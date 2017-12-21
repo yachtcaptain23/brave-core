@@ -12,7 +12,11 @@ group("browser_dependencies") {
 }
 
 group("brave") {
+
+if (!is_android) {
   public_deps = [
     "//chrome",
   ]
+}
+
 }

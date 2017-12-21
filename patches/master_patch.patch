@@ -1,3 +1,76 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index 5fdb6c5f516c18a201a15ecdb7edd5a6930f436a..92a3f1412589988f2ce1452c28489d311bc6001c 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -225,11 +225,18 @@ group("gn_all") {
+   deps += root_extra_deps
+ 
+   if (enable_extensions) {
++###AB###
++if (!is_android) {
++print("//BUILD.gn add deps ",   "//extensions:extensions_browsertests",   "//extensions:extensions_unittests",   "//extensions/shell:app_shell_unittests")
+     deps += [
+       "//extensions:extensions_browsertests",
+       "//extensions:extensions_unittests",
+       "//extensions/shell:app_shell_unittests",
+     ]
++}
++else{
++print("//BUILD.gn ignoring deps ",   "//extensions:extensions_browsertests",   "//extensions:extensions_unittests",   "//extensions/shell:app_shell_unittests")
++} ###AB###
+   }
+ 
+   if (enable_remoting) {
+@@ -479,10 +486,21 @@ group("gn_all") {
+     }
+ 
+     if (enable_extensions) {
++###AB###
++print("//BUILD.gn add deps (2) ",
++"//extensions/shell:app_shell",
++"//extensions/shell/installer:app_shell_installer")
++
++if (!is_android){
+       deps += [
+         "//extensions/shell:app_shell",
+         "//extensions/shell/installer:app_shell_installer",
+       ]
++} else {
++  print("//BUILD.gn android, ignoring deps of  ",
++  "//extensions/shell:app_shell",
++  "//extensions/shell/installer:app_shell_installer"  )
++}
+     }
+ 
+     if (enable_nacl) {
+diff --git a/apps/BUILD.gn b/apps/BUILD.gn
+index 00e95f3a10cf141935aeca8e3b68309aabd77602..c0b409a9f7458f6ebbfd4da686fb9ee55e0a650d 100644
+--- a/apps/BUILD.gn
++++ b/apps/BUILD.gn
+@@ -6,6 +6,9 @@ import("//build/config/features.gni")
+ import("//build/config/ui.gni")
+ import("//extensions/features/features.gni")
+ 
++print("//apps/BUILD.gn enter")
++
++###AB###
+ assert(!is_android && !is_ios)
+ assert(enable_extensions,
+        "Cannot depend on extensions because enable_extensions=false.")
+diff --git a/build/config/android/config.gni b/build/config/android/config.gni
+index e74ee86f4e694fa3060c14fe86bcdc9f5999bda9..16999f809fab843ab0c4eaa29223754d5154a305 100644
+--- a/build/config/android/config.gni
++++ b/build/config/android/config.gni
+@@ -187,6 +187,9 @@ if (is_android) {
+     enable_incremental_dx = is_java_debug
+   }
+ 
++print("android/config.gni: enable_incremental_javac=",enable_incremental_javac)
++print("android/config.gni: is_java_debug=",is_java_debug)
++
+   # Neither of these should ever be used for release builds since they are
+   # somewhat experimental and dx --incremental is known to not produce
+   # byte-for-byte identical output.
 diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
 index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2cf91c07a7 100644
 --- a/build/config/chrome_build.gni
@@ -22,18 +95,21 @@ index 93a04ceb27d04671efddc245fc4e57ec388112da..683d6dce475462785fd365e373ca090d
          r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community'):
        if path and os.path.exists(path):
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0813b36a1 100644
+index cf36e40ee5426464cee670a11128a0e11ca49efd..810c6deb1ba08555d466197fb6a07483242f97dd 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -253,6 +253,8 @@ if (!is_android && !is_mac) {
+@@ -253,8 +253,10 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
            "app/chrome_main_delegate.h",
 +          "//brave/app/brave_main_delegate.cc",
 +          "//brave/app/brave_main_delegate.h",
          ]
- 
+-
++print("chrome/BUILD.GN, line 259 in is_linux")
          deps += [
+           # On Linux, link the dependencies (libraries) that make up actual
+           # Chromium functionality directly into the executable.
 @@ -375,6 +377,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
@@ -97,15 +173,63 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1739,6 +1751,8 @@ if (is_android) {
+@@ -1739,6 +1751,17 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
 +      "//brave/app/brave_main_delegate.cc",
 +      "//brave/app/brave_main_delegate.h",
++
++
++#      "//brave/components/brave_shields/browser/ad_block_service.cc",
++#      "//brave/components/brave_shields/browser/ad_block_service.h",
++#      "//brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.h",
++#      "//brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.cc",
++### ninja: error: '../../brave/components/brave_shields/browser/brave_network_delegate.cc', needed by 'obj/chrome/chrome_android_core/brave_network_delegate.o', missing and no known rule to make it
++#      "//brave/components/brave_shields/browser/brave_network_delegate.cc",
++#      "//brave/components/brave_shields/browser/brave_network_delegate.h",
      ]
  
      include_dirs = [ android_ndk_include_dir ]
+@@ -1749,6 +1772,9 @@ if (is_android) {
+     ]
+ 
+     deps = [
++
++
++
+       "//chrome/browser",
+       "//chrome/browser/ui",
+       "//chrome/child",
+@@ -1761,6 +1787,19 @@ if (is_android) {
+       "//content/public/app:both",
+       "//content/public/common:service_names",
+       "//services/service_manager/embedder",
++
++##AB: try, if does not help, try direct deps for brave's src
++##../../chrome/browser/extensions/extension_tab_util.h:12:10: fatal error: 'chrome/common/extensions/api/tabs.h' file not found
++  ":browser_dependencies",
++  ":child_dependencies",
++
++#"//device/serial:serial",
++#"//device/serial:test_support",
++#"//extensions:extensions_resources__build_config",
++
++#"//device/serial",
++#"//extensions",
++
+     ]
+ 
+     # Explicit dependency required for JNI registration to be able to
+@@ -1868,3 +1907,8 @@ if (is_linux) {
+     ]
+   }
+ }
++
++
++
++
++
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
 index f85f3d75cf76d8861a1f57ce9b799d60e830e878..0275be6c254d7cce443913ddc7f1fab14ff4dcc0 100644
 --- a/chrome/app/BUILD.gn
@@ -140,18 +264,196 @@ index e05f30380d9d06fb15a7922aead3f4f82abbe9f1..5464cf08b360bce105d4ece3d7b6e29a
        base::TimeTicks::FromInternalValue(exe_entry_point_ticks));
    content::ContentMainParams params(&chrome_main_delegate);
  
+diff --git a/chrome/app/generated_resources.grd b/chrome/app/generated_resources.grd
+index 7a4995c2608ffdf4923c67f72faefbcb34c35829..424995f36c9920850c1644434fb6d6ec9af0c041 100644
+--- a/chrome/app/generated_resources.grd
++++ b/chrome/app/generated_resources.grd
+@@ -7296,7 +7296,8 @@ I don't think this site should be blocked!
+       <!-- Settings related strings not specific to chrome://settings.
+            (Settings specific strings are in settings_strings.grdp).
+            Android uses native UI for settings -->
+-      <if expr="not is_android">
++<!--
++      <if expr="not is_android"> AB -->
+         <message name="IDS_TOOLBAR_INFORM_SET_HOME_PAGE" desc="The confirmation message when dropping a link on the Home toolbar button">
+            Your home page has been set.
+         </message>
+@@ -7498,7 +7499,7 @@ I don't think this site should be blocked!
+         <message name="IDS_RESET_PROFILE_SETTINGS_PROCESSING_SHORTCUTS" desc="A placeholder for the actual shortcuts in the Reset Profile Settings dialog (shortcut refers to the desktop icon on windows)">
+           Processing shortcuts...
+         </message>
+-      </if>
++<!--      </if> -->
+ 
+       <if expr="is_android">
+         <message name="IDS_OPTIONS_HOMEPAGE_TITLE" desc="The title of the home page overlay on Android" formatter_data="android_java">
+@@ -10529,7 +10530,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@gmail.com</ex
+       </if>
+ 
+       <!-- Media Galleries. -->
+-      <if expr="not is_android">
++<!--      <if expr="not is_android"> -->
+         <message name="IDS_MEDIA_GALLERIES_DIALOG_HEADER" desc="Header for media gallery permissions dialog.">
+           Media-File Permissions for "<ph name="EXTENSION">$1<ex>Photo Editor</ex></ph>"
+         </message>
+@@ -10584,7 +10585,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@gmail.com</ex
+         <message name="IDS_MEDIA_GALLERIES_DIALOG_DELETE" desc="Text label of the menu item which removes selected media gallery access for all apps.">
+           Permanently remove access for all apps
+         </message>
+-      </if>
++<!--      </if> -->
+ 
+       <!-- App List. -->
+       <if expr="enable_app_list">
+@@ -11561,7 +11562,8 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@gmail.com</ex
+       </message>
+     </if>
+ 
+-    <if expr="not is_android">
++<!-- AB
++    <if expr="not is_android"> -->
+       <!-- Device Chooser Prompt -->
+       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth chooser details to the user in a popup when it is from a website.">
+         <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to pair
+@@ -11623,7 +11625,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@gmail.com</ex
+       <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_UNKNOWN_DEVICE_WITH_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a device when only numeric vendor and product IDs are available.">
+         Unknown device [<ph name="VENDOR_ID">$1<ex>123</ex></ph>:<ph name="PRODUCT_ID">$2<ex>123</ex></ph>]
+       </message>
+-    </if>
++<!--    </if> AB -->
+ 
+     <!-- Chrome IME API activated bubble. -->
+     <message name="IDS_IME_API_ACTIVATED_WARNING" desc="The Warning info when an IME extension is trying to activate.">
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 27e5f84cb1f06d0a1cd766beace97d5b20317928..23841a71e3e7060727dab6f47b90356cb985f733 100644
+index 27e5f84cb1f06d0a1cd766beace97d5b20317928..8f4e014954fc056b7841e276f5d18bad08b09858 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1760,6 +1760,7 @@ split_static_library("browser") {
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//chrome/browser/BUILD.gn enter")
++
+ import("//build/config/chrome_build.gni")
+ import("//build/config/crypto.gni")
+ import("//build/config/features.gni")
+@@ -57,6 +59,9 @@ if (is_win) {
+ # Use a static library here because many test binaries depend on this but don't
+ # require many files from it. This makes linking more efficient.
+ split_static_library("browser") {
++
++print("//chrome/browser/BUILD.gn, in split_static_library(\"browser\"), is_android=", is_android)
++
+   # Split into multiple static libraries on Windows builds. We have hit size
+   # limits on Windows official builds and on goma builds when symbol_level = 2
+   # is selected. Always splitting on Windows builds is simpler than trying to
+@@ -1760,8 +1765,21 @@ split_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
 +    "//brave/browser:browser_process",
    ]
  
++  ###AB###
++#  if (!is_android) {
++#    print("//chrome/browser/BUILD.gn add deps" )
++#    deps += [
++#      ## "//chrome/browser/apps:apps",
++#    ]
++#  } else {
++#    print("//chrome/browser/BUILD.gn ignore deps" )
++#  }
++#  ##
++
++
    # Android does in-process PAC, so must link against V8 directly. Other
+   # platforms use OOP Mojo resolution.
+   if (is_android) {
+@@ -2029,25 +2047,50 @@ split_static_library("browser") {
+       "sync_file_system/task_logger.h",
+     ]
+     public_deps += [
+-      "//chrome/browser/apps",
++      ###AB###"//chrome/browser/apps",
+       "//chrome/browser/extensions",
+     ]
+     allow_circular_includes_from += [
+-      "//chrome/browser/apps",
++      ###AB###"//chrome/browser/apps",
+       "//chrome/browser/extensions",
+     ]
+     deps += [
+-      "//apps",
++      ###AB###"//apps",
+       "//chrome/browser/sync_file_system/drive_backend:sync_file_system_drive_proto",
+       "//chrome/common/extensions/api",
+       "//chrome/common/extensions/api:api_registration",
+       "//chrome/common/extensions/api:extensions_features",
+       "//components/drive",
++      ###AB###
+       "//components/guest_view/browser",
+       "//extensions/components/javascript_dialog_extensions_client",
+       "//media/cast:net",
+       "//services/device/public/interfaces",
+     ]
++    ###AB###
++    if (!is_android){
++      print("//chrome/browser/BUILD.gn add deps", "//apps", "//components/guest_view/browser")
++      deps += [
++        "//apps",
++        #"//components/guest_view/browser",
++      ]
++
++      print("//chrome/browser/BUILD.gn add public_deps", "//chrome/browser/apps")
++      public_deps += [
++        "//chrome/browser/apps",
++      ]
++
++      print("//chrome/browser/BUILD.gn add allow_circular_includes_from", "//chrome/browser/apps")
++      allow_circular_includes_from += [
++        "//chrome/browser/apps",
++      ]
++
++
++    }else{
++      #print("//chrome/browser/BUILD.gn ignore deps", "//apps", "//components/guest_view/browser")
++      print("//chrome/browser/BUILD.gn ignore public_deps", "//chrome/browser/apps")
++      print("//chrome/browser/BUILD.gn ignore allow_circular_includes_from", "//chrome/browser/apps")
++    }
+   }
+   if (enable_background) {
+     sources += [
+diff --git a/chrome/browser/apps/BUILD.gn b/chrome/browser/apps/BUILD.gn
+index c56220320e10342d98c055aa41a71f19e8b91efa..4b4fd489d9b305bcec8b13e73b89eda4067cc0de 100644
+--- a/chrome/browser/apps/BUILD.gn
++++ b/chrome/browser/apps/BUILD.gn
+@@ -6,6 +6,19 @@ import("//extensions/features/features.gni")
+ 
+ assert(enable_extensions)
+ 
++###AB####
++if (is_android) {
++  static_library("extensions") {
++    sources = []
++    configs = []
++    defines = []
++    public_deps = []
++    deps = []
++  }
++} else {
++###AB####
++
++
+ source_set("apps") {
+   sources = [
+     "app_launch_for_metro_restart_win.cc",
+@@ -54,3 +67,6 @@ source_set("apps") {
+ 
+   allow_circular_includes_from = [ "//chrome/browser/extensions" ]
+ }
++
++
++} #else is_android ###AB####
 diff --git a/chrome/browser/browser_process.h b/chrome/browser/browser_process.h
 index 77cd9e948514e875e636da465f60136ebd510491..ee7a2eeb61330c718036c04364251be7c59ce361 100644
 --- a/chrome/browser/browser_process.h
@@ -311,6 +613,517 @@ index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb
    friend class DisableWebRtcEncryptionFlagTest;
    friend class InProcessBrowserTest;
  
+diff --git a/chrome/browser/chromeos/extensions/file_manager/private_api_misc.cc b/chrome/browser/chromeos/extensions/file_manager/private_api_misc.cc
+index 50a56c440a58e1b1117afe39d719acc2db65622f..75a8aba163a69c3323222dd7a9519080c534db81 100644
+--- a/chrome/browser/chromeos/extensions/file_manager/private_api_misc.cc
++++ b/chrome/browser/chromeos/extensions/file_manager/private_api_misc.cc
+@@ -49,7 +49,9 @@
+ #include "components/signin/core/browser/profile_oauth2_token_service.h"
+ #include "components/signin/core/browser/signin_manager.h"
+ #include "components/user_manager/user_manager.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
++#endif
+ #include "content/public/browser/web_contents.h"
+ #include "content/public/common/page_zoom.h"
+ #include "extensions/browser/api/file_handlers/mime_util.h"
+diff --git a/chrome/browser/devtools/devtools_ui_bindings.cc b/chrome/browser/devtools/devtools_ui_bindings.cc
+index a1dd70e2acdb9ddbc9e49c9250820add3f36e2d6..be229cb71666bccb8113e1ad05840bc112936efa 100644
+--- a/chrome/browser/devtools/devtools_ui_bindings.cc
++++ b/chrome/browser/devtools/devtools_ui_bindings.cc
+@@ -45,7 +45,9 @@
+ #include "components/infobars/core/infobar.h"
+ #include "components/prefs/scoped_user_pref_update.h"
+ #include "components/sync_preferences/pref_service_syncable.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
++#endif
+ #include "content/public/browser/child_process_security_policy.h"
+ #include "content/public/browser/devtools_external_agent_proxy.h"
+ #include "content/public/browser/devtools_external_agent_proxy_delegate.h"
+diff --git a/chrome/browser/devtools/devtools_window.cc b/chrome/browser/devtools/devtools_window.cc
+index 003280aa4898497ff00de8fcc6986f9bab719394..cfc84916213ce284fbd942afbe3e78e26e45408c 100644
+--- a/chrome/browser/devtools/devtools_window.cc
++++ b/chrome/browser/devtools/devtools_window.cc
+@@ -40,8 +40,10 @@
+ #include "components/pref_registry/pref_registry_syncable.h"
+ #include "components/prefs/scoped_user_pref_update.h"
+ #include "components/sync_preferences/pref_service_syncable.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/browser_thread.h"
+ #include "content/public/browser/devtools_agent_host.h"
+ #include "content/public/browser/keyboard_event_processing_result.h"
+diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
+index 5e6fcdbf3505b8df07587c01d73f1252148dc721..58ff2dc38a5bd74522565751e0871f58ca0b8f6d 100644
+--- a/chrome/browser/extensions/BUILD.gn
++++ b/chrome/browser/extensions/BUILD.gn
+@@ -12,6 +12,18 @@ import("//rlz/features/features.gni")
+ 
+ assert(enable_extensions)
+ 
++###AB####
++#if (is_android) {
++#  static_library("extensions") {
++#    sources = []
++#    configs = []
++#    defines = []
++#    public_deps = []
++#    deps = []
++#  }
++#} else {
++###AB####
++
+ static_library("extensions") {
+   sources = [
+     # TODO These references to files in //chrome/browser/ should either be
+@@ -88,8 +100,8 @@ static_library("extensions") {
+     "api/chrome_device_permissions_prompt.h",
+     "api/chrome_extensions_api_client.cc",
+     "api/chrome_extensions_api_client.h",
+-    "api/cloud_print_private/cloud_print_private_api.cc",
+-    "api/cloud_print_private/cloud_print_private_api.h",
++###AB###    "api/cloud_print_private/cloud_print_private_api.cc",
++###AB###    "api/cloud_print_private/cloud_print_private_api.h",
+     "api/command_line_private/command_line_private_api.cc",
+     "api/command_line_private/command_line_private_api.h",
+     "api/commands/command_service.cc",
+@@ -334,8 +346,11 @@ static_library("extensions") {
+     "api/proxy/proxy_api_constants.h",
+     "api/proxy/proxy_api_helpers.cc",
+     "api/proxy/proxy_api_helpers.h",
+-    "api/resources_private/resources_private_api.cc",
+-    "api/resources_private/resources_private_api.h",
++
++###AB###
++#    "api/resources_private/resources_private_api.cc",
++#    "api/resources_private/resources_private_api.h",
++
+     "api/runtime/chrome_runtime_api_delegate.cc",
+     "api/runtime/chrome_runtime_api_delegate.h",
+     "api/screenlock_private/screenlock_private_api.cc",
+@@ -403,22 +418,23 @@ static_library("extensions") {
+     "api/tab_capture/tab_capture_api.h",
+     "api/tab_capture/tab_capture_registry.cc",
+     "api/tab_capture/tab_capture_registry.h",
+-    "api/tabs/app_base_window.cc",
+-    "api/tabs/app_base_window.h",
+-    "api/tabs/app_window_controller.cc",
+-    "api/tabs/app_window_controller.h",
+-    "api/tabs/tabs_api.cc",
+-    "api/tabs/tabs_api.h",
+-    "api/tabs/tabs_constants.cc",
+-    "api/tabs/tabs_constants.h",
+-    "api/tabs/tabs_event_router.cc",
+-    "api/tabs/tabs_event_router.h",
+-    "api/tabs/tabs_windows_api.cc",
+-    "api/tabs/tabs_windows_api.h",
+-    "api/tabs/windows_event_router.cc",
+-    "api/tabs/windows_event_router.h",
+-    "api/tabs/windows_util.cc",
+-    "api/tabs/windows_util.h",
++
++#    "api/tabs/app_base_window.cc",
++#    "api/tabs/app_base_window.h",
++#    "api/tabs/app_window_controller.cc",
++#    "api/tabs/app_window_controller.h",
++#    "api/tabs/tabs_api.cc",
++#    "api/tabs/tabs_api.h",
++#    "api/tabs/tabs_constants.cc",
++#    "api/tabs/tabs_constants.h",
++#    "api/tabs/tabs_event_router.cc",
++#    "api/tabs/tabs_windows_api.cc",
++#    "api/tabs/tabs_windows_api.h",
++#    "api/tabs/windows_event_router.cc",
++#    "api/tabs/windows_event_router.h",
++#    "api/tabs/windows_util.cc",
++#    "api/tabs/windows_util.h",
++
+     "api/top_sites/top_sites_api.cc",
+     "api/top_sites/top_sites_api.h",
+     "api/web_navigation/frame_navigation_state.cc",
+@@ -689,8 +705,8 @@ static_library("extensions") {
+     "permissions_based_management_policy_provider.h",
+     "permissions_updater.cc",
+     "permissions_updater.h",
+-    "plugin_manager.cc",
+-    "plugin_manager.h",
++###AB###    "plugin_manager.cc",
++###AB###    "plugin_manager.h",
+     "policy_extension_reinstaller.cc",
+     "policy_extension_reinstaller.h",
+     "policy_handlers.cc",
+@@ -787,7 +803,7 @@ static_library("extensions") {
+     "//content/public/browser",
+   ]
+   deps = [
+-    "//apps",
++###AB###    "//apps",
+     "//chrome:extra_resources",
+     "//chrome:resources",
+     "//chrome:strings",
+@@ -859,7 +875,7 @@ static_library("extensions") {
+     "//components/user_prefs",
+     "//components/vector_icons",
+     "//components/web_modal",
+-    "//components/zoom",
++###AB###    "//components/zoom",
+     "//content/app/resources",
+     "//content/public/common",
+     "//crypto",
+@@ -876,7 +892,7 @@ static_library("extensions") {
+     "//media:media_features",
+     "//net",
+     "//ppapi/features",
+-    "//printing/features",
++###AB###    "//printing/features",
+     "//rlz/features",
+     "//services/identity/public/interfaces",
+     "//services/service_manager/public/cpp",
+@@ -905,6 +921,11 @@ static_library("extensions") {
+     "//ui/shell_dialogs",
+     "//ui/strings",
+     "//url",
++
++    ###AB###
++    "//chrome/browser/resources:component_extension_resources",
++
++    "//chrome/common/media_router/mojo:media_router",
+   ]
+ 
+   if (!is_chromeos) {
+@@ -1158,3 +1179,5 @@ static_library("extensions") {
+     sources += [ "api/braille_display_private/braille_controller_stub.cc" ]
+   }
+ }
++
++#} #else is_android ###AB####
+diff --git a/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc b/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc
+index 53abf8bcdc21a34c056e19a878a6cfd051b848d5..1df7c7897b1c56cfb27580a819306c44a2ff855e 100644
+--- a/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc
++++ b/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc
+@@ -516,14 +516,15 @@ BookmarkManagerPrivateGetStringsFunction::Run() {
+       l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO));
+   localized_strings->SetString("remove",
+       l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_REMOVE));
+-  localized_strings->SetString("copy",
+-      l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_COPY));
+-  localized_strings->SetString("cut",
+-      l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_CUT));
+-  localized_strings->SetString("paste",
+-      l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_PASTE));
+-  localized_strings->SetString("delete",
+-      l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_DELETE));
++//AB      
++  // localized_strings->SetString("copy",
++  //     l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_COPY));
++  // localized_strings->SetString("cut",
++  //     l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_CUT));
++  // localized_strings->SetString("paste",
++  //     l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_PASTE));
++  // localized_strings->SetString("delete",
++  //     l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_DELETE));
+   localized_strings->SetString("undo_delete",
+       l10n_util::GetStringUTF16(IDS_UNDO_DELETE));
+   localized_strings->SetString("new_folder_name",
+diff --git a/chrome/browser/extensions/api/feedback_private/chrome_feedback_private_delegate.cc b/chrome/browser/extensions/api/feedback_private/chrome_feedback_private_delegate.cc
+index 28a53f9baaa790b1184bfe605c20ad867faeec00..6a23c4bbb2f97c18b434fe70354587a8e89872fa 100644
+--- a/chrome/browser/extensions/api/feedback_private/chrome_feedback_private_delegate.cc
++++ b/chrome/browser/extensions/api/feedback_private/chrome_feedback_private_delegate.cc
+@@ -78,12 +78,13 @@ ChromeFeedbackPrivateDelegate::GetStrings(
+              IDS_FEEDBACK_INCLUDE_PERFORMANCE_TRACE_CHECKBOX);
+   // Add the localized strings needed for the "system information" page.
+   SET_STRING("sysinfoPageTitle", IDS_FEEDBACK_SYSINFO_PAGE_TITLE);
+-  SET_STRING("sysinfoPageDescription", IDS_ABOUT_SYS_DESC);
+-  SET_STRING("sysinfoPageTableTitle", IDS_ABOUT_SYS_TABLE_TITLE);
+-  SET_STRING("sysinfoPageExpandAllBtn", IDS_ABOUT_SYS_EXPAND_ALL);
+-  SET_STRING("sysinfoPageCollapseAllBtn", IDS_ABOUT_SYS_COLLAPSE_ALL);
+-  SET_STRING("sysinfoPageExpandBtn", IDS_ABOUT_SYS_EXPAND);
+-  SET_STRING("sysinfoPageCollapseBtn", IDS_ABOUT_SYS_COLLAPSE);
++//AB  
++  // SET_STRING("sysinfoPageDescription", IDS_ABOUT_SYS_DESC);
++  // SET_STRING("sysinfoPageTableTitle", IDS_ABOUT_SYS_TABLE_TITLE);
++  // SET_STRING("sysinfoPageExpandAllBtn", IDS_ABOUT_SYS_EXPAND_ALL);
++  // SET_STRING("sysinfoPageCollapseAllBtn", IDS_ABOUT_SYS_COLLAPSE_ALL);
++  // SET_STRING("sysinfoPageExpandBtn", IDS_ABOUT_SYS_EXPAND);
++  // SET_STRING("sysinfoPageCollapseBtn", IDS_ABOUT_SYS_COLLAPSE);
+   SET_STRING("sysinfoPageStatusLoading", IDS_FEEDBACK_SYSINFO_PAGE_LOADING);
+   // And the localized strings needed for the SRT Download Prompt.
+   SET_STRING("srtPromptBody", IDS_FEEDBACK_SRT_PROMPT_BODY);
+diff --git a/chrome/browser/extensions/api/messaging/native_process_launcher_posix.cc b/chrome/browser/extensions/api/messaging/native_process_launcher_posix.cc
+index 0a5d0166333980dd335ba3ecab98ae332ede7a75..f40185346670296fb7bfd30950fd5d9d13a35f23 100644
+--- a/chrome/browser/extensions/api/messaging/native_process_launcher_posix.cc
++++ b/chrome/browser/extensions/api/messaging/native_process_launcher_posix.cc
+@@ -20,6 +20,7 @@ namespace extensions {
+ 
+ namespace {
+ 
++#if !defined OS_ANDROID
+ base::FilePath FindManifestInDir(int dir_key, const std::string& host_name) {
+   base::FilePath base_path;
+   if (PathService::Get(dir_key, &base_path)) {
+@@ -29,6 +30,7 @@ base::FilePath FindManifestInDir(int dir_key, const std::string& host_name) {
+   }
+   return base::FilePath();
+ }
++#endif
+ 
+ }  // namespace
+ 
+@@ -38,6 +40,7 @@ base::FilePath NativeProcessLauncher::FindManifest(
+     bool allow_user_level_hosts,
+     std::string* error_message) {
+   base::FilePath result;
++#if !defined OS_ANDROID
+   if (allow_user_level_hosts)
+     result = FindManifestInDir(chrome::DIR_USER_NATIVE_MESSAGING, host_name);
+   if (result.empty())
+@@ -45,10 +48,13 @@ base::FilePath NativeProcessLauncher::FindManifest(
+ 
+   if (result.empty())
+     *error_message = "Can't find native messaging host " + host_name;
+-
++#else
++    *error_message = "Unavailable for Android";
++#endif
+   return result;
+ }
+ 
++
+ // static
+ bool NativeProcessLauncher::LaunchNativeProcess(
+     const base::CommandLine& command_line,
+diff --git a/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc b/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc
+index d4c0b762a4619ee522d867aa3f8196b906b0e510..eca94502984b01d6b62b9fa566e87da8fba5dd2d 100644
+--- a/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc
++++ b/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc
+@@ -251,8 +251,13 @@ void ChromeRuntimeAPIDelegate::OpenURL(const GURL& uninstall_url) {
+   if (!browser)
+     browser = new Browser(Browser::CreateParams(profile, false));
+ 
++#if !defined(OS_ANDROID)
+   chrome::NavigateParams params(
+       browser, uninstall_url, ui::PAGE_TRANSITION_CLIENT_REDIRECT);
++#else
++  chrome::NavigateParams params(
++      profile, uninstall_url, ui::PAGE_TRANSITION_CLIENT_REDIRECT);
++#endif
+   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+   params.user_gesture = false;
+   chrome::Navigate(&params);
+diff --git a/chrome/browser/extensions/api/settings_private/settings_private_api.cc b/chrome/browser/extensions/api/settings_private/settings_private_api.cc
+index d146a27939314050f7263f3a9a4d139dbdb9a2f9..18b51a661b79aa115edba5ee23016fc6246677be 100644
+--- a/chrome/browser/extensions/api/settings_private/settings_private_api.cc
++++ b/chrome/browser/extensions/api/settings_private/settings_private_api.cc
+@@ -102,6 +102,7 @@ ExtensionFunction::ResponseAction SettingsPrivateGetPrefFunction::Run() {
+     return RespondNow(OneArgument(std::move(value)));
+ }
+ 
++#if !defined(OS_ANDROID)
+ ////////////////////////////////////////////////////////////////////////////////
+ // SettingsPrivateGetDefaultZoomFunction
+ ////////////////////////////////////////////////////////////////////////////////
+@@ -143,5 +144,6 @@ ExtensionFunction::ResponseAction
+   delegate->SetDefaultZoom(parameters->zoom);
+   return RespondNow(OneArgument(base::MakeUnique<base::Value>(true)));
+ }
++#endif// !defined(OS_ANDROID)
+ 
+ }  // namespace extensions
+diff --git a/chrome/browser/extensions/api/settings_private/settings_private_api.h b/chrome/browser/extensions/api/settings_private/settings_private_api.h
+index e61e09a458a0f90d21b7ede413a0446eb9da8ab4..aa1a1c01cdcaaec0bc23a1c0dd9066abd3078cd1 100644
+--- a/chrome/browser/extensions/api/settings_private/settings_private_api.h
++++ b/chrome/browser/extensions/api/settings_private/settings_private_api.h
+@@ -60,6 +60,7 @@ class SettingsPrivateGetPrefFunction : public UIThreadExtensionFunction {
+   DISALLOW_COPY_AND_ASSIGN(SettingsPrivateGetPrefFunction);
+ };
+ 
++#if !defined(OS_ANDROID)
+ // Implements the chrome.settingsPrivate.getDefaultZoom method.
+ class SettingsPrivateGetDefaultZoomFunction
+     : public UIThreadExtensionFunction {
+@@ -93,6 +94,8 @@ class SettingsPrivateSetDefaultZoomFunction
+ 
+   DISALLOW_COPY_AND_ASSIGN(SettingsPrivateSetDefaultZoomFunction);
+ };
++#endif
++
+ 
+ }  // namespace extensions
+ 
+diff --git a/chrome/browser/extensions/api/settings_private/settings_private_delegate.cc b/chrome/browser/extensions/api/settings_private/settings_private_delegate.cc
+index f043941329f6a329e32ec5dd366725f6fe897f47..f65fc45fc7b05662405c6db55f376edb0ccad660 100644
+--- a/chrome/browser/extensions/api/settings_private/settings_private_delegate.cc
++++ b/chrome/browser/extensions/api/settings_private/settings_private_delegate.cc
+@@ -59,6 +59,7 @@ PrefsUtil::SetPrefResult SettingsPrivateDelegate::SetPref(
+   return prefs_util_->SetPref(pref_name, value);
+ }
+ 
++#if !defined(OS_ANDROID)
+ std::unique_ptr<base::Value> SettingsPrivateDelegate::GetDefaultZoom() {
+   double zoom = content::ZoomLevelToZoomFactor(
+       profile_->GetZoomLevelPrefs()->GetDefaultZoomLevelPref());
+@@ -72,5 +73,6 @@ PrefsUtil::SetPrefResult SettingsPrivateDelegate::SetDefaultZoom(
+   profile_->GetZoomLevelPrefs()->SetDefaultZoomLevelPref(zoom_factor);
+   return PrefsUtil::SetPrefResult::SUCCESS;
+ }
++#endif
+ 
+ }  // namespace extensions
+diff --git a/chrome/browser/extensions/api/settings_private/settings_private_delegate.h b/chrome/browser/extensions/api/settings_private/settings_private_delegate.h
+index 752c2f005e140d6eb4482a206fbcd56c344fe8c6..222d47f3aaedb025e3e786da36018bc177165e86 100644
+--- a/chrome/browser/extensions/api/settings_private/settings_private_delegate.h
++++ b/chrome/browser/extensions/api/settings_private/settings_private_delegate.h
+@@ -44,11 +44,13 @@ class SettingsPrivateDelegate : public KeyedService {
+   // Gets the values of all whitelisted prefs.
+   virtual std::unique_ptr<base::Value> GetAllPrefs();
+ 
++#if !defined(OS_ANDROID)
+   // Gets the value.
+   virtual std::unique_ptr<base::Value> GetDefaultZoom();
+ 
+   // Sets the pref.
+   virtual PrefsUtil::SetPrefResult SetDefaultZoom(double zoom);
++#endif
+ 
+  protected:
+   Profile* profile_;  // weak; not owned by us
+diff --git a/chrome/browser/extensions/api/tabs/tabs_api.cc b/chrome/browser/extensions/api/tabs/tabs_api.cc
+index 4330ebfbcd93f9bcd7bb10199e6483f8e87cb7ec..f41b17d4727e50658c21aa77f00da5f4f2d774bb 100644
+--- a/chrome/browser/extensions/api/tabs/tabs_api.cc
++++ b/chrome/browser/extensions/api/tabs/tabs_api.cc
+@@ -62,7 +62,9 @@
+ #include "components/prefs/pref_service.h"
+ #include "components/translate/core/browser/language_state.h"
+ #include "components/translate/core/common/language_detection_details.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/navigation_controller.h"
+ #include "content/public/browser/navigation_entry.h"
+ #include "content/public/browser/notification_details.h"
+diff --git a/chrome/browser/extensions/api/tabs/tabs_api.h b/chrome/browser/extensions/api/tabs/tabs_api.h
+index c8e4071ec5a3515c844b7392fab2edacfdf10f80..a4d7cd03261d40ccc1584d722568bd99589a37b6 100644
+--- a/chrome/browser/extensions/api/tabs/tabs_api.h
++++ b/chrome/browser/extensions/api/tabs/tabs_api.h
+@@ -12,7 +12,11 @@
+ #include "chrome/browser/extensions/chrome_extension_function.h"
+ #include "chrome/browser/extensions/chrome_extension_function_details.h"
+ #include "chrome/common/extensions/api/tabs.h"
++
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
++
+ #include "content/public/browser/notification_observer.h"
+ #include "content/public/browser/notification_registrar.h"
+ #include "extensions/browser/api/execute_code_function.h"
+@@ -40,9 +44,12 @@ class PrefRegistrySyncable;
+ 
+ namespace extensions {
+ 
++#if !defined OS_ANDROID
+ // Converts a ZoomMode to its ZoomSettings representation.
+ void ZoomModeToZoomSettings(zoom::ZoomController::ZoomMode zoom_mode,
+                             api::tabs::ZoomSettings* zoom_settings);
++#endif
++
+ 
+ // Windows
+ class WindowsGetFunction : public UIThreadExtensionFunction {
+diff --git a/chrome/browser/extensions/api/tabs/tabs_event_router.h b/chrome/browser/extensions/api/tabs/tabs_event_router.h
+index c100285f6255a6a795990da448033278dc9e7b92..a68e1038bc35789e49eb70f386ebca401faba503 100644
+--- a/chrome/browser/extensions/api/tabs/tabs_event_router.h
++++ b/chrome/browser/extensions/api/tabs/tabs_event_router.h
+@@ -19,7 +19,9 @@
+ #include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
+ #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+ #include "components/favicon/core/favicon_driver_observer.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_observer.h"
++#endif
+ #include "content/public/browser/web_contents_observer.h"
+ #include "extensions/browser/event_router.h"
+ 
+diff --git a/chrome/browser/extensions/device_permissions_dialog_controller.cc b/chrome/browser/extensions/device_permissions_dialog_controller.cc
+index d6ca6dd841ba5c82a1ec6d2e798ec64931eeba33..287081127f221635b17397d06f27be34352593b9 100644
+--- a/chrome/browser/extensions/device_permissions_dialog_controller.cc
++++ b/chrome/browser/extensions/device_permissions_dialog_controller.cc
+@@ -35,6 +35,7 @@ bool DevicePermissionsDialogController::AllowMultipleSelection() const {
+ 
+ base::string16 DevicePermissionsDialogController::GetNoOptionsText() const {
+   return l10n_util::GetStringUTF16(IDS_DEVICE_CHOOSER_NO_DEVICES_FOUND_PROMPT);
++  //return l10n_util::GetStringUTF16("NO_DEVICES_FOUND_PROMPT");//AB
+ }
+ 
+ base::string16 DevicePermissionsDialogController::GetOkButtonLabel() const {
+diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
+index 596d163d649045b58a2142908c100d45332429e0..6302cc9f1bf08c16bc477794b7b40ea7a2d10939 100644
+--- a/chrome/browser/extensions/extension_tab_util.cc
++++ b/chrome/browser/extensions/extension_tab_util.cc
+@@ -251,8 +251,14 @@ base::DictionaryValue* ExtensionTabUtil::OpenTab(
+   add_types |= TabStripModel::ADD_FORCE_INDEX;
+   if (pinned)
+     add_types |= TabStripModel::ADD_PINNED;
++#if !defined OS_ANDROID
+   chrome::NavigateParams navigate_params(
+       browser, url, ui::PAGE_TRANSITION_LINK);
++#else
++chrome::NavigateParams navigate_params(
++    profile, url, ui::PAGE_TRANSITION_LINK);
++#endif
++
+   navigate_params.disposition = active
+                                     ? WindowOpenDisposition::NEW_FOREGROUND_TAB
+                                     : WindowOpenDisposition::NEW_BACKGROUND_TAB;
+@@ -260,6 +266,8 @@ base::DictionaryValue* ExtensionTabUtil::OpenTab(
+   navigate_params.tabstrip_add_types = add_types;
+   chrome::Navigate(&navigate_params);
+ 
++//AB
++#if !defined OS_ANDROID
+   // The tab may have been created in a different window, so make sure we look
+   // at the right tab strip.
+   tab_strip = navigate_params.browser->tab_strip_model();
+@@ -281,6 +289,9 @@ base::DictionaryValue* ExtensionTabUtil::OpenTab(
+                                            function->extension())
+       ->ToValue()
+       .release();
++#else
++  return nullptr;
++#endif
+ }
+ 
+ Browser* ExtensionTabUtil::GetBrowserFromWindowID(
+@@ -610,6 +621,7 @@ void ExtensionTabUtil::CreateTab(WebContents* web_contents,
+                                  WindowOpenDisposition disposition,
+                                  const gfx::Rect& initial_rect,
+                                  bool user_gesture) {
++#if !defined OS_ANDROID                                   
+   Profile* profile =
+       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+   Browser* browser = chrome::FindTabbedBrowser(profile, false);
+@@ -618,6 +630,7 @@ void ExtensionTabUtil::CreateTab(WebContents* web_contents,
+     Browser::CreateParams params = Browser::CreateParams(profile, user_gesture);
+     browser = new Browser(params);
+   }
++
+   chrome::NavigateParams params(browser, web_contents);
+ 
+   // The extension_app_id parameter ends up as app_name in the Browser
+@@ -637,6 +650,10 @@ void ExtensionTabUtil::CreateTab(WebContents* web_contents,
+   // Close the browser if chrome::Navigate created a new one.
+   if (browser_created && (browser != params.browser))
+     browser->window()->Close();
++
++#else
++  return;
++#endif
+ }
+ 
+ // static
 diff --git a/chrome/browser/extensions/tab_helper.cc b/chrome/browser/extensions/tab_helper.cc
 index 21cbe22a4480f24c6793ef5c4d1db1d22329bafe..2f57dc0636ab2947a401b9fc11896c83074c2bdf 100644
 --- a/chrome/browser/extensions/tab_helper.cc
@@ -345,6 +1158,150 @@ index 4161673ba0f9ec6a079436469e5a6579ff1e88cc..b1dfe5add2d5a69f8fc305610e591333
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/data_usage/tab_id_annotator.h"
+diff --git a/chrome/browser/media/router/BUILD.gn b/chrome/browser/media/router/BUILD.gn
+index 650d76273d73f840103706e11d4f50aa026f04af..bd077164fa0409eea5c87c4c1ad43fc279050fa0 100644
+--- a/chrome/browser/media/router/BUILD.gn
++++ b/chrome/browser/media/router/BUILD.gn
+@@ -58,11 +58,18 @@ static_library("router") {
+     "route_message_observer.h",
+   ]
+ 
+-  if (enable_extensions) {
++  if (enable_extensions
++###AB###
++&& !is_android
++
++  ) {
+     deps += [
+       "discovery",
+       "//extensions/browser",
+       "//mojo/public/cpp/bindings",
++
++      ###AB###
++      ## - does not help "//chrome/common/media_router/mojo:media_router",
+     ]
+     sources += [
+       "event_page_request_manager.cc",
+diff --git a/chrome/browser/media/router/media_router.h b/chrome/browser/media/router/media_router.h
+index 4913a8cec22dfcc3663c0bbc51fbb22fd7981872..5df8f4d791c8329bbab662cb518e4026254ef0b1 100644
+--- a/chrome/browser/media/router/media_router.h
++++ b/chrome/browser/media/router/media_router.h
+@@ -39,9 +39,10 @@ class MediaRoutesObserver;
+ class MediaSinksObserver;
+ class PresentationConnectionStateObserver;
+ class RouteRequestResult;
+-#if !defined(OS_ANDROID)
++//AB
++//#if !defined(OS_ANDROID)
+ class MediaRouteController;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ // Type of callback used in |CreateRoute()|, |JoinRoute()|, and
+ // |ConnectRouteByRouteId()|. Callback is invoked when the route request either
+@@ -198,12 +199,13 @@ class MediaRouter : public KeyedService {
+   // there is a change to the media routes, subclass MediaRoutesObserver.
+   virtual std::vector<MediaRoute> GetCurrentRoutes() const = 0;
+ 
+-#if !defined(OS_ANDROID)
++//AB
++//#if !defined(OS_ANDROID)
+   // Returns a controller for sending media commands to a route. Returns a
+   // nullptr if no MediaRoute exists for the given |route_id|.
+   virtual scoped_refptr<MediaRouteController> GetRouteController(
+       const MediaRoute::Id& route_id) = 0;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // Registers/Unregisters a CastRemotingConnector with the |tab_id|. For a
+   // given |tab_id|, only one CastRemotingConnector can be registered. The
+@@ -219,9 +221,10 @@ class MediaRouter : public KeyedService {
+   friend class MediaRoutesObserver;
+   friend class PresentationConnectionStateObserver;
+   friend class RouteMessageObserver;
+-#if !defined(OS_ANDROID)
++//AB
++//#if !defined(OS_ANDROID)
+   friend class MediaRouteController;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // The following functions are called by friend Observer classes above.
+ 
+@@ -275,13 +278,14 @@ class MediaRouter : public KeyedService {
+   virtual void UnregisterRouteMessageObserver(
+       RouteMessageObserver* observer) = 0;
+ 
+-#if !defined(OS_ANDROID)
++//AB
++//#if !defined(OS_ANDROID)
+   // Removes the MediaRouteController for |route_id| from the list of
+   // controllers held by |this|. Called by MediaRouteController when it is
+   // invalidated.
+   virtual void DetachRouteController(const MediaRoute::Id& route_id,
+                                      MediaRouteController* controller) = 0;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ };
+ 
+ }  // namespace media_router
+diff --git a/chrome/browser/media/router/media_router_base.h b/chrome/browser/media/router/media_router_base.h
+index ecbecf50fe2680448686e25358cf269547727333..5bf9f5acc9312fe6c054f2b1bb8b49093aa01130 100644
+--- a/chrome/browser/media/router/media_router_base.h
++++ b/chrome/browser/media/router/media_router_base.h
+@@ -17,6 +17,9 @@
+ #include "chrome/browser/media/router/media_routes_observer.h"
+ #include "chrome/common/media_router/media_route.h"
+ 
++//AB
++#include "chrome/browser/media/router/mojo/media_route_controller.h"
++
+ namespace media_router {
+ 
+ class MediaRouterBase : public MediaRouter {
+@@ -35,10 +38,11 @@ class MediaRouterBase : public MediaRouter {
+ 
+   std::vector<MediaRoute> GetCurrentRoutes() const override;
+ 
+-#if !defined(OS_ANDROID)
++//AB: commented out #if
++//#if !defined(OS_ANDROID)
+   scoped_refptr<MediaRouteController> GetRouteController(
+       const MediaRoute::Id& route_id) override;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   void RegisterRemotingSource(int32_t tab_id,
+                               CastRemotingConnector* remoting_source) override;
+@@ -103,11 +107,12 @@ class MediaRouterBase : public MediaRouter {
+   // KeyedService
+   void Shutdown() override;
+ 
+-#if !defined(OS_ANDROID)
++//AB: commented out #if
++//#if !defined(OS_ANDROID)
+   // MediaRouter
+   void DetachRouteController(const MediaRoute::Id& route_id,
+                              MediaRouteController* controller) override;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   std::unique_ptr<InternalMediaRoutesObserver> internal_routes_observer_;
+   bool initialized_;
+diff --git a/chrome/browser/media/router/mojo/media_router_mojo_impl.h b/chrome/browser/media/router/mojo/media_router_mojo_impl.h
+index 0af9b77a0be93a05489d6cda172922db17274b15..73c4141a31bf541e3e30fcb928888830fd6a1dca 100644
+--- a/chrome/browser/media/router/mojo/media_router_mojo_impl.h
++++ b/chrome/browser/media/router/mojo/media_router_mojo_impl.h
+@@ -31,6 +31,9 @@
+ #include "content/public/browser/browser_thread.h"
+ #include "mojo/public/cpp/bindings/binding.h"
+ 
++//AB?
++#include "chrome/browser/media/router/mojo/media_route_controller.h"
++
+ namespace content {
+ class BrowserContext;
+ }
 diff --git a/chrome/browser/net/chrome_network_delegate.h b/chrome/browser/net/chrome_network_delegate.h
 index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551be5f1a27 100644
 --- a/chrome/browser/net/chrome_network_delegate.h
@@ -358,6 +1315,36 @@ index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551
    // NetworkDelegate implementation.
    int OnBeforeURLRequest(net::URLRequest* request,
                           const net::CompletionCallback& callback,
+diff --git a/chrome/browser/pdf/pdf_extension_test.cc b/chrome/browser/pdf/pdf_extension_test.cc
+index 39274014a81795bb7cc86febfdde76c7fecdfe1f..ad94f7e07c83e1aecb688f15850da071b845f97e 100644
+--- a/chrome/browser/pdf/pdf_extension_test.cc
++++ b/chrome/browser/pdf/pdf_extension_test.cc
+@@ -37,9 +37,11 @@
+ #include "chrome/common/chrome_switches.h"
+ #include "chrome/common/pref_names.h"
+ #include "chrome/test/base/ui_test_utils.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/test/zoom_test_utils.h"
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/browser_accessibility_state.h"
+ #include "content/public/browser/browser_plugin_guest_manager.h"
+ #include "content/public/browser/download_item.h"
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index 0531ff8d09a684e7aec55197b9bf04a74f5e7b48..f6f57db5780879ba277fc574c72a2cd0ace06fbd 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -729,7 +729,9 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
+         action_migration_dict->GetBoolean(
+             ComponentToolbarActionsFactory::kMediaRouterActionId,
+             &show_cast_icon)) {
++#if !defined(OS_ANDROID)
+       profile_prefs->SetBoolean(prefs::kShowCastIconInToolbar, show_cast_icon);
++#endif      
+     }
+     profile_prefs->ClearPref(kToolbarMigratedComponentActionStatus);
+   }
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
 index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c8bde0c95 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
@@ -379,6 +1366,365 @@ index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c
  #if BUILDFLAG(ENABLE_EXTENSIONS)
            io_thread_globals->extension_event_router_forwarder.get(),
  #else
+diff --git a/chrome/browser/resources/BUILD.gn b/chrome/browser/resources/BUILD.gn
+index 39e356bfb6955ee93b9a876ab8580a8825d444ef..e3b97c60587e10cf0652b92114347e752d65598b 100644
+--- a/chrome/browser/resources/BUILD.gn
++++ b/chrome/browser/resources/BUILD.gn
+@@ -77,7 +77,7 @@ grit("webapks_ui_resources") {
+   output_dir = "$root_gen_dir/chrome"
+ }
+ 
+-if (!is_android) {
++###if (!is_android) {
+   grit("component_extension_resources") {
+     source = "component_extension_resources.grd"
+     defines = chrome_grit_defines
+@@ -93,7 +93,7 @@ if (!is_android) {
+     ]
+     output_dir = "$root_gen_dir/chrome"
+   }
+-
++if (!is_android) {
+   grit("settings_resources") {
+     if (use_vulcanize) {
+       source = "settings/settings_resources_vulcanized.grd"
+diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
+index d207627330a378ffbc458f2d7d5c9bcb88a4bb8a..8172744cba5bd165891e8f5f2a4e8f76cb08ce16 100644
+--- a/chrome/browser/ui/BUILD.gn
++++ b/chrome/browser/ui/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//chrome/browser/ui/BUILD.gn enter")
++
+ import("//build/config/chromecast_build.gni")
+ import("//build/config/crypto.gni")
+ import("//build/config/features.gni")
+@@ -649,10 +651,22 @@ split_static_library("ui") {
+   if (enable_extensions) {
+     deps += [
+       "//components/drive",
++      ###AB###
+       "//components/guest_view/browser",
+       "//extensions/browser",
+       "//extensions/strings",
+     ]
++
++    ###AB###
++    if (!is_android) {
++      #print("//chrome/browser/ui/BUILD.gn add deps", "//components/guest_view/browser"  )
++      #deps += [
++      #  "//components/guest_view/browser",
++      #]
++    } else {
++      #print("//chrome/browser/ui/BUILD.gn ignore deps", "//components/guest_view/browser"  )
++    }
++
+   }
+ 
+   if (is_chromeos && use_cras) {
+@@ -666,6 +680,16 @@ split_static_library("ui") {
+     ]
+   }
+ 
++###AB###
++  if (is_android) {
++    sources += [
++      "apps/chrome_app_delegate.cc",
++      "apps/chrome_app_delegate.h",
++      "apps/chrome_app_window_client.cc",
++      "apps/chrome_app_window_client.h",
++    ]
++  }
++
+   if (!is_android) {
+     sources += [
+       "apps/app_info_dialog.h",
+@@ -3432,15 +3456,31 @@ split_static_library("ui") {
+   }
+   if (enable_extensions) {
+     deps += [
+-      "//chrome/browser/apps",
++      ###AB###"//chrome/browser/apps",
+       "//chrome/browser/extensions",
+       "//chrome/common/extensions/api",
+       "//chrome/common/extensions/api:api_registration",
+     ]
+     allow_circular_includes_from += [
+-      "//chrome/browser/apps",
++      ###AB###"//chrome/browser/apps",
+       "//chrome/browser/extensions",
+     ]
++    ###AB###
++    if (!is_android) {
++      print("//chrome/browser/ui/BUILD.gn add deps", "//chrome/browser/apps")
++      print("//chrome/browser/ui/BUILD.gn add allow_circular_includes", "//chrome/browser/apps")
++      deps += [
++        "//chrome/browser/apps",
++      ]
++      allow_circular_includes_from += [
++        "//chrome/browser/apps",
++      ]
++    } else {
++      print("//chrome/browser/ui/BUILD.gn ignore deps", "//chrome/browser/apps")
++      print("//chrome/browser/ui/BUILD.gn ignore allow_circular_includes", "//chrome/browser/apps")
++    }
++    ####
++
+     sources += [
+       "extensions/accelerator_priority.cc",
+       "extensions/accelerator_priority.h",
+diff --git a/chrome/browser/ui/app_list/start_page_service.cc b/chrome/browser/ui/app_list/start_page_service.cc
+index be92c2f33b25a5f59b22d9491375b429caf04b75..8e8e4df1f010c41d5bcd158e17b848313776f755 100644
+--- a/chrome/browser/ui/app_list/start_page_service.cc
++++ b/chrome/browser/ui/app_list/start_page_service.cc
+@@ -38,7 +38,11 @@
+ #include "chrome/common/url_constants.h"
+ #include "components/prefs/pref_service.h"
+ #include "components/search_engines/template_url_service.h"
++
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
++
+ #include "content/public/browser/browser_thread.h"
+ #include "content/public/browser/navigation_handle.h"
+ #include "content/public/browser/notification_details.h"
+diff --git a/chrome/browser/ui/apps/chrome_app_delegate.cc b/chrome/browser/ui/apps/chrome_app_delegate.cc
+index fd93814f426b394d0a01664df305aee2b1635e0e..83396e132ab978c7902e35a03d003c2ee25f204c 100644
+--- a/chrome/browser/ui/apps/chrome_app_delegate.cc
++++ b/chrome/browser/ui/apps/chrome_app_delegate.cc
+@@ -29,7 +29,9 @@
+ #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
+ #include "chrome/browser/ui/web_contents_sizer.h"
+ #include "chrome/common/extensions/chrome_extension_messages.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/browser_context.h"
+ #include "content/public/browser/browser_thread.h"
+ #include "content/public/browser/host_zoom_map.h"
+@@ -68,8 +70,13 @@ content::WebContents* OpenURLFromTabInternal(
+     const content::OpenURLParams& params) {
+   // Force all links to open in a new tab, even if they were trying to open a
+   // window.
++#if !defined(OS_ANDROID)
+   chrome::NavigateParams new_tab_params(
+       static_cast<Browser*>(NULL), params.url, params.transition);
++#else
++  chrome::NavigateParams new_tab_params(
++      static_cast<Profile*>(NULL), params.url, params.transition);
++#endif
+   if (params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB) {
+     new_tab_params.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
+   } else {
+@@ -196,7 +203,9 @@ void ChromeAppDelegate::InitWebContents(content::WebContents* web_contents) {
+   extensions::ChromeExtensionWebContentsObserver::CreateForWebContents(
+       web_contents);
+ 
++#if !defined OS_ANDROID
+   zoom::ZoomController::CreateForWebContents(web_contents);
++#endif  
+ }
+ 
+ void ChromeAppDelegate::RenderViewCreated(
+diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
+index f6e1ce435c674a643b50d25c226f13cd360f288e..b5eb1f429a06b8fae047599d81f74fcd782ea5cc 100644
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
+@@ -174,7 +174,11 @@
+ #include "components/toolbar/toolbar_model_impl.h"
+ #include "components/translate/core/browser/language_state.h"
+ #include "components/web_modal/web_contents_modal_dialog_manager.h"
++
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
++
+ #include "content/public/browser/devtools_agent_host.h"
+ #include "content/public/browser/interstitial_page.h"
+ #include "content/public/browser/invalidate_type.h"
+diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
+index b419af011c957a20f16f3acf9ece24f2a3752740..7694542a4f80f241789a99f88417791d5ebec706 100644
+--- a/chrome/browser/ui/browser_commands.cc
++++ b/chrome/browser/ui/browser_commands.cc
+@@ -67,8 +67,10 @@
+ #include "components/translate/core/browser/language_state.h"
+ #include "components/version_info/version_info.h"
+ #include "components/web_modal/web_contents_modal_dialog_manager.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/browsing_data_remover.h"
+ #include "content/public/browser/devtools_agent_host.h"
+ #include "content/public/browser/navigation_controller.h"
+diff --git a/chrome/browser/ui/extensions/application_launch.cc b/chrome/browser/ui/extensions/application_launch.cc
+index e186629195535a1af2fb1ca8afb43ed4d4a65c28..ceeb9a48503efcdc45f7b17145b16024462775aa 100644
+--- a/chrome/browser/ui/extensions/application_launch.cc
++++ b/chrome/browser/ui/extensions/application_launch.cc
+@@ -272,7 +272,11 @@ WebContents* OpenApplicationTab(const AppLaunchParams& launch_params,
+     add_type |= TabStripModel::ADD_PINNED;
+ 
+   ui::PageTransition transition = ui::PAGE_TRANSITION_AUTO_BOOKMARK;
++#if !defined(OS_ANDROID)
+   chrome::NavigateParams params(browser, url, transition);
++#else
++  chrome::NavigateParams params(profile, url, transition);
++#endif
+   params.tabstrip_add_types = add_type;
+   params.disposition = disposition;
+ 
+diff --git a/chrome/browser/ui/toolbar/app_menu_model.cc b/chrome/browser/ui/toolbar/app_menu_model.cc
+index 8a63b61dacf24be3033829a3845c5a946159b34e..44075e99a0527bce73013fb71e3c2cc9ab3034bf 100644
+--- a/chrome/browser/ui/toolbar/app_menu_model.cc
++++ b/chrome/browser/ui/toolbar/app_menu_model.cc
+@@ -53,8 +53,10 @@
+ #include "components/signin/core/browser/signin_manager.h"
+ #include "components/signin/core/common/profile_management_switches.h"
+ #include "components/strings/grit/components_strings.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
+ #include "components/zoom/zoom_event_manager.h"
++#endif
+ #include "content/public/browser/host_zoom_map.h"
+ #include "content/public/browser/navigation_entry.h"
+ #include "content/public/browser/notification_service.h"
+diff --git a/chrome/browser/ui/views/apps/chrome_native_app_window_views.cc b/chrome/browser/ui/views/apps/chrome_native_app_window_views.cc
+index 081b7749bf0f6efd8c50606dfdd92831af63099d..cfcc90adbdb612edb7333b138c591178fd95b092 100644
+--- a/chrome/browser/ui/views/apps/chrome_native_app_window_views.cc
++++ b/chrome/browser/ui/views/apps/chrome_native_app_window_views.cc
+@@ -19,8 +19,10 @@
+ #include "chrome/browser/profiles/profile.h"
+ #include "chrome/browser/ui/views/extensions/extension_keybinding_registry_views.h"
+ #include "components/favicon/content/content_favicon_driver.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "extensions/browser/app_window/app_delegate.h"
+ #include "ui/gfx/image/image_skia_operations.h"
+ #include "ui/gfx/skia_util.h"
+diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
+index 10a0788fe79f8cba2aab785a52090aeae97bf74d..38155eff938b163ece8876fc063da3e99ea5db85 100644
+--- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
++++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
+@@ -61,8 +61,10 @@
+ #include "components/toolbar/toolbar_model.h"
+ #include "components/translate/core/browser/language_state.h"
+ #include "components/variations/variations_associated_data.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
+ #include "components/zoom/zoom_event_manager.h"
++#endif
+ #include "content/public/browser/render_widget_host_view.h"
+ #include "content/public/browser/web_contents.h"
+ #include "content/public/common/url_constants.h"
+diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
+index a3804788b9d7bb433ada5b80a49734df35d02564..18a9550c149a0a7c0c0adccfd9586b5cc3909ab3 100644
+--- a/chrome/browser/ui/views/location_bar/location_bar_view.h
++++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
+@@ -21,7 +21,9 @@
+ #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+ #include "components/prefs/pref_member.h"
+ #include "components/security_state/core/security_state.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_event_manager_observer.h"
++#endif
+ #include "ui/gfx/animation/animation_delegate.h"
+ #include "ui/gfx/animation/slide_animation.h"
+ #include "ui/gfx/font.h"
+diff --git a/chrome/browser/ui/views/location_bar/zoom_bubble_view.cc b/chrome/browser/ui/views/location_bar/zoom_bubble_view.cc
+index bf9ed6b56cdc729556c9574c5288583969579599..0ee36758bd9f28d4bf5e68bbfe94f49afa80a346 100644
+--- a/chrome/browser/ui/views/location_bar/zoom_bubble_view.cc
++++ b/chrome/browser/ui/views/location_bar/zoom_bubble_view.cc
+@@ -25,8 +25,10 @@
+ #include "chrome/common/extensions/api/extension_action/action_info.h"
+ #include "chrome/grit/generated_resources.h"
+ #include "chrome/grit/theme_resources.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/notification_source.h"
+ #include "extensions/browser/extension_zoom_request_client.h"
+ #include "extensions/common/manifest_handlers/icons_handler.h"
+diff --git a/chrome/browser/ui/views/location_bar/zoom_view.cc b/chrome/browser/ui/views/location_bar/zoom_view.cc
+index 08812e5367a19b3cd1694c68e0f34f9aabdee6a2..c465677b4c7211d52403e408cca02008d06f66d5 100644
+--- a/chrome/browser/ui/views/location_bar/zoom_view.cc
++++ b/chrome/browser/ui/views/location_bar/zoom_view.cc
+@@ -10,7 +10,9 @@
+ #include "chrome/browser/ui/views/location_bar/zoom_bubble_view.h"
+ #include "chrome/grit/generated_resources.h"
+ #include "components/toolbar/toolbar_model.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "ui/accessibility/ax_node_data.h"
+ #include "ui/base/l10n/l10n_util.h"
+ #include "ui/events/event.h"
+diff --git a/chrome/browser/ui/views/toolbar/app_menu.cc b/chrome/browser/ui/views/toolbar/app_menu.cc
+index 2cd0fd4aa5f178a70b83d4114638f3bf25e860d7..e09bf8ca9595ee5b12cb6167299fe1eb2da089ba 100644
+--- a/chrome/browser/ui/views/toolbar/app_menu.cc
++++ b/chrome/browser/ui/views/toolbar/app_menu.cc
+@@ -34,9 +34,11 @@
+ #include "chrome/grit/generated_resources.h"
+ #include "chrome/grit/theme_resources.h"
+ #include "components/bookmarks/browser/bookmark_model.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/zoom_controller.h"
+ #include "components/zoom/zoom_event_manager.h"
++#endif
+ #include "content/public/browser/host_zoom_map.h"
+ #include "content/public/browser/notification_observer.h"
+ #include "content/public/browser/notification_registrar.h"
+diff --git a/chrome/browser/ui/webui/constrained_web_dialog_delegate_base.cc b/chrome/browser/ui/webui/constrained_web_dialog_delegate_base.cc
+index c42de33bb41e36d965c29bf1b83e14e39c1968c5..f97ff25fdba8577c58af463223c7a163c292f200 100644
+--- a/chrome/browser/ui/webui/constrained_web_dialog_delegate_base.cc
++++ b/chrome/browser/ui/webui/constrained_web_dialog_delegate_base.cc
+@@ -9,7 +9,9 @@
+ #include "chrome/browser/profiles/profile.h"
+ #include "chrome/browser/renderer_preferences_util.h"
+ #include "chrome/browser/ui/webui/chrome_web_contents_handler.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/render_view_host.h"
+ #include "content/public/browser/web_contents.h"
+ #include "content/public/common/renderer_preferences.h"
+diff --git a/chrome/browser/ui/webui/extensions/extension_icon_source.cc b/chrome/browser/ui/webui/extensions/extension_icon_source.cc
+index 46f69c56a2385f19f9b8432ff5b8a6d3683ce1de..bcf77f7bbf3ebe886498e984fa7bce408972a55a 100644
+--- a/chrome/browser/ui/webui/extensions/extension_icon_source.cc
++++ b/chrome/browser/ui/webui/extensions/extension_icon_source.cc
+@@ -21,7 +21,12 @@
+ #include "chrome/common/extensions/extension_constants.h"
+ #include "chrome/common/extensions/manifest_handlers/app_launch_info.h"
+ #include "chrome/common/url_constants.h"
++
++//AB
++#if !defined(OS_ANDROID)
+ #include "chrome/grit/component_extension_resources_map.h"
++#endif
++
+ #include "extensions/browser/extension_prefs.h"
+ #include "extensions/browser/extension_system.h"
+ #include "extensions/browser/image_loader.h"
+diff --git a/chrome/browser/ui/zoom/chrome_zoom_level_otr_delegate.cc b/chrome/browser/ui/zoom/chrome_zoom_level_otr_delegate.cc
+index 5092f549385ea777a8539c81655e69ca9ad97bf5..cafec161822cc692a82a34c5ca98a38703e52f77 100644
+--- a/chrome/browser/ui/zoom/chrome_zoom_level_otr_delegate.cc
++++ b/chrome/browser/ui/zoom/chrome_zoom_level_otr_delegate.cc
+@@ -5,7 +5,9 @@
+ #include "chrome/browser/ui/zoom/chrome_zoom_level_otr_delegate.h"
+ 
+ #include "base/bind.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_event_manager.h"
++#endif
+ 
+ ChromeZoomLevelOTRDelegate::ChromeZoomLevelOTRDelegate(
+     base::WeakPtr<zoom::ZoomEventManager> zoom_event_manager)
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
 index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5afcf04ad 100644
 --- a/chrome/common/chrome_constants.cc
@@ -499,6 +1845,35 @@ index 9c0927abbb6127eae9f4e3143f6d508aa9d81f72..0e14960a0abd58957144050582577500
        }
      }
    }
+diff --git a/chrome/common/extensions/api/settings_private.idl b/chrome/common/extensions/api/settings_private.idl
+index f998ee3c0ab81f4e1715e78f6b311209ba8f9498..7949c59a01fbe4e9c2f333c53e8acff94398538b 100644
+--- a/chrome/common/extensions/api/settings_private.idl
++++ b/chrome/common/extensions/api/settings_private.idl
+@@ -55,6 +55,8 @@ namespace settingsPrivate {
+   callback OnPrefSetCallback = void (boolean success);
+   callback GetAllPrefsCallback = void (PrefObject[] prefs);
+   callback GetPrefCallback = void (PrefObject pref);
++
++//AB
+   callback GetDefaultZoomCallback = void (double zoom);
+   callback SetDefaultZoomCallback = void (boolean success);
+ 
+@@ -73,14 +75,8 @@ namespace settingsPrivate {
+     // Gets the value of a specific pref.
+     static void getPref(DOMString name, GetPrefCallback callback);
+ 
+-    // Gets the default page zoom factor. Possible values are currently between
+-    // 0.25 and 5. For a full list, see zoom::kPresetZoomFactors.
+-    static void getDefaultZoom(GetDefaultZoomCallback callback);
+ 
+-    // Sets the page zoom factor. Must be less than 0.001 different than a value
+-    // in zoom::kPresetZoomFactors.
+-    static void setDefaultZoom(
+-        double zoom, optional SetDefaultZoomCallback callback);
++
+   };
+ 
+   interface Events {
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
 index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
@@ -511,6 +1886,44 @@ index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2
      @"Chromium": @"Chromium",
      @"Google Chrome": @"Google Chrome",
      @"Google Chrome Canary": @"Google Chrome",
+diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
+index 82318fb223a441fc0085f152857f8d14641a4aa7..fd3a824206b9476c2b249fdb99e41d44b4feddd3 100644
+--- a/chrome/renderer/BUILD.gn
++++ b/chrome/renderer/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//chrome/renderer/BUILD.gn enter")
++
+ import("//build/config/features.gni")
+ import("//chrome/common/features.gni")
+ import("//components/spellcheck/spellcheck_build_features.gni")
+@@ -321,6 +323,7 @@ static_library("renderer") {
+       # TODO(hclam): See crbug.com/298380 for details.
+       # We should isolate the APIs needed by the renderer.
+       "//chrome/common/extensions/api",
++      ###AB###
+       "//components/guest_view/renderer",
+       "//extensions:extensions_resources",
+       "//extensions/renderer",
+@@ -328,6 +331,16 @@ static_library("renderer") {
+       "//media/cast:receiver",
+       "//media/cast:sender",
+     ]
++    ###AB###
++    if (!is_android){
++      #print("//chrome/renderer/BUILD.gn add deps", "//components/guest_view/renderer")
++      #deps += [
++      #  "//components/guest_view/renderer",
++      #]
++    } else {
++      #print("//chrome/renderer/BUILD.gn ignoring deps", "//components/guest_view/renderer")
++    }
++
+     public_deps = [
+       "//ipc",
+     ]
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
 index 6de49b0d3dcecdd31370a85625c621cdd1935f90..47604d1e11fe40078a828db154a1f25ad5dc1d38 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
@@ -523,6 +1936,71 @@ index 6de49b0d3dcecdd31370a85625c621cdd1935f90..47604d1e11fe40078a828db154a1f25a
    FRIEND_TEST_ALL_PREFIXES(ChromeContentRendererClientTest, NaClRestriction);
    FRIEND_TEST_ALL_PREFIXES(ChromeContentRendererClientTest,
                             ShouldSuppressErrorPage);
+diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
+index 3dc16c61c387ab0f7799107f7880f8452820bbfd..986e9a24f219a83a3ed40d8e56509c1c56238162 100644
+--- a/chrome/test/BUILD.gn
++++ b/chrome/test/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//src/chrome/test/BUILD.gn: enter")
++
+ import("//build/config/chrome_build.gni")
+ import("//build/config/compiler/compiler.gni")
+ import("//build/config/crypto.gni")
+@@ -188,11 +190,23 @@ static_library("test_support") {
+ 
+   if (enable_extensions) {
+     public_deps += [
+-      "//apps:test_support",
++      ###AB###"//apps:test_support",
+       "//chrome/common/extensions/api",
++      ###AB###
+       "//components/guest_view/browser:test_support",
+       "//extensions:test_support",
+     ]
++
++    ###AB###
++    if (!is_android) {
++      #print("//src/chrome/test/BUILD.gn: add deps ", "//apps:test_support", "//components/guest_view/browser:test_support")
++      #public_deps += [
++      #  "//apps:test_support",
++      #  "//components/guest_view/browser:test_support",
++      #]
++    } else {
++      #print("//src/chrome/test/BUILD.gn: ignoring deps ", "//apps:test_support", "//components/guest_view/browser:test_support")
++    }
+   }
+ 
+   if (enable_offline_pages) {
+@@ -4254,7 +4268,7 @@ test("unit_tests") {
+     ]
+     deps += [
+       "//chrome/common/extensions/api",
+-      "//extensions:extensions_resources",
++      ###AB###       "//extensions:extensions_resources",
+       "//extensions/browser:test_support",
+       "//extensions/common",
+       "//extensions/strings",
+@@ -4265,6 +4279,17 @@ test("unit_tests") {
+       # target.
+       "//tools/json_schema_compiler/test:unit_tests",
+     ]
++    ###AB###
++    if (!is_android) {
++      print("//chrome/test/BUILD.gn add deps", "//extensions:extensions_resources")
++      deps += [
++        "//extensions:extensions_resources",
++      ]
++    } else {
++      print("//chrome/test/BUILD.gn ignore deps", "//extensions:extensions_resources")
++    }
++
++
+     if (enable_service_discovery) {
+       sources += [ "../browser/extensions/api/mdns/mdns_api_unittest.cc" ]
+     }
 diff --git a/chrome/utility/chrome_content_utility_client.h b/chrome/utility/chrome_content_utility_client.h
 index c0132fecb0b9e8a91f288d6e6ecaad9dfdbec247..a6e307d6ddcee3ca0f75a91c459a690324ee0f3a 100644
 --- a/chrome/utility/chrome_content_utility_client.h
@@ -594,6 +2072,321 @@ index 6781f84119866016a4610cdfc187b25d82e442e9..a8a1fb899a60697f64f2ec4752900e58
  };
  
  struct ContentSettingsTypeHash {
+diff --git a/components/guest_view/browser/BUILD.gn b/components/guest_view/browser/BUILD.gn
+index 00bd7eb473b2d8d595ff4b10b703ecabe2772f97..9fa84c1638c49aac71e50fe8909d31c5e3f96b05 100644
+--- a/components/guest_view/browser/BUILD.gn
++++ b/components/guest_view/browser/BUILD.gn
+@@ -6,7 +6,10 @@
+ # assert to prevent the accidental building of GuestViews on mobile
+ # platforms. If you're now using GuestViews on mobile, go ahead and
+ # remove this assert.
+-assert(!is_android && !is_ios)
++
++print("//components/guest_view/browser/BUILD.gn enter")
++
++###AB###assert(!is_android && !is_ios)
+ 
+ static_library("browser") {
+   output_name = "guest_view_browser"
+@@ -32,12 +35,23 @@ static_library("browser") {
+     "//components/guest_view/common",
+   ]
+   deps = [
+-    "//components/zoom",
++    ###AB### "//components/zoom",
+     "//content/public/browser",
+     "//content/public/common",
+     "//ipc",
+     "//url",
+   ]
++
++  ###AB###
++  if (!is_android){
++    print("//components/guest_view/browser/BUILD.gn ignore deps", "//components/zoom")
++    deps += [
++      "//components/zoom",
++    ]
++  } else {
++    print("//components/guest_view/browser/BUILD.gn ignore deps", "//components/zoom")
++  }
++
+ }
+ 
+ static_library("test_support") {
+diff --git a/components/guest_view/browser/guest_view_base.cc b/components/guest_view/browser/guest_view_base.cc
+index 24ec4b67e72b1490f6572f4367e6233e57c0a373..d3e494d454bad11420773bee771213ac615a0085 100644
+--- a/components/guest_view/browser/guest_view_base.cc
++++ b/components/guest_view/browser/guest_view_base.cc
+@@ -14,8 +14,10 @@
+ #include "components/guest_view/browser/guest_view_manager.h"
+ #include "components/guest_view/common/guest_view_constants.h"
+ #include "components/guest_view/common/guest_view_messages.h"
++#if !defined OS_ANDROID
+ #include "components/zoom/page_zoom.h"
+ #include "components/zoom/zoom_controller.h"
++#endif
+ #include "content/public/browser/guest_mode.h"
+ #include "content/public/browser/navigation_handle.h"
+ #include "content/public/browser/render_frame_host.h"
+@@ -213,6 +215,7 @@ void GuestViewBase::InitWithWebContents(
+     WebContents* guest_web_contents) {
+   DCHECK(guest_web_contents);
+ 
++#if !defined(OS_ANDROID)
+   // Create a ZoomController to allow the guest's contents to be zoomed.
+   // Do this before adding the GuestView as a WebContents Observer so that
+   // the GuestView and its derived classes can re-configure the ZoomController
+@@ -223,6 +226,7 @@ void GuestViewBase::InitWithWebContents(
+   // zoom mode on this event, GuestViewBase would need to do so after
+   // ZoomController::DidFinishNavigation has completed.
+   zoom::ZoomController::CreateForWebContents(guest_web_contents);
++#endif
+ 
+   // At this point, we have just created the guest WebContents, we need to add
+   // an observer to the owner WebContents. This observer will be responsible
+@@ -241,9 +245,11 @@ void GuestViewBase::InitWithWebContents(
+ 
+   SetUpSizing(create_params);
+ 
++#if !defined(OS_ANDROID)
+   // Observe guest zoom changes.
+   auto* zoom_controller = zoom::ZoomController::FromWebContents(web_contents());
+   zoom_controller->AddObserver(this);
++#endif
+ 
+   // Give the derived class an opportunity to perform additional initialization.
+   DidInitialize(create_params);
+@@ -435,7 +441,9 @@ void GuestViewBase::DidAttach(int guest_proxy_routing_id) {
+ // https://crbug.com/533069 .
+ void GuestViewBase::DidDetach() {
+   GuestViewManager::FromBrowserContext(browser_context_)->DetachGuest(this);
++#if !defined(OS_ANDROID)
+   StopTrackingEmbedderZoomLevel();
++#endif
+   owner_web_contents()->Send(new GuestViewMsg_GuestDetached(
+       element_instance_id_));
+   element_instance_id_ = kInstanceIDNone;
+@@ -465,10 +473,12 @@ void GuestViewBase::Destroy(bool also_delete) {
+ 
+   is_being_destroyed_ = true;
+ 
++#if !defined(OS_ANDROID)
+   // It is important to clear owner_web_contents_ after the call to
+   // StopTrackingEmbedderZoomLevel(), but before the rest of
+   // the statements in this function.
+   StopTrackingEmbedderZoomLevel();
++#endif
+   owner_web_contents_ = nullptr;
+ 
+   element_instance_id_ = kInstanceIDNone;
+@@ -521,9 +531,11 @@ void GuestViewBase::WillAttach(WebContents* embedder_web_contents,
+                                int element_instance_id,
+                                bool is_full_page_plugin,
+                                const base::Closure& callback) {
++#if !defined(OS_ANDROID)
+   // Stop tracking the old embedder's zoom level.
+   if (owner_web_contents())
+     StopTrackingEmbedderZoomLevel();
++#endif    
+ 
+   if (owner_web_contents_ != embedder_web_contents) {
+     DCHECK_EQ(owner_contents_observer_->web_contents(), owner_web_contents_);
+@@ -533,8 +545,10 @@ void GuestViewBase::WillAttach(WebContents* embedder_web_contents,
+     SetOwnerHost();
+   }
+ 
++#if !defined(OS_ANDROID)
+   // Start tracking the new embedder's zoom level.
+   StartTrackingEmbedderZoomLevel();
++#endif
+   attach_in_progress_ = true;
+   element_instance_id_ = element_instance_id;
+   is_full_page_plugin_ = is_full_page_plugin;
+@@ -553,15 +567,23 @@ void GuestViewBase::SignalWhenReady(const base::Closure& callback) {
+ }
+ 
+ int GuestViewBase::LogicalPixelsToPhysicalPixels(double logical_pixels) const {
++#if !defined(OS_ANDROID)
+   DCHECK(logical_pixels >= 0);
+   double zoom_factor = GetEmbedderZoomFactor();
+   return lround(logical_pixels * zoom_factor);
++#else
++  return -1;
++#endif
+ }
+ 
+ double GuestViewBase::PhysicalPixelsToLogicalPixels(int physical_pixels) const {
++#if !defined(OS_ANDROID)
+   DCHECK(physical_pixels >= 0);
+   double zoom_factor = GetEmbedderZoomFactor();
+   return physical_pixels / zoom_factor;
++  #else
++    return -1;
++  #endif
+ }
+ 
+ void GuestViewBase::DidStopLoading() {
+@@ -618,11 +640,13 @@ void GuestViewBase::ContentsMouseEvent(WebContents* source,
+       embedder_web_contents(), location, motion, exited);
+ }
+ 
++#if !defined(OS_ANDROID)
+ void GuestViewBase::ContentsZoomChange(bool zoom_in) {
+   zoom::PageZoom::Zoom(embedder_web_contents(), zoom_in
+                                                     ? content::PAGE_ZOOM_IN
+                                                     : content::PAGE_ZOOM_OUT);
+ }
++#endif
+ 
+ void GuestViewBase::HandleKeyboardEvent(
+     WebContents* source,
+@@ -725,6 +749,7 @@ content::SiteInstance* GuestViewBase::GetOwnerSiteInstance() {
+   return nullptr;
+ }
+ 
++#if !defined(OS_ANDROID)
+ void GuestViewBase::OnZoomChanged(
+     const zoom::ZoomController::ZoomChangedEventData& data) {
+   if (data.web_contents == embedder_web_contents()) {
+@@ -746,6 +771,7 @@ void GuestViewBase::OnZoomChanged(
+     GuestZoomChanged(data.old_zoom_level, data.new_zoom_level);
+   }
+ }
++#endif
+ 
+ void GuestViewBase::DispatchEventToGuestProxy(
+     std::unique_ptr<GuestViewEvent> event) {
+@@ -788,6 +814,7 @@ void GuestViewBase::CompleteInit(
+   callback.Run(guest_web_contents);
+ }
+ 
++#if !defined(OS_ANDROID)
+ double GuestViewBase::GetEmbedderZoomFactor() const {
+   if (!embedder_web_contents())
+     return 1.0;
+@@ -796,6 +823,7 @@ double GuestViewBase::GetEmbedderZoomFactor() const {
+       zoom::ZoomController::GetZoomLevelForWebContents(
+           embedder_web_contents()));
+ }
++#endif
+ 
+ void GuestViewBase::SetUpSizing(const base::DictionaryValue& params) {
+   // Read the autosize parameters passed in from the embedder.
+@@ -845,6 +873,7 @@ void GuestViewBase::SetUpSizing(const base::DictionaryValue& params) {
+   SetSize(set_size_params);
+ }
+ 
++#if !defined(OS_ANDROID)
+ void GuestViewBase::SetGuestZoomLevelToMatchEmbedder() {
+   auto* embedder_zoom_controller =
+       zoom::ZoomController::FromWebContents(owner_web_contents());
+@@ -882,6 +911,7 @@ void GuestViewBase::StopTrackingEmbedderZoomLevel() {
+     return;
+   embedder_zoom_controller->RemoveObserver(this);
+ }
++#endif
+ 
+ void GuestViewBase::UpdateGuestSize(const gfx::Size& new_size,
+                                     bool due_to_auto_resize) {
+diff --git a/components/guest_view/browser/guest_view_base.h b/components/guest_view/browser/guest_view_base.h
+index 0fb03b86f0de78de9668fc865075836817d2d880..3200b429ad59a7ba0dce4ee7adc9d28b72fc581b 100644
+--- a/components/guest_view/browser/guest_view_base.h
++++ b/components/guest_view/browser/guest_view_base.h
+@@ -12,7 +12,11 @@
+ #include "base/memory/weak_ptr.h"
+ #include "base/values.h"
+ #include "components/guest_view/common/guest_view_constants.h"
++
++#if !defined OS_ANDROID
+ #include "components/zoom/zoom_observer.h"
++#endif
++
+ #include "content/public/browser/browser_plugin_guest_delegate.h"
+ #include "content/public/browser/guest_host.h"
+ #include "content/public/browser/render_process_host_observer.h"
+@@ -49,8 +53,12 @@ struct SetSizeParams {
+ // it is attached to a container within the owner's WebContents.
+ class GuestViewBase : public content::BrowserPluginGuestDelegate,
+                       public content::WebContentsDelegate,
+-                      public content::WebContentsObserver,
+-                      public zoom::ZoomObserver {
++                      public content::WebContentsObserver
++#if !defined OS_ANDROID
++                      ,
++                      public zoom::ZoomObserver
++#endif
++                      {
+  public:
+   // Returns a *ViewGuest if this GuestView is of the given view type.
+   template <typename T>
+@@ -353,7 +361,9 @@ class GuestViewBase : public content::BrowserPluginGuestDelegate,
+                           const gfx::Point& location,
+                           bool motion,
+                           bool exited) final;
++#if !defined(OS_ANDROID)
+   void ContentsZoomChange(bool zoom_in) final;
++#endif
+   void LoadingStateChanged(content::WebContents* source,
+                            bool to_different_document) final;
+   content::ColorChooser* OpenColorChooser(
+@@ -375,9 +385,11 @@ class GuestViewBase : public content::BrowserPluginGuestDelegate,
+   void RenderViewReady() final;
+   void WebContentsDestroyed() final;
+ 
++#if !defined OS_ANDROID
+   // ui_zoom::ZoomObserver implementation.
+   void OnZoomChanged(
+       const zoom::ZoomController::ZoomChangedEventData& data) final;
++#endif
+ 
+   void SendQueuedEvents();
+ 
+@@ -392,13 +404,17 @@ class GuestViewBase : public content::BrowserPluginGuestDelegate,
+   // Returns the default size of the guestview.
+   gfx::Size GetDefaultSize() const;
+ 
++#if !defined(OS_ANDROID)
+   // Get the zoom factor for the embedder's web contents.
+   double GetEmbedderZoomFactor() const;
++#endif  
+ 
+   void SetUpSizing(const base::DictionaryValue& params);
+ 
++#if !defined(OS_ANDROID)
+   void StartTrackingEmbedderZoomLevel();
+   void StopTrackingEmbedderZoomLevel();
++#endif
+ 
+   void UpdateGuestSize(const gfx::Size& new_size, bool due_to_auto_resize);
+ 
+diff --git a/components/guest_view/common/BUILD.gn b/components/guest_view/common/BUILD.gn
+index 9916d95a111647db552cff1850f6a081d92e39d5..dfac706e55283dd8469b00819ffd617e3ae21e36 100644
+--- a/components/guest_view/common/BUILD.gn
++++ b/components/guest_view/common/BUILD.gn
+@@ -1,3 +1,6 @@
++
++print("//components/guest_view/common/BUILD.gn : enter")
++
+ static_library("common") {
+   output_name = "guest_view_common"
+   sources = [
+diff --git a/components/guest_view/renderer/BUILD.gn b/components/guest_view/renderer/BUILD.gn
+index f3d79c79a8b6649d28f5d9a7145259e056e1c1ad..747f406aeeb37832b47d26b3c7882971f7e47212 100644
+--- a/components/guest_view/renderer/BUILD.gn
++++ b/components/guest_view/renderer/BUILD.gn
+@@ -6,7 +6,11 @@
+ # assert to prevent the accidental building of GuestViews on mobile
+ # platforms. If you're now using GuestViews on mobile, go ahead and
+ # remove this assert.
+-assert(!is_android && !is_ios)
++
++print("//components/guest_view/renderer/BUILD.gn : enter")
++###AB###
++#assert(!is_android && !is_ios)
++assert(!is_ios)
+ 
+ static_library("renderer") {
+   sources = [
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
 index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44fc4119ac 100644
 --- a/components/strings/BUILD.gn
@@ -607,6 +2400,390 @@ index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44
    outputs = [
      "grit/components_chromium_strings.h",
    ]
+diff --git a/components/web_modal/BUILD.gn b/components/web_modal/BUILD.gn
+index 40e777598dc956a361316887ef004e301243a3b8..c52c5b75a5eb6c866060641454699228bf89446e 100644
+--- a/components/web_modal/BUILD.gn
++++ b/components/web_modal/BUILD.gn
+@@ -2,7 +2,11 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
+-assert(!is_android && !is_ios)
++print("//components/web_modal/BUILD.gn enter")
++
++###AB###
++###assert(!is_android && !is_ios)
++assert(!is_ios)
+ 
+ static_library("web_modal") {
+   sources = [
+diff --git a/components/zoom/BUILD.gn b/components/zoom/BUILD.gn
+index 208334ae537047b2b29772b7ecb60952dc6d53e1..a1b7e27c3b3f3a5382d8d9a86edb0933fc188052 100644
+--- a/components/zoom/BUILD.gn
++++ b/components/zoom/BUILD.gn
+@@ -2,6 +2,9 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//components/zoom/BUILD.gn enter")
++
++###AB###
+ assert(!is_android && !is_ios, "Desktop zoom is not used on mobile platforms.")
+ 
+ static_library("zoom") {
+diff --git a/components/zoom/zoom_controller.h b/components/zoom/zoom_controller.h
+index b0ecd4cf625372e8bd0a88ad4aa5bcd3a6914363..f330574bc36a4575c498d7dff6b7c745bbe199be 100644
+--- a/components/zoom/zoom_controller.h
++++ b/components/zoom/zoom_controller.h
+@@ -4,7 +4,7 @@
+ 
+ #ifndef COMPONENTS_ZOOM_ZOOM_CONTROLLER_H_
+ #define COMPONENTS_ZOOM_ZOOM_CONTROLLER_H_
+-
++#error DONT INCLUDE
+ #include <memory>
+ 
+ #include "base/compiler_specific.h"
+diff --git a/device/serial/BUILD.gn b/device/serial/BUILD.gn
+index b467ac6df78a935f36795409195de65fbf043dd8..90b5cf206eb943cee55192efce0cf15f5a139430 100644
+--- a/device/serial/BUILD.gn
++++ b/device/serial/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//device/serial/BUILD.gn enter")
++
+ import("//build/config/features.gni")
+ import("//mojo/public/tools/bindings/mojom.gni")
+ 
+diff --git a/extensions/BUILD.gn b/extensions/BUILD.gn
+index d1e1fc2f9e4e0dcd316b0c764e2f44606353344b..f0cb4580af004229e05d55e5f4008ba22124a428 100644
+--- a/extensions/BUILD.gn
++++ b/extensions/BUILD.gn
+@@ -1,6 +1,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//extensions/BUILD.gn enter")
++
+ import("//extensions/features/features.gni")
+ import("//testing/test.gni")
+ import("//tools/grit/grit_rule.gni")
+@@ -130,7 +132,7 @@ static_library("test_support") {
+     "//base",
+     "//components/cast_certificate:test_support",
+     "//components/cast_channel:test_support",
+-    "//components/guest_view/browser:test_support",
++    ###AB###"//components/guest_view/browser:test_support",
+     "//components/prefs:test_support",
+     "//components/sync_preferences:test_support",
+     "//content/public/common",
+@@ -146,6 +148,17 @@ static_library("test_support") {
+     "//third_party/cld",
+   ]
+ 
++###AB###
++if (!is_android) {
++print("//extensions/BUILD.gn add deps", "//components/guest_view/browser:test_support")
++  deps += [
++    "//components/guest_view/browser:test_support",
++  ]
++} else {
++  print("//extensions/BUILD.gn ignoring deps", "//components/guest_view/browser:test_support")
++}
++####
++
+   public_deps = [
+     "//content/public/browser",
+   ]
+@@ -200,7 +213,7 @@ test("extensions_unittests") {
+   ]
+ 
+   deps = [
+-    ":extensions_resources",
++    ###AB###    ":extensions_resources",
+     ":shell_and_test_pak",
+     ":test_support",
+     "//base/test:test_support",
+@@ -214,6 +227,15 @@ test("extensions_unittests") {
+     "//extensions/utility:unit_tests",
+     "//ui/gl:test_support",
+   ]
++  ###AB###
++  if (!is_android) {
++    print("//extensions/BUILD.gn add deps", ":extensions_resources")
++    deps += [
++      ":extensions_resources",
++    ]
++  } else {
++    print("//extensions/BUILD.gn ignore deps", ":extensions_resources")
++  }
+ 
+   data_deps = [
+     "//third_party/mesa:osmesa",
+@@ -278,7 +300,7 @@ source_set("chrome_extensions_browsertests") {
+     "//components/captive_portal:test_support",
+     "//components/dom_distiller/content/browser",
+     "//components/dom_distiller/core:test_support",
+-    "//components/guest_view/browser:test_support",
++    ###AB###"//components/guest_view/browser:test_support",
+     "//components/resources",
+     "//components/strings",
+     "//components/sync",
+@@ -287,7 +309,7 @@ source_set("chrome_extensions_browsertests") {
+     "//crypto:platform",
+     "//crypto:test_support",
+     "//device/bluetooth:mocks",
+-    "//device/serial:test_support",
++    ###AB###"//device/serial:test_support",
+     "//extensions/common/api",
+     "//google_apis:test_support",
+     "//media:test_support",
+@@ -315,6 +337,18 @@ source_set("chrome_extensions_browsertests") {
+     "//v8",
+   ]
+ 
++  ###AB###
++  if (!is_android) {
++  print("//extensions/BUILD.gn add deps (2)", "//components/guest_view/browser:test_support", "//device/serial:test_support")
++    deps += [
++      "//components/guest_view/browser:test_support",
++      "//device/serial:test_support",
++    ]
++  } else {
++    print("//extensions/BUILD.gn ignoring deps (2)", "//components/guest_view/browser:test_support", "//device/serial:test_support")
++  }
++  ####
++
+   if (is_chromeos) {
+     deps += [ "//components/user_manager:test_support" ]
+   }
+diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
+index d0cd3ac05989f9db54906d55b8500fefc680d709..991d75b358f4f437471ba7a5cbcb17a2fc4a6125 100644
+--- a/extensions/browser/BUILD.gn
++++ b/extensions/browser/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//extensions/browser/BUILD.gn enter")
++
+ import("//build/config/features.gni")
+ import("//extensions/features/features.gni")
+ 
+@@ -174,8 +176,8 @@ source_set("browser_sources") {
+     "extension_util.h",
+     "extension_web_contents_observer.cc",
+     "extension_web_contents_observer.h",
+-    "extension_zoom_request_client.cc",
+-    "extension_zoom_request_client.h",
++    ###AB### "extension_zoom_request_client.cc",
++    ###AB### "extension_zoom_request_client.h",
+     "extensions_browser_client.cc",
+     "extensions_browser_client.h",
+     "external_install_info.cc",
+@@ -340,6 +342,7 @@ source_set("browser_sources") {
+     "//components/cast_certificate",
+     "//components/cast_channel",
+     "//components/crx_file",
++    ###AB###
+     "//components/guest_view/browser",
+     "//components/keyed_service/content",
+     "//components/keyed_service/core",
+@@ -352,8 +355,8 @@ source_set("browser_sources") {
+     "//components/variations",
+     "//components/version_info",
+     "//components/web_cache/browser",
+-    "//components/web_modal",
+-    "//components/zoom",
++    ###AB###"//components/web_modal",
++    ###AB###"//components/zoom",
+     "//content/public/browser",
+     "//content/public/common",
+     "//crypto:platform",
+@@ -371,6 +374,25 @@ source_set("browser_sources") {
+     "//ui/display",
+   ]
+ 
++  ###AB###
++  if (!is_android) {
++    #print("//extensions/browser/BUILD.gn add deps", "//components/guest_view/browser", "//components/web_modal", "//components/zoom")
++    deps += [
++      #"//components/guest_view/browser",
++      "//components/web_modal",
++      "//components/zoom",
++    ]
++
++    sources += [
++     "extension_zoom_request_client.cc",
++     "extension_zoom_request_client.h",
++    ]
++  } else {
++    print("//extensions/browser/BUILD.gn ignore deps",
++    #"//components/guest_view/browser",
++    "//components/web_modal","//components/zoom")
++  }
++
+   public_deps = [
+     "//extensions/browser/install",
+     "//extensions/browser/kiosk",
+@@ -428,7 +450,7 @@ source_set("browser_tests") {
+   deps = [
+     ":browser",
+     "//base",
+-    "//components/guest_view/browser:test_support",
++    ###AB###"//components/guest_view/browser:test_support",
+     "//components/storage_monitor:test_support",
+     "//content/test:test_support",
+     "//device/base:mocks",
+@@ -443,6 +465,16 @@ source_set("browser_tests") {
+     "//net:test_support",
+   ]
+ 
++  ###AB###
++  if (!is_android) {
++    print("//extensions/browser/BUILD.gn add deps", "//components/guest_view/browser:test_support" )
++    deps += [
++      "//components/guest_view/browser:test_support",
++    ]
++  } else {
++    print("//extensions/browser/BUILD.gn ignore deps", "//components/guest_view/browser:test_support" )
++  }
++
+   if (is_mac) {
+     # Needed for App Shell.app's Helper.
+     deps += [ "//extensions/shell:app_shell" ]
+diff --git a/extensions/browser/api/BUILD.gn b/extensions/browser/api/BUILD.gn
+index 93d884346f6f64e516524b56efaaaae374ba29c3..50858f4bbb2d2878a954e86def38a64dee5337fc 100644
+--- a/extensions/browser/api/BUILD.gn
++++ b/extensions/browser/api/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//extensions/browser/api/BUILD.gn enter" )
++
+ import("//extensions/common/api/schema.gni")
+ import("//extensions/features/features.gni")
+ import("//tools/json_schema_compiler/json_schema_api.gni")
+@@ -106,9 +108,19 @@ source_set("api") {
+     "//device/base",
+     "//device/bluetooth",
+     "//device/hid",
+-    "//device/serial",
++    ###AB###"//device/serial",
+   ]
+ 
++  ###AB###
++  if (!is_android) {
++    print("//extensions/browser/api/BUILD.gn add deps", "//device/serial")
++    deps += [
++      "//device/serial",
++    ]
++  } else {
++    print("//extensions/browser/api/BUILD.gn ignore deps", "//device/serial")
++  }
++
+   if (is_chromeos) {
+     sources += [
+       "lock_screen_data/data_item.cc",
+@@ -152,8 +164,21 @@ json_schema_api("api_registration") {
+ 
+   deps = [
+     ":api",
+-    "//device/serial",
++    ###AB###"//device/serial",
+     "//extensions/common/api",
+     "//skia",
+   ]
++
++  ###AB###
++  if (!is_android) {
++    print("//extensions/browser/api/BUILD.gn (api_registration) add deps", "//device/serial")
++    deps += [
++      "//device/serial",
++    ]
++  } else {
++    print("//extensions/browser/api/BUILD.gn (api_registration) ignore deps", "//device/serial")
++  }
++
++
++
+ }
+diff --git a/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc b/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc
+index 0783385b9095a07f0de0e4c7c5d74d94899942fd..a94f4875ccaff2c57ddad0d93c45a8781c17f9cb 100644
+--- a/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc
++++ b/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc
+@@ -34,7 +34,9 @@ using extensions::api::web_view_internal::InjectionItems;
+ using extensions::api::web_view_internal::SetPermission::Params;
+ using extensions::api::extension_types::InjectDetails;
+ using extensions::UserScript;
++#if !defined OS_ANDROID
+ using zoom::ZoomController;
++#endif
+ // error messages for content scripts:
+ namespace errors = extensions::manifest_errors;
+ namespace web_view_internal = extensions::api::web_view_internal;
+@@ -628,7 +630,9 @@ ExtensionFunction::ResponseAction WebViewInternalSetZoomFunction::Run() {
+   std::unique_ptr<web_view_internal::SetZoom::Params> params(
+       web_view_internal::SetZoom::Params::Create(*args_));
+   EXTENSION_FUNCTION_VALIDATE(params.get());
++#if !defined OS_ANDROID
+   guest_->SetZoom(params->zoom_factor);
++#endif
+   return RespondNow(NoArguments());
+ }
+ 
+@@ -657,7 +661,7 @@ ExtensionFunction::ResponseAction WebViewInternalSetZoomModeFunction::Run() {
+   std::unique_ptr<web_view_internal::SetZoomMode::Params> params(
+       web_view_internal::SetZoomMode::Params::Create(*args_));
+   EXTENSION_FUNCTION_VALIDATE(params.get());
+-
++#if !defined(OS_ANDROID)
+   ZoomController::ZoomMode zoom_mode = ZoomController::ZOOM_MODE_DEFAULT;
+   switch (params->zoom_mode) {
+     case web_view_internal::ZOOM_MODE_PER_ORIGIN:
+@@ -674,6 +678,7 @@ ExtensionFunction::ResponseAction WebViewInternalSetZoomModeFunction::Run() {
+   }
+ 
+   guest_->SetZoomMode(zoom_mode);
++#endif
+   return RespondNow(NoArguments());
+ }
+ 
+@@ -688,6 +693,7 @@ ExtensionFunction::ResponseAction WebViewInternalGetZoomModeFunction::Run() {
+       web_view_internal::GetZoomMode::Params::Create(*args_));
+   EXTENSION_FUNCTION_VALIDATE(params.get());
+ 
++#if !defined(OS_ANDROID)
+   web_view_internal::ZoomMode zoom_mode = web_view_internal::ZOOM_MODE_NONE;
+   switch (guest_->GetZoomMode()) {
+     case ZoomController::ZOOM_MODE_DEFAULT:
+@@ -705,6 +711,10 @@ ExtensionFunction::ResponseAction WebViewInternalGetZoomModeFunction::Run() {
+ 
+   return RespondNow(OneArgument(
+       std::make_unique<base::Value>(web_view_internal::ToString(zoom_mode))));
++#else
++return RespondNow(OneArgument(
++    std::make_unique<base::Value>("???")));
++#endif
+ }
+ 
+ WebViewInternalFindFunction::WebViewInternalFindFunction() {
+diff --git a/extensions/browser/api/messaging/message_service.cc b/extensions/browser/api/messaging/message_service.cc
+index 8b84570b413d6bd94dc20163a900dbb813023c5d..ec99c2ea23350f9d6bea24b1590010286c059e67 100644
+--- a/extensions/browser/api/messaging/message_service.cc
++++ b/extensions/browser/api/messaging/message_service.cc
+@@ -391,6 +391,8 @@ void MessageService::OpenChannelToNativeApp(
+ 
+   AddChannel(std::move(channel), receiver_port_id);
+ #else  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX))
++  PortId receiver_port_id(source_port_id.context_id, source_port_id.port_number,
++                          false);
+   const char kNativeMessagingNotSupportedError[] =
+       "Native Messaging is not supported on this platform.";
+   DispatchOnDisconnect(
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
 index 6b388cec2f2f769ebfec1aced038713932fd8a2e..b6198d06761a701b80d82b1bb6e11b121fa4aa56 100644
 --- a/extensions/browser/extension_event_histogram_value.h
@@ -622,6 +2799,273 @@ index 6b388cec2f2f769ebfec1aced038713932fd8a2e..b6198d06761a701b80d82b1bb6e11b12
    // Last entry: Add new entries above, then run:
    // python tools/metrics/histograms/update_extension_histograms.py
    ENUM_BOUNDARY
+diff --git a/extensions/browser/extension_zoom_request_client.cc b/extensions/browser/extension_zoom_request_client.cc
+index aebc33d26650fc64f2b77862370760883f217bfc..8f69b70392250035be1eb6ec132d005707f77f91 100644
+--- a/extensions/browser/extension_zoom_request_client.cc
++++ b/extensions/browser/extension_zoom_request_client.cc
+@@ -2,6 +2,8 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#if !defined(OS_ANDROID)
++
+ #include "extensions/browser/extension_zoom_request_client.h"
+ 
+ #include "extensions/common/features/behavior_feature.h"
+@@ -25,3 +27,6 @@ ExtensionZoomRequestClient::~ExtensionZoomRequestClient() {
+ }
+ 
+ }  // namespace extensions
++
++
++#endif
+diff --git a/extensions/browser/extension_zoom_request_client.h b/extensions/browser/extension_zoom_request_client.h
+index d52ddacbefe0ff2171c7925c304a98c939cf2089..6ea0274abc3bc9afad079bcd3ebbb47cafbe77ef 100644
+--- a/extensions/browser/extension_zoom_request_client.h
++++ b/extensions/browser/extension_zoom_request_client.h
+@@ -5,12 +5,16 @@
+ #ifndef EXTENSIONS_BROWSER_EXTENSION_ZOOM_REQUEST_CLIENT_H_
+ #define EXTENSIONS_BROWSER_EXTENSION_ZOOM_REQUEST_CLIENT_H_
+ 
++
++
+ #include <memory>
+ 
+ #include "base/macros.h"
++#if !defined(OS_ANDROID)
+ #include "components/zoom/zoom_controller.h"
+ #include "extensions/common/extension.h"
+ 
++
+ namespace extensions {
+ 
+ class Extension;
+@@ -35,4 +39,5 @@ class ExtensionZoomRequestClient : public zoom::ZoomRequestClient {
+ 
+ }  // namespace extensions
+ 
++#endif
+ #endif  // EXTENSIONS_BROWSER_EXTENSION_ZOOM_REQUEST_CLIENT_H_
+diff --git a/extensions/browser/guest_view/extension_options/extension_options_guest.cc b/extensions/browser/guest_view/extension_options/extension_options_guest.cc
+index 586eee3c9935d8c4c033a0b42ce61d48076c71ff..66d5755547067caa6811e76c9d70b5ec57b15173 100644
+--- a/extensions/browser/guest_view/extension_options/extension_options_guest.cc
++++ b/extensions/browser/guest_view/extension_options/extension_options_guest.cc
+@@ -220,10 +220,12 @@ void ExtensionOptionsGuest::DidFinishNavigation(
+     return;
+   }
+ 
++#if !defined OS_ANDROID
+   auto* guest_zoom_controller =
+       zoom::ZoomController::FromWebContents(web_contents());
+   guest_zoom_controller->SetZoomMode(zoom::ZoomController::ZOOM_MODE_ISOLATED);
+   SetGuestZoomLevelToMatchEmbedder();
++#endif  
+ 
+   if (!url::IsSameOriginWith(navigation_handle->GetURL(), options_page_)) {
+     bad_message::ReceivedBadMessage(web_contents()->GetRenderProcessHost(),
+diff --git a/extensions/browser/guest_view/web_view/web_view_guest.cc b/extensions/browser/guest_view/web_view/web_view_guest.cc
+index d2a2122c938de4cb39f311069698e1afda62565e..09f1ca17c0f232442cae5712db25fef0817f3e04 100644
+--- a/extensions/browser/guest_view/web_view/web_view_guest.cc
++++ b/extensions/browser/guest_view/web_view/web_view_guest.cc
+@@ -72,7 +72,10 @@ using content::WebContents;
+ using guest_view::GuestViewBase;
+ using guest_view::GuestViewEvent;
+ using guest_view::GuestViewManager;
++
++#if !defined OS_ANDROID
+ using zoom::ZoomController;
++#endif
+ 
+ namespace extensions {
+ 
+@@ -144,6 +147,14 @@ static std::string TerminationStatusToString(base::TerminationStatus status) {
+       return "crashed";
+     case base::TERMINATION_STATUS_LAUNCH_FAILED:
+       return "failed to launch";
++#if defined(OS_ANDROID)
++    // On Android processes are spawned from the system Zygote and we do not get
++    // the termination status.  We can't know if the termination was a crash or an
++    // oom kill for sure, but we can use status of the strong process bindings as
++    // a hint.
++    case base::TERMINATION_STATUS_OOM_PROTECTED:        // child was protected from oom kill
++      return "oom protected";
++#endif
+     case base::TERMINATION_STATUS_MAX_ENUM:
+       break;
+   }
+@@ -569,14 +580,20 @@ void WebViewGuest::OnAudioStateChanged(bool audible) {
+ }
+ 
+ double WebViewGuest::GetZoom() const {
++#if !defined(OS_ANDROID)
+   double zoom_level =
+       ZoomController::FromWebContents(web_contents())->GetZoomLevel();
++#else
++  double zoom_level = 1.0;
++#endif
+   return ConvertZoomLevelToZoomFactor(zoom_level);
+ }
+ 
++#if !defined(OS_ANDROID)
+ ZoomController::ZoomMode WebViewGuest::GetZoomMode() {
+   return ZoomController::FromWebContents(web_contents())->zoom_mode();
+ }
++#endif
+ 
+ bool WebViewGuest::HandleContextMenu(
+     const content::ContextMenuParams& params) {
+@@ -810,11 +827,13 @@ void WebViewGuest::DidFinishNavigation(
+     // For LoadDataWithBaseURL loads, |url| contains the data URL, but the
+     // virtual URL is needed in that case. So use WebContents::GetURL instead.
+     src_ = web_contents()->GetURL();
++#if !defined(OS_ANDROID)
+     // Handle a pending zoom if one exists.
+     if (pending_zoom_factor_) {
+       SetZoom(pending_zoom_factor_);
+       pending_zoom_factor_ = 0.0;
+     }
++#endif
+   }
+   auto args = std::make_unique<base::DictionaryValue>();
+   args->SetString(guest_view::kUrl, src_.spec());
+@@ -1150,17 +1169,22 @@ void WebViewGuest::SetName(const std::string& name) {
+       new ExtensionMsg_SetFrameName(main_frame->GetRoutingID(), name_));
+ }
+ 
++
+ void WebViewGuest::SetZoom(double zoom_factor) {
++#if !defined(OS_ANDROID)
+   did_set_explicit_zoom_ = true;
+   auto* zoom_controller = ZoomController::FromWebContents(web_contents());
+   DCHECK(zoom_controller);
+   double zoom_level = content::ZoomFactorToZoomLevel(zoom_factor);
+   zoom_controller->SetZoomLevel(zoom_level);
++#endif
+ }
+ 
++#if !defined(OS_ANDROID)
+ void WebViewGuest::SetZoomMode(ZoomController::ZoomMode zoom_mode) {
+   ZoomController::FromWebContents(web_contents())->SetZoomMode(zoom_mode);
+ }
++#endif  
+ 
+ void WebViewGuest::SetAllowTransparency(bool allow) {
+   if (allow_transparency_ == allow)
+diff --git a/extensions/browser/guest_view/web_view/web_view_guest.h b/extensions/browser/guest_view/web_view/web_view_guest.h
+index 0534fe15f2a969266c7ef08d55fcce4c6e7ecde3..eaf80e899d916cafde1d9e42f2b555a50ae7ca43 100644
+--- a/extensions/browser/guest_view/web_view/web_view_guest.h
++++ b/extensions/browser/guest_view/web_view/web_view_guest.h
+@@ -73,8 +73,10 @@ class WebViewGuest : public guest_view::GuestView<WebViewGuest> {
+   // Get the current zoom.
+   double GetZoom() const;
+ 
++#if !defined OS_ANDROID
+   // Get the current zoom mode.
+   zoom::ZoomController::ZoomMode GetZoomMode();
++#endif
+ 
+   // Request navigating the guest to the provided |src| URL.
+   void NavigateGuest(const std::string& src, bool force_navigation);
+@@ -91,8 +93,10 @@ class WebViewGuest : public guest_view::GuestView<WebViewGuest> {
+   // Set the zoom factor.
+   void SetZoom(double zoom_factor);
+ 
++#if !defined OS_ANDROID
+   // Set the zoom mode.
+   void SetZoomMode(zoom::ZoomController::ZoomMode zoom_mode);
++#endif
+ 
+   void SetAllowScaling(bool allow);
+   bool allow_scaling() const { return allow_scaling_; }
+diff --git a/extensions/renderer/BUILD.gn b/extensions/renderer/BUILD.gn
+index 2dd370104ccd4005ab6efd109c9169be8be7037d..23db958ef843800e78eb43b710d66804549883c8 100644
+--- a/extensions/renderer/BUILD.gn
++++ b/extensions/renderer/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//extensions/renderer/BUILD.gn enter")
++
+ import("//build/config/features.gni")
+ import("//extensions/features/features.gni")
+ 
+@@ -263,6 +265,7 @@ source_set("renderer") {
+ 
+   deps = [
+     "//chrome:resources",
++    ###AB###
+     "//components/guest_view/renderer",
+     "//content:resources",
+     "//extensions:extensions_resources",
+@@ -276,6 +279,16 @@ source_set("renderer") {
+     "//third_party/cld",
+   ]
+ 
++  ###AB###
++  if (!is_android) {
++    #print("//extensions/renderer/BUILD.gn add deps", "//components/guest_view/renderer")
++    deps += [
++    #  "//components/guest_view/renderer",
++    ]
++  } else {
++    #print("//extensions/renderer/BUILD.gn ignore deps", "//components/guest_view/renderer")
++  }
++
+   if (proprietary_codecs && enable_wifi_display) {
+     sources += [
+       "api/display_source/wifi_display/wifi_display_audio_encoder.cc",
+diff --git a/extensions/shell/BUILD.gn b/extensions/shell/BUILD.gn
+index 4ed28d19a7013ba2e3498c116ef27271753ddede..44af3571365c2e389993c72b6f9267c252da7f78 100644
+--- a/extensions/shell/BUILD.gn
++++ b/extensions/shell/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//extensions/shell/BUILD.gn enter")
++
+ import("//build/config/features.gni")
+ import("//build/config/ui.gni")
+ import("//build/util/process_version.gni")
+@@ -32,11 +34,13 @@ source_set("app_shell_lib") {
+   deps = [
+     ":resources",
+     ":version_header",
+-    "//apps",
++    ###AB###"//apps",
+     "//base",
+     "//components/feedback",
++    ###AB###
+     "//components/guest_view/browser",
+     "//components/guest_view/common",
++    ###AB###
+     "//components/guest_view/renderer",
+     "//components/network_session_configurator/common",
+     "//components/pref_registry",
+@@ -70,6 +74,22 @@ source_set("app_shell_lib") {
+     "//v8",
+   ]
+ 
++  ###AB###
++  if (!is_android) {
++    print("//extensions/shell/BUILD.gn add deps", "//apps"
++    #"//components/guest_view/browser", "//components/guest_view/renderer"
++    )
++    deps += [
++      "//apps",
++      #"//components/guest_view/browser",
++      #"//components/guest_view/renderer",
++    ]
++  } else {
++    print("//extensions/shell/BUILD.gn ignore deps", "//apps"
++    #"//components/guest_view/browser", "//components/guest_view/renderer"
++    )
++  }
++
+   # TODO(michaelpg): remove Mac support and always use aura.
+   if (use_aura) {
+     deps += [
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
 index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..11d0c86fb7cdfc1881f563552fb6f5c5abdabae4 100644
 --- a/third_party/widevine/cdm/BUILD.gn
@@ -664,3 +3108,55 @@ index ee0116d1852ba4d7ab0ab65f2ef8a70fc20636de..9fda56edc3b5934bc2f48a30ac1b7333
    "components/components_chromium_strings.grd": {
      "messages": [15000],
    },
+diff --git a/tools/json_schema_compiler/json_schema_api.gni b/tools/json_schema_compiler/json_schema_api.gni
+index 46cb996f1bcb96cbfd2c12eda19cb2447c247eab..bc3eb51ba7cfe90c6ae47004952f1db8674d0805 100644
+--- a/tools/json_schema_compiler/json_schema_api.gni
++++ b/tools/json_schema_compiler/json_schema_api.gni
+@@ -191,6 +191,10 @@ template("json_schema_api") {
+     action(bundle_generator_registration_name) {
+       script = compiler_script
+       inputs = compiler_sources + invoker.sources + uncompiled_sources
++
++print("//tools/json_schema_compiler/json_schema_api.gni AAA", "inputs=", inputs)
++print("//tools/json_schema_compiler/json_schema_api.gni BBB", "script=", script) 
++
+       outputs = [
+         "$root_gen_dir/$gen_child_dir/generated_api_registration.cc",
+         "$root_gen_dir/$gen_child_dir/generated_api_registration.h",
+diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
+index 4210c32aa44f90ba6bb35fed51e1d15329e479b5..257585e21f86323cb537c3405d5a92b745c63ac7 100644
+--- a/ui/base/BUILD.gn
++++ b/ui/base/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++print("//ui/base/BUILD.gn enter ")
++
+ import("//build/buildflag_header.gni")
+ import("//build/config/compiler/compiler.gni")
+ import("//build/config/sanitizers/sanitizers.gni")
+@@ -58,6 +60,10 @@ buildflag_header("ui_features") {
+   ]
+ }
+ 
++
++
++
++
+ component("base") {
+   output_name = "ui_base"
+ 
+@@ -616,9 +622,9 @@ component("base") {
+       "cursor/image_cursors.cc",
+       "cursor/image_cursors.h",
+       "default_theme_provider.cc",
+-      "idle/idle.cc",
+-      "idle/idle.h",
+-      "idle/idle_android.cc",
++      ###AB###        "idle/idle.cc",
++      ###AB###        "idle/idle.h",
++      ###AB###        "idle/idle_android.cc",
+       "l10n/l10n_font_util.cc",
+       "models/button_menu_item_model.cc",
+       "models/dialog_model.cc",
