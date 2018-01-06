@@ -1,5 +1,11 @@
 import("//tools/grit/repack.gni")
 
+declare_args() {
+  if (is_mac) {
+    mac_signing_identifier = ""
+  }
+}
+
 group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
