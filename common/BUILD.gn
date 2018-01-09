@@ -1,4 +1,7 @@
 source_set("common") {
+  #public_configs = [
+  #  "//brave/build/geolocation",
+  #]
   sources = [
     "common_message_generator.cc",
     "common_message_generator.h",

@@ -16,6 +16,10 @@ source_set("browser_process") {
 }
 
 source_set("browser") {
+  public_configs = [
+    "//brave/build/geolocation",
+  ]
+
   sources = [
     "brave_content_browser_client.cc",
     "brave_content_browser_client.h",

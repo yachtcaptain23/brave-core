@@ -1,0 +1,14 @@
+diff --git a/device/geolocation/network_location_request.cc b/device/geolocation/network_location_request.cc
+index fc90253986e06c19188d27a2aee84e4b26a82f6a..b7224acf5b44849d6a6108254a4e72e915ba1857 100644
+--- a/device/geolocation/network_location_request.cc
++++ b/device/geolocation/network_location_request.cc
+@@ -31,8 +31,7 @@
+ namespace device {
+ namespace {
+ 
+-const char kNetworkLocationBaseUrl[] =
+-    "https://www.googleapis.com/geolocation/v1/geolocate";
++const char kNetworkLocationBaseUrl[] = GOOGLEAPIS_ENDPOINT;
+ 
+ const char kLocationString[] = "location";
+ const char kLatitudeString[] = "lat";

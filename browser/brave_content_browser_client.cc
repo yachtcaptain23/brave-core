@@ -5,6 +5,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include "brave/browser/brave_browser_main_extra_parts.h"
+#include "brave/common/google_api_key.h"
 
 BraveContentBrowserClient::BraveContentBrowserClient() {}
 
@@ -16,4 +17,8 @@ content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
       ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
   main_parts->AddParts(new BraveBrowserMainExtraParts());
   return main_parts;
+}
+
+std::string BraveContentBrowserClient::GetGeolocationApiKey() {
+  return GOOGLEAPIS_API_KEY;
 }

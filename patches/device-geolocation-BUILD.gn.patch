@@ -1,0 +1,12 @@
+diff --git a/device/geolocation/BUILD.gn b/device/geolocation/BUILD.gn
+index 0d865cbc489ff42b44a45f1df491969be435b2b4..1e7e1e83c44c70a415ee4b12e7b68bd26f8c136a 100644
+--- a/device/geolocation/BUILD.gn
++++ b/device/geolocation/BUILD.gn
+@@ -11,6 +11,7 @@ if (is_android) {
+ 
+ component("geolocation") {
+   defines = [ "DEVICE_GEOLOCATION_IMPLEMENTATION" ]
++  configs += [ "//brave/build/geolocation" ]
+ 
+   sources = [
+     "access_token_store.h",

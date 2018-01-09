@@ -7,6 +7,8 @@
 
 #include "chrome/browser/chrome_content_browser_client.h"
 
+#include <string>
+
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
   BraveContentBrowserClient();
@@ -15,6 +17,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
    // Overridden from ChromeContentBrowserClient:
   content::BrowserMainParts* CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
+
+  std::string GetGeolocationApiKey() override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
