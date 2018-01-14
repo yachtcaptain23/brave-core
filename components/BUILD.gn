@@ -1,0 +1,6 @@
+source_set("components") {
+  sources = [
+    "component_updater/component_updater_url_constants.cc",
+    "component_updater/component_updater_url_constants.h"
+  ]
+}

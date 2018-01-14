@@ -11,10 +11,10 @@
 namespace brave {
 
 int OnBeforeURLRequest_SystemStaticRedirectWork(
-  net::URLRequest* request,
-  GURL* new_url,
-  const ResponseCallback& next_callback,
-  std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    net::URLRequest* request,
+    GURL* new_url,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
   URLPattern geoPattern(URLPattern::SCHEME_HTTPS,
       "https://www.googleapis.com/geolocation/v1/geolocate?key=*");
   if (geoPattern.MatchesURL(request->url())) {
