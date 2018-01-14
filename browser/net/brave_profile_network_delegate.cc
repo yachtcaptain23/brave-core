@@ -5,6 +5,7 @@
 #include "brave/browser/net/brave_profile_network_delegate.h"
 
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
+#include "brave/browser/net/profile_static_redirect_network_delegate_helper.h"
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     extensions::EventRouterForwarder* event_router,
@@ -13,6 +14,11 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   brave::OnBeforeURLRequestCallback callback =
       base::Bind(
           brave::OnBeforeURLRequest_HttpsePreFileWork);
+  before_url_request_callbacks_.push_back(callback);
+
+  callback =
+      base::Bind(
+          brave::OnBeforeURLRequest_ProfileStaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 }
 

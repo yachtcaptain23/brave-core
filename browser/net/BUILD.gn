@@ -9,10 +9,12 @@ source_set("net") {
     "brave_httpse_network_delegate_helper.h",
     "brave_profile_network_delegate.cc",
     "brave_profile_network_delegate.h",
-    "brave_static_redirect_network_delegate_helper.cc",
-    "brave_static_redirect_network_delegate_helper.h",
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
+    "profile_static_redirect_network_delegate_helper.cc",
+    "profile_static_redirect_network_delegate_helper.h",
+    "system_static_redirect_network_delegate_helper.cc",
+    "system_static_redirect_network_delegate_helper.h",
     "url_context.cc",
     "url_context.h"
   ]
