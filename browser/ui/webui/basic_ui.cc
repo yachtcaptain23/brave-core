@@ -12,6 +12,19 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/resource/resource_bundle.h"
 
+
+
+
+#include "base/strings/utf_string_conversions.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
+#include "content/browser/dom_storage/dom_storage_area.h"
+#include "content/browser/dom_storage/dom_storage_context_wrapper.h"
+#include "content/browser/dom_storage/dom_storage_namespace.h"
+#include "content/common/dom_storage/dom_storage_types.h"
+#include "chrome/common/webui_url_constants.h"
+#include "chrome/browser/profiles/profile_manager.h"
+
 using content::WebContents;
 using content::WebUIMessageHandler;
 
@@ -79,7 +92,66 @@ BasicUI::BasicUI(content::WebUI* web_ui,
     int js_resource_id,
     int html_resource_id)
     : WebUIController(web_ui) {
+
+
+
+  ////////////////////////////////////////
+  // THIS IS JUST A TEST, CODE IS NOT STAYING HERE
+  ////////////////////////////////////////
+
   Profile* profile = Profile::FromWebUI(web_ui);
+  GURL new_tab = GURL(chrome::kChromeUINewTabURL).GetOrigin();
+
+  content::StoragePartition* partition =
+    content::BrowserContext::GetStoragePartitionForSite(
+      profile, new_tab);
+
+LOG(ERROR) << "--------------1";
+  content::DOMStorageContextWrapper* storage_context_wrapper =
+    static_cast<content::DOMStorageContextWrapper*>(
+      partition->GetDOMStorageContext());
+
+  LOG(ERROR) << "--------------2";
+  content::DOMStorageContextImpl* context = storage_context_wrapper->context();
+
+  LOG(ERROR) << "--------------3";
+  content::DOMStorageNamespace* storage_namespace = context->
+    GetStorageNamespace(content::kLocalStorageNamespaceId);
+  LOG(ERROR) << "--------------4";
+
+  content::DOMStorageArea* area = storage_namespace->GetOpenStorageArea(new_tab);
+  bool was_opened = false;
+  if (!area) {
+    LOG(ERROR) << "---Opening";
+    area = storage_namespace->OpenStorageArea(new_tab);
+    was_opened = true;
+  }
+  if (area) {
+
+    base::NullableString16 str1 = area->Key(0);
+    LOG(ERROR) << "str1 is: " << base::UTF16ToUTF8(str1.string());
+    base::NullableString16 str2 = area->Key(1);
+    LOG(ERROR) << "str2 is: " << base::UTF16ToUTF8(str2.string());
+
+    LOG(ERROR) << "--------------5.1";
+    base::NullableString16 str = area->GetItem(base::UTF8ToUTF16("new-tab-data"));
+    LOG(ERROR) << "str is: " << base::UTF16ToUTF8(str.string());
+
+    base::NullableString16 client_old_value;
+    base::NullableString16 old_value;
+    area->SetItem(base::UTF8ToUTF16("new-tab-data-3"), base::UTF8ToUTF16("test"), client_old_value, &old_value);
+  } else {
+    LOG(ERROR) << "--------------5.2";
+  }
+  if (was_opened && area) {
+    LOG(ERROR) << "---Closing";
+    storage_namespace->CloseStorageArea(area);
+  }
+
+  ////////////////////////////////////////
+  // END THIS IS JUST A TEST, CODE IS NOT STAYING HERE
+  ////////////////////////////////////////
+
 
   auto handler_owner = base::MakeUnique<BasicDOMHandler>();
   BasicDOMHandler* handler = handler_owner.get();

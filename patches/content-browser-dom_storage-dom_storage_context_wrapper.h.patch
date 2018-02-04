@@ -1,0 +1,29 @@
+diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.h b/content/browser/dom_storage/dom_storage_context_wrapper.h
+index ccc7d2f2eddf2e65b8fbd409334c01c4202c1f78..82d18dd1a8db52366cfb040d142b32b5ccd64e88 100644
+--- a/content/browser/dom_storage/dom_storage_context_wrapper.h
++++ b/content/browser/dom_storage/dom_storage_context_wrapper.h
+@@ -36,6 +36,7 @@ namespace content {
+ class DOMStorageContextImpl;
+ class LocalStorageContextMojo;
+ class SessionStorageContextMojo;
++class BasicUI;
+ 
+ // This is owned by Storage Partition and encapsulates all its dom storage
+ // state.
+@@ -85,6 +86,8 @@ class CONTENT_EXPORT DOMStorageContextWrapper
+   void SetLocalStorageDatabaseForTesting(
+       leveldb::mojom::LevelDBDatabaseAssociatedPtr database);
+ 
++  DOMStorageContextImpl* context() const { return context_.get(); }
++
+  private:
+   friend class DOMStorageMessageFilter;  // for access to context()
+   friend class SessionStorageNamespaceImpl;  // ditto
+@@ -92,7 +95,6 @@ class CONTENT_EXPORT DOMStorageContextWrapper
+   friend class MojoDOMStorageBrowserTest;
+ 
+   ~DOMStorageContextWrapper() override;
+-  DOMStorageContextImpl* context() const { return context_.get(); }
+   SessionStorageContextMojo* mojo_session_state() {
+     return mojo_session_state_.get();
+   }
