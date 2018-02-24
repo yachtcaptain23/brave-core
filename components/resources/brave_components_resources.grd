@@ -85,6 +85,9 @@
 
     </includes>
     <messages fallback_to_english="true">
+      <!-- WebUI payments resrouces -->
+      <part file="brave_payments.grdp" />
+
       <!-- WebUI newtab resrouces -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Ads Blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TRACKERS_BLOCKED" desc="total number of trackers blocked">Trackers Blocked</message>

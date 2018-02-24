@@ -4,6 +4,8 @@ source_set("ui") {
   sources = [
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
+    "webui/brave_payments_html_source.cc",
+    "webui/brave_payments_html_source.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
     "webui/new_tab_html_source.cc",

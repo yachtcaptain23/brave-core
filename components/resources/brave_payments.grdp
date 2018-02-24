@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_PAYMENTS_TITLE" desc="title of the Brave Payments feature.">
+    Brave Payments
+  </message>
+</grit-part>

@@ -5,6 +5,7 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 
 #include "brave/browser/ui/webui/new_tab_html_source.h"
+#include "brave/browser/ui/webui/brave_payments_html_source.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,6 +32,7 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
       content::WebUIDataSource::Create(name);
 
   CustomizeNewTabHTMLSource(profile, source);
+  CustomizeBravePaymentsHTMLSource(profile, source);
 
   source->SetJsonPath("strings.js");
   source->SetDefaultResource(html_resource_id);
@@ -96,6 +98,7 @@ void BasicUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     Profile* profile = Profile::FromWebUI(web_ui());
     CustomizeNewTabWebUIProperties(web_ui(), profile, render_view_host);
+    CustomizeBravePaymentsWebUIProperties(web_ui(), profile, render_view_host);
   }
 }
 
@@ -107,6 +110,7 @@ void BasicUI::OnPreferenceChanged(PrefService* service,
     if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
       Profile* profile = Profile::FromWebUI(web_ui());
       CustomizeNewTabWebUIProperties(web_ui(), profile, render_view_host_);
+      CustomizeBravePaymentsWebUIProperties(web_ui(), profile, render_view_host_);
       web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
     }
   }
