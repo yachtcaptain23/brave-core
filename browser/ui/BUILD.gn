@@ -8,6 +8,8 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/new_tab_html_source.cc",
     "webui/new_tab_html_source.h",
+    "webui/web_ui_util.cc",
+    "webui/web_ui_util.h",
   ]
   public_deps = [
     "//content/public/browser",
