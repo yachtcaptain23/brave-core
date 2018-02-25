@@ -15,5 +15,6 @@ source_set("ui") {
   ]
   public_deps = [
     "//content/public/browser",
+    "//brave/components/resources:brave_components_resources_grit",
   ]
 }
