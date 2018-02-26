@@ -1,7 +1,7 @@
 import("//tools/grit/grit_rule.gni")
 
 
-transpile_includes = [
+transpile_newtab_includes = [
   # Brave new tab
   "../brave_new_tab_ui/brave_new_tab.html",
   "../brave_new_tab_ui/brave_new_tab.js",
@@ -19,9 +19,26 @@ transpile_includes = [
   "../brave_new_tab_ui/store.js",
   "../brave_new_tab_ui/reducers/index.js",
   "../brave_new_tab_ui/reducers/newTabReducer.js",
-  # Brave payments
-  "../brave_payments_ui/brave_payments.html",
 ]
+
+transpile_payments_includes = [
+  # Brave new tab
+  "../brave_payments_ui/brave_payments.html",
+  "../brave_payments_ui/brave_payments.js",
+
+  "../brave_payments_ui/components/app.js",
+
+  "../brave_payments_ui/constants/paymentsTypes.js",
+  "../brave_payments_ui/actions/paymentsActions.js",
+  "../brave_payments_ui/api.js",
+  "../brave_payments_ui/storage.js",
+  "../brave_payments_ui/store.js",
+  "../brave_payments_ui/reducers/index.js",
+  "../brave_payments_ui/reducers/paymentsReducer.js",
+]
+
+transpile_includes = transpile_newtab_includes
+transpile_includes += transpile_payments_includes
 
 action("transpile_web_uis") {
   script = "//brave/script/transpile-web-ui.py"
