@@ -268,6 +268,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     frame_tree_node->navigator()->GetController()->GetPendingEntry();
 
   if (!navigation_entry) {
+    LOG(ERROR) << "Getting last committed";
     navigation_entry =
       frame_tree_node->navigator()->GetController()->GetLastCommittedEntry();
   }
@@ -304,6 +305,12 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
           navigation_handle->GetURL(),
           navigation_handle->GetURL().GetOrigin(),
           original_referrer.policy, &new_referrer)) {
+    LOG(ERROR) << "<1>: " << original_referrer.url;
+    LOG(ERROR) << "<2>: " << new_referrer.url.spec();
+    LOG(ERROR) << "<3>: " << tab_origin;
+    LOG(ERROR) << "<4>: " << navigation_handle->GetURL();
+    LOG(ERROR) << "<5>: " << navigation_handle->GetURL().GetOrigin();
+    LOG(ERROR) << "<6>: " << new_referrer.url;
     navigation_entry->SetReferrer(new_referrer);
   }
 }
