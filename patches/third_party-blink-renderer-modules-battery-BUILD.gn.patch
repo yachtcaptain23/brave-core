@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/modules/battery/BUILD.gn b/third_party/blink/renderer/modules/battery/BUILD.gn
+index 64c9513c20a1bfa765c26de56acc8ee2c16a98f5..a4cbd9ac777e35f9e108beca8b8ebe7f6cc2cbcf 100644
+--- a/third_party/blink/renderer/modules/battery/BUILD.gn
++++ b/third_party/blink/renderer/modules/battery/BUILD.gn
+@@ -11,8 +11,8 @@ blink_modules_sources("battery") {
+     "battery_manager.cc",
+     "battery_manager.h",
+     "battery_status.h",
+-    "navigator_battery.cc",
+     "navigator_battery.h",
++    "//brave/chromium_src/third_party/blink/render/modules/battery/navigator_battery.cc",
+   ]
+ 
+   deps = [

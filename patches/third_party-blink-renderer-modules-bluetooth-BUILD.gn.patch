@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/bluetooth/BUILD.gn b/third_party/blink/renderer/modules/bluetooth/BUILD.gn
+index 86525ded88b86ee42b6f01cfe19231dec5cedbb5..cc7fec1705f7034f732bafc10290da72b88dbea7 100644
+--- a/third_party/blink/renderer/modules/bluetooth/BUILD.gn
++++ b/third_party/blink/renderer/modules/bluetooth/BUILD.gn
+@@ -28,7 +28,7 @@ blink_modules_sources("bluetooth") {
+     "bluetooth_remote_gatt_utils.h",
+     "bluetooth_uuid.cc",
+     "bluetooth_uuid.h",
+-    "navigator_bluetooth.cc",
++    "//brave/chromium_src/third_party/blink/render/modules/bluetooth/navigator_bluetooth.cc",
+     "navigator_bluetooth.h",
+   ]
+ 
