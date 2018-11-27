@@ -1,5 +1,5 @@
 diff --git a/chrome/common/pref_names.cc b/chrome/common/pref_names.cc
-index 99932760446390c1d68351968c8207d247963e40..98c772a0a5614933a50daa4eaf8b80376d641282 100644
+index ec3f4f8ac617f99a21def38f34c94499a13637d2..cab98f489bd6fa09bc5804d2867a782dd64aa7cb 100644
 --- a/chrome/common/pref_names.cc
 +++ b/chrome/common/pref_names.cc
 @@ -1084,6 +1084,8 @@ const char kImportDialogBookmarks[] = "import_dialog_bookmarks";
