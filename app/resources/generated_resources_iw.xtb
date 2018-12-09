@@ -165,11 +165,8 @@
 <translation id="3612673635130633812">‏ההורדה בוצעה באמצעות &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">ההורדה בוצעה במצב גלישה בסתר</translation>
 <translation id="8028803902702117856">הקובץ <ph name="FILE_NAME"/> בהורדה, <ph name="SIZE"/></translation>
-<translation id="4644818355646995778">בהורדה, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">בהורדה, <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">ההורדה נכשלה: <ph name="FILE_NAME"/></translation>
-<translation id="6577284282025554716">ההורדה בוטלה: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">ההורדה הסתיימה: <ph name="FILE_NAME"/></translation>
 <translation id="2743387203779672305">העתק ללוח</translation>
 <translation id="883911313571074303">רשום הערה לתמונה</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{הורדה מתבצעת}two{הורדות מתבצעות}many{הורדות מתבצעות}other{הורדות מתבצעות}}</translation>
@@ -291,7 +288,6 @@
 <translation id="6398765197997659313">צא ממסך מלא</translation>
 <translation id="8559694214572302298">מפענח התמונות</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
-<translation id="6185617499004995178">‏מאמת CUPS IPP</translation>
 <translation id="3077708072777965506">‏שיטת הקלט של Brave OS</translation>
 <translation id="7171242884588191792">‏תוכניות שירות של Brave לקבצים</translation>
 <translation id="3061707000357573562">שירות תיקון</translation>
@@ -300,7 +296,6 @@
 <translation id="1545775234664667895">נושא שהותקן "<ph name="THEME_NAME"/>"</translation>
 <translation id="2079545284768500474">בטל פעולה</translation>
 <translation id="2256115617011615191">הפעל מחדש כעת</translation>
-<translation id="795025003224538582">אל תבצע הפעלה מחדש</translation>
 <translation id="4545028762441890696">כדי להפעיל את התוסף מחדש, אשר את ההרשאות החדשות:</translation>
 <translation id="3009487527589249344">‏Brave Software סימנה את "<ph name="EXTENSION_NAME"/>" כזדוני, וההתקנה נמנעה</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> נוסף מרחוק</translation>
@@ -495,9 +490,7 @@
 <translation id="3987348946546879621">נתונים נחסכו</translation>
 <translation id="6228516488918914827">נטען דף מהיר יותר</translation>
 <translation id="9137013805542155359">הצג מקור</translation>
-<translation id="71243390042171582">עודכנה לפני <ph name="MINUTES"/> דקות</translation>
 <translation id="8743864605301774756">עודכנה לפני שעה</translation>
-<translation id="5638497698949808140">עודכנה לפני <ph name="HOURS"/> שעות</translation>
 <translation id="1329584516321524826">עודכן עכשיו</translation>
 <translation id="224940702122312781">הדף הזה יצרוך הרבה נתונים.</translation>
 <translation id="3861241522664181545">הדף מושהה.</translation>
@@ -772,9 +765,6 @@
 <translation id="2445484935443597917">יצירת פרופיל חדש</translation>
 <translation id="2606246518223360146">קישור נתונים</translation>
 <translation id="473546211690256853">חשבון זה מנוהל על ידי <ph name="DOMAIN"/></translation>
-<translation id="3661054927247347545">אישור הכניסה אינו חוקי. החלון ייסגר בעוד <ph name="MINUTES"/> : <ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">היכנס עכשיו</translation>
-<translation id="5436822233913560332">עוד מעט כל חלונות הדפדפן ייסגרו באופן אוטומטי ללא כניסה.</translation>
 <translation id="8168435359814927499">תוכן</translation>
 <translation id="7702907602086592255">דומיין</translation>
 <translation id="3202131003361292969">נתיב</translation>
@@ -842,15 +832,6 @@
 <translation id="3074037959626057712">נכנסת לחשבונך והפעלת את הסנכרון</translation>
 <translation id="1231733316453485619">להפעיל סנכרון?</translation>
 <translation id="9125982323641182972">‏תכונות חכמות של Brave Software</translation>
-<translation id="7988117629517051942">‏גישה אל עוד יכולות חכמות של Brave Software</translation>
-<translation id="5596627076506792578">אפשרויות נוספות</translation>
-<translation id="4419556793104466535">שליטה בסינכרון, התאמה אישית ועוד</translation>
-<translation id="184568702928428857">‏ההגדרות ששולטות בסינכרון, בהתאמה אישית ובשירותים אחרים של Brave Software ב-Brave השתנו. השינוי עשוי להשפיע על ההגדרות הנוכחיות שלך.</translation>
-<translation id="4192273449750167573">אפשר לבדוק את ההגדרות במסך הבא</translation>
-<translation id="685040365210406336">לא לבצע שינויים</translation>
-<translation id="6418273007044911016">‏הנתונים המסונכרנים עם Brave Software והתכונות שבהן בחרת להשתמש לא ישתנו</translation>
-<translation id="8372733498235009300">‏הפעלת סינכרון, התאמה אישית ושירותים אחרים של Brave Software</translation>
-<translation id="8340964510643644301">‏אפשר תמיד להתאים אישית דרך הגדרות Brave</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">‏הסימניות, ההיסטוריה, הסיסמאות והגדרות נוספות יסונכרנו עם חשבון Brave Software, כך שתוכל להשתמש בהם בכל המכשירים שלך.</translation>
 <translation id="1371301976177520732">הסימניות, הסיסמאות, ההיסטוריה ונתונים נוספים שלך - בכל המכשירים שברשותך</translation>
@@ -896,7 +877,6 @@
 <translation id="6812349420832218321">לא ניתן להפעיל את <ph name="PRODUCT_NAME"/> בתור בסיס.</translation>
 <translation id="2292848386125228270">‏הפעל את <ph name="PRODUCT_NAME"/> כמשתמש רגיל. אם תצטרך להפעיל כבסיס לצורך פיתוח, הפעל מחדש עם הסימון ‎--no-sandbox.</translation>
 <translation id="3122496702278727796">יצירת ספריית נתונים נכשלה</translation>
-<translation id="602251597322198729">אתר זה מנסה להוריד קבצים מרובים. האם אתה מעוניין לאשר זאת?</translation>
 <translation id="691024665142758461">להוריד מספר קבצים</translation>
 <translation id="7004499039102548441">כרטיסיות אחרונות</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{כרטיסייה אחת}two{# כרטיסיות}many{# כרטיסיות}other{# כרטיסיות}}</translation>
@@ -1229,7 +1209,6 @@
 <translation id="3596235046596950091">הפעלת שירותי ענן</translation>
 <translation id="7649070708921625228">עזרה</translation>
 <translation id="9011163749350026987">הצג תמיד את הסמל</translation>
-<translation id="9115487443206954631">‏נהל מכשירי Cast</translation>
 <translation id="1706586824377653884">נוסף על ידי מנהל המערכת שלך</translation>
 <translation id="6467304607960172345">אופטימיזציה של סרטונים במסך מלא</translation>
 <translation id="1597210476603167523">‏הפעל העברה לשירותים מבוססי-ענן כמו Brave Software Hangouts.</translation>
@@ -1293,7 +1272,6 @@
 <translation id="3340978935015468852">הגדרות</translation>
 <translation id="5704875434923668958">מסנכרן עם</translation>
 <translation id="6257602895346497974">הפעלת סנכרון...</translation>
-<translation id="8618141719844947886">אין סנכרון</translation>
 <translation id="5781092003150880845">סינכרון בשם <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">סנכרון עם החשבון שלך</translation>
 <translation id="2538361623464451692">הסינכרון מושבת</translation>
@@ -1512,7 +1490,6 @@
 <translation id="386548886866354912">הוסף לחבילה יחד עם <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">שתף באמצעות <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">כווץ את הקבצים שנבחרו</translation>
-<translation id="9215934040295798075">הגדר טפט</translation>
 <translation id="204914487372604757">צור קיצור דרך</translation>
 <translation id="799547531016638432">הסר קיצור דרך</translation>
 <translation id="5494920125229734069">בחר הכל</translation>
@@ -1658,7 +1635,6 @@
 <translation id="8671210955687109937">יכול להגיב</translation>
 <translation id="799923393800005025">יכול להציג</translation>
 <translation id="7925686952655276919">אין להשתמש בנתונים ניידים עבור סנכרון</translation>
-<translation id="4649168043999963079">‏הצג קובצי Brave Software Docs</translation>
 <translation id="7106346894903675391">קנה שטח אחסון נוסף...</translation>
 <translation id="3549797760399244642">‏עבור אל drive.google.com...</translation>
 <translation id="3451154303153932176">‏שטח אחסון שנותר ב-Brave Software Drive‏: <ph name="SPACE_AVAILABLE"/>.</translation>
@@ -1671,7 +1647,6 @@
 <translation id="7606199793785990727">‏לא ניתן היה להגיע אל Brave Software Drive‏. <ph name="BEGIN_LINK"/>צא<ph name="END_LINK"/> ואז התחבר שוב.</translation>
 <translation id="585883343689351092">‏ברוכים הבאים ל-Brave Software Drive!</translation>
 <translation id="1788440444874291920">‏קבל ‏GB ‏100 ללא תשלום עם Brave Software Drive</translation>
-<translation id="5722262830411045381">‏קבל ‎1TB בחינם עם Brave Software Drive</translation>
 <translation id="6862635236584086457">כל הקבצים השמורים בתיקיה זו מגובים באופן אוטומטי באינטרנט</translation>
 <translation id="7220787572447472056">‏<ph name="MARKUP_1"/>היכנס לקבצים מכל מקום, אפילו כשאינך מחובר לאינטרנט.<ph name="MARKUP_2"/>
     קבצים ב-Brave Software Drive מעודכנים וזמינים בכל מכשיר.<ph name="MARKUP_3"/>
@@ -1689,9 +1664,6 @@
 <translation id="3096967955765855393">‏אנחנו מחפשים כל הזמן דרכים לגלישה בטוחה יותר. בעבר, כל אתר יכול היה להציע לך להוסיף תוסף לדפדפן. בגרסאות האחרונות של Brave Software Brave, עליך לציין באופן מפורש ל-Brave שברצונך להתקין תוספים אלה על-ידי הוספתם דרך הדף 'תוספים'. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">לא ניתן לפתוח עם $1</translation>
 <translation id="639777613761517128">‏כדי לפתוח קבצים בעזרת $1, קודם צריך להעתיק אותם אל תיקיית קובצי ה-Linux.</translation>
-<translation id="5112009661904384591">‏שיתוף קבצים עם Linux</translation>
-<translation id="3186202398303525187">‏מתן הרשאה לאפליקציות Linux לפתוח את $1.</translation>
-<translation id="1603300902586586390">‏מתן הרשאה לאפליקציות Linux לפתוח קובצי $1.</translation>
 <translation id="4572815280350369984">קובץ <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">קובץ</translation>
 <translation id="895586998699996576">תמונת $1</translation>
@@ -1922,15 +1894,11 @@
 <translation id="6643016212128521049">נקה</translation>
 <translation id="8465252176946159372">לא חוקי</translation>
 <translation id="8647834505253004544">כתובת האינטרנט לא חוקית</translation>
-<translation id="2149850907588596975">סיסמאות וטפסים</translation>
-<translation id="8639963783467694461">הגדרות מילוי אוטומטי</translation>
 <translation id="7764225426217299476">הוסף כתובת</translation>
 <translation id="5595485650161345191">ערוך כתובת</translation>
 <translation id="6207937957461833379">מדינה/אזור</translation>
 <translation id="4378154925671717803">טלפון</translation>
 <translation id="5659593005791499971">אימייל</translation>
-<translation id="5762172915276660232">הגדרות של כרטיסי אשראי</translation>
-<translation id="4499718683476608392">התכונה 'מילוי אוטומטי' של כרטיסי אשראי יכולה למלא טפסים בקליק אחד</translation>
 <translation id="9064275926664971810">אפשר ל'מילוי אוטומטי' למלא טפסים בלחיצה אחת</translation>
 <translation id="5029568752722684782">נקה את העותק</translation>
 <translation id="2154484045852737596">עריכת כרטיס</translation>
@@ -1945,11 +1913,9 @@
 <translation id="1149401351239820326">חודש פקיעת התוקף</translation>
 <translation id="8058655154417507695">שנת תפוגה</translation>
 <translation id="379082410132524484">תוקף הכרטיס שלך פג</translation>
-<translation id="5624120631404540903">נהל סיסמאות</translation>
 <translation id="6644512095122093795">הצע לשמור סיסמאות</translation>
 <translation id="2100273922101894616">כניסה אוטומטית</translation>
 <translation id="7513029293694390567">היכנס באופן אוטומטי לאתרים באמצעות פרטי כניסה שמורים. כשהאפשרות הזו מושבתת, תתבקש לאשר לפני כל כניסה לאתר.</translation>
-<translation id="1511388193702657997">הצגת הצעה לשמור את הסיסמאות שלך באינטרנט</translation>
 <translation id="1375321115329958930">סיסמאות שמורות</translation>
 <translation id="152234381334907219">פריטים שאף פעם לא נשמרו</translation>
 <translation id="5137501176474113045">מחק את הפריט הזה</translation>
@@ -1959,7 +1925,6 @@
 <translation id="8503813439785031346">שם משתמש</translation>
 <translation id="6657585470893396449">סיסמה</translation>
 <translation id="137651782282853227">כאן יופיעו הכתובות ששמרת</translation>
-<translation id="1529116897397289129">כאן יופיעו הכרטיסים ששמרת</translation>
 <translation id="7930294771522048157">אמצעי תשלום שנשמרו יופיעו כאן</translation>
 <translation id="9124003689441359348">כאן יופיעו הסיסמאות ששמרת</translation>
 <translation id="4400367121200150367">כאן יופיעו האתרים שאף פעם אינם שומרים סיסמאות</translation>
@@ -2373,8 +2338,6 @@
 <translation id="490074449735753175">השתמש בשירות אינטרנט כדי לסייע בפתרון שגיאות איות</translation>
 <translation id="3523078749603005179">‏בדיקת איות חכמה יותר המתבצעת על-ידי שליחת הטקסט שאתה מקליד בדפדפן אל Brave Software</translation>
 <translation id="2564653188463346023">בדיקת איות משופרת</translation>
-<translation id="7469406957790636836">כדי להפעיל את האפשרות הזאת, צריך להפעיל את בדיקת האיות דרך <ph name="BEGIN_LINK"/>שפות וקלט<ph name="END_LINK"/></translation>
-<translation id="8699566574894671540">כדי להפעיל את האפשרות הזאת, צריך לבחור 'בדיקת איות בעת ההקלדה' בתפריט 'עריכה'.</translation>
 <translation id="9079153198295609735">‏שלח ל-Brave Software דוחות קריסה וסטטיסטיקת שימוש באופן אוטומטי</translation>
 <translation id="5941220456342415404">‏שליחה אוטומטית של נתוני אבחון ושימוש אל Brave Software</translation>
 <translation id="918192811481327695">‏עזרה בשיפור התכונות והביצועים של Brave</translation>
@@ -2419,13 +2382,10 @@
 <translation id="1545786162090505744">‏כתובת אתר עם %s במקום שאילתה</translation>
 <translation id="7136694880210472378">הפוך לברירת מחדל</translation>
 <translation id="6953878494808481632">מידע קשור</translation>
-<translation id="7258619945375359543">‏מתן הרשאה ל-Assitant להציג הצעות לפי התוכן שמופיע על המסך</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">‏גישה ל-Assistant בכל פעם שאומרים "Ok Brave Software" כשהמסך מופעל</translation>
 <translation id="2482878487686419369">התראות</translation>
 <translation id="5355099869024327351">‏מתן הרשאה ל-Assistant להציג הודעות</translation>
-<translation id="1127216846847548354">הפעלה קולית</translation>
-<translation id="3506093155988721483">‏שימוש בדיבור במקום במקלדת כשמפעילים את ה-Assistant</translation>
 <translation id="3908743412684152579">‏ההגדרות של Brave Software Assistant</translation>
 <translation id="4933484234309072027">מוטבע ב-<ph name="URL"/></translation>
 <translation id="8427292751741042100">מוטמע במארח כלשהו</translation>
@@ -2568,7 +2528,6 @@
 <translation id="1296497012903089238">סוג אישור</translation>
 <translation id="8553342806078037065">נהל אנשים אחרים</translation>
 <translation id="8907706281008466056">‏תמונת פרופיל Brave Software</translation>
-<translation id="127138278192656016">שימוש בסינכרון ובכל השירותים</translation>
 <translation id="2408955596600435184">‏הזן את מספר ה-PIN</translation>
 <translation id="6619990499523117484">‏אשר את מספר ה-PIN</translation>
 <translation id="2023167225947895179">‏ייתכן שיהיה קל לנחש את ה-PIN</translation>
@@ -2643,10 +2602,8 @@
 <translation id="2731700343119398978">המתן...</translation>
 <translation id="7529411698175791732">בדוק את חיבור האינטרנט. אם הבעיה לא נפתרת, נסה לצאת מהחשבון ולהיכנס אליו שוב.</translation>
 <translation id="4684427112815847243">סנכרן הכל</translation>
-<translation id="2709516037105925701">מילוי אוטומטי</translation>
 <translation id="1644574205037202324">היסטוריה</translation>
 <translation id="5117427536932535467">עיצובים וטפטים</translation>
-<translation id="3259418918864581163">‏כרטיסי אשראי וכתובות דרך Brave Software Pay.</translation>
 <translation id="3268451620468152448">כרטיסיות פתוחות</translation>
 <translation id="5241892180459725878">‏הצעות לחיפושים של Brave Software Drive</translation>
 <translation id="2120297377148151361">פעילות ואינטראקציות</translation>
@@ -2725,7 +2682,6 @@
 <translation id="258095186877893873">ארוכה</translation>
 <translation id="3511528412952710609">קצרה</translation>
 <translation id="6545665334409411530">שיעור חזרה</translation>
-<translation id="9169496697824289689">הצג מקשי קיצור</translation>
 <translation id="6116921718742659598">שנה את הגדרות הקלט והשפה</translation>
 <translation id="8785622406424941542">סטיילוס</translation>
 <translation id="4673442866648850031">פתח את כלי הסטיילוס לאחר שליפת הסטיילוס</translation>
@@ -2822,7 +2778,6 @@
 <translation id="2307631131458143837">‏ניתוק הטלפון מה-Bravebook</translation>
 <translation id="1146102139091738471">‏ניתוק הטלפון מה-Bravebook. השניים לא יתחברו יותר באופן אוטומטי.</translation>
 <translation id="7878562273885520351">ייתכן שאבטחת הסיסמה שלך נפגעה</translation>
-<translation id="6582421931165117398">כדאי לשנות את הסיסמה עכשיו כדי להגן על המידע האישי. תוצג לך בקשה להיכנס לחשבונך לפני שינוי הסיסמה.</translation>
 <translation id="1089439967362294234">שינוי סיסמה</translation>
 <translation id="4635398712689569051"><ph name="PAGE_NAME"/> לא זמין למשתמשים במצב אורח.</translation>
 <translation id="4893522937062257019">במסך הנעילה</translation>
@@ -2914,13 +2869,6 @@
 <translation id="720110658997053098">השארת המכשיר הזה במצב קיוסק באופן קבוע</translation>
 <translation id="1909880997794698664">האם אתה בטוח שברצונך להשאיר מכשיר זה במצב קיוסק באופן קבוע?</translation>
 <translation id="1512210426710821809">הדרך היחידה לבטל את הפעולה זו היא להתקין מחדש את <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
-<translation id="4472575034687746823">תחילת העבודה</translation>
-<translation id="6060991652695587932">כדאי לבחור שירות אימייל לצורך גישה מהירה</translation>
-<translation id="296137235951584143">‏אפשר להתאים אישית את Brave בדרך שנוחה לך</translation>
-<translation id="7835178595033117206">הסימניה הוסרה</translation>
-<translation id="2785008241190445880">הסימניה הוחלפה</translation>
-<translation id="2950533317914339731">‏הוספת סימניות לאפליקציות המועדפות שלך ב-Brave Software Apps</translation>
-<translation id="8846319957959474018">סימניות עוזרות לפתוח אפליקציות במהירות</translation>
 <translation id="5939847200023027600">‏שירות מחבר של מסמכי PDF</translation>
 <translation id="5877584842898320529">המדפסת שבחרת אינה זמינה או שאינה מותקנת כראוי. <ph name="BR"/> יש לבדוק את המדפסת או לנסות לבחור מדפסת אחרת.</translation>
 <translation id="1526560967942511387">מסמך ללא שם</translation>

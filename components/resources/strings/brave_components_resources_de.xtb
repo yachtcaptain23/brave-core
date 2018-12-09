@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">entfernen</translation>
 <translation id="3157931365184549694">Wiederherstellen</translation>
 <translation id="3626186271103896082">Sichern Sie Ihr Wallet</translation>
-<translation id="5717619667204259673">Bewahren Sie diesen Wiederherstellungsschlüssel sicher auf. Sie können diesen Schlüssel jederzeit nutzen, um Ihre Wallet zurückzuerhalten, falls Ihrem Browser oder Ihrem Rechner etwas passiert. Aber passen Sie gut darauf auf – jeder der Zugriff auf diesen Schlüssel hat, könnte Ihre Wallet stehlen. Es ist wahrscheinlich am sichersten, ihn auf ein Stück Papier zu schreiben oder wo sonst Sie wichtige Informationen notieren.</translation>
 <translation id="5522744783101549748">Sie können diese Seite unterstützen, indem Sie ihr ein Trinkgeld spendieren. Damit können Sie den Betreibern für tolle Inhalte danken. Conten Creators bekommen Ihre Trinkgelder während der ersten Woche jedes Kalendermonats ausgezahlt.</translation>
 <translation id="1704859330137112950">Wenn Sie möchten, können Sie montaliche Trinkgelder einrichten, um diese Seite durchgängig zu unterstützen.</translation>
 <translation id="3074127054582480056">Aufmerksamkeit</translation>
 <translation id="822513417008209372">Sie unterstützen derzeit</translation>
-<translation id="797446268269282651">Mit Ihrem alten Browser haben Sie für das Surfen im Netz bezahlt, indem Sie Ihre wertvolle Aufmerksamkeit dem Ansehen von Werbung gewidmet haben. Sie haben Ihre wertvolle Zeit investiert, um invasive Werbetechnologie auf Ihr Gerät herunterzuladen, die Ihre wertvollen privaten Daten ohne Ihr Einverständnis an Werbeunternehmen weitergeleitet hat –</translation>
 <translation id="5010112177773747965">ohne Ihre Zustimmung.</translation>
 <translation id="7147673045905733351">Heute heißt Sie Brave im neuen Internet willkommen.</translation>
 <translation id="1350763070659630336">Einem Internet, in dem Ihre Zeit gewürdigt wird, Ihre persönlichen Daten privat bleiben und Sie für Ihre Aufmerksamkeit sogar bezahlt werden.</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">Brave Rewards basiert auf dem Basic Attention Token. Erfahren Sie mehr über BAT</translation>
 <translation id="7823359893981882407">hier</translation>
 <translation id="4483635855837696643">Ihr Wallet wiederherstellen</translation>
-<translation id="459721429458957031">Nutzen Sie Ihren Wiederherstellungsschlüssel, um Ihre Wallet wiederherzustellen. Das  Wiederherstellen mithilfe eines solchen Schlüssels ersetzt Ihre derzeitige Wallet. Stellen Sie also sicher, dass Sie vor der Wiederherstellung Ihre aktuelle Wallet leeren oder ein Backup davon anlegen.</translation>
-<translation id="4600052736217630789">Geben Sie Ihren Wiederherstellungsschlüssel an oder</translation>
 <translation id="3494964159182650590">Rewards-Übersicht</translation>
 <translation id="63956545637156715">Warum Brave Rewards?</translation>
 <translation id="1738658589626889850">Als Datei speichern</translation>

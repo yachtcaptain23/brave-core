@@ -165,11 +165,8 @@
 <translation id="3612673635130633812">由&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;下载</translation>
 <translation id="6395403722585816044">已在隐身模式下进行下载</translation>
 <translation id="8028803902702117856">正在下载“<ph name="FILE_NAME"/>”，大小为 <ph name="SIZE"/></translation>
-<translation id="4644818355646995778">正在下载，<ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">正在下载，<ph name="STATUS"/></translation>
 <translation id="1834503245783133039">未能成功下载“<ph name="FILE_NAME"/>”</translation>
-<translation id="6577284282025554716">已取消下载“<ph name="FILE_NAME"/>”</translation>
-<translation id="348999362308956431">“<ph name="FILE_NAME"/>”已下载完毕</translation>
 <translation id="2743387203779672305">复制到剪贴板</translation>
 <translation id="883911313571074303">为图片添加注释</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{有 1 项下载正在进行中}other{有多项下载正在进行中}}</translation>
@@ -291,7 +288,6 @@
 <translation id="6398765197997659313">退出全屏模式</translation>
 <translation id="8559694214572302298">图片解码器</translation>
 <translation id="8191453843330043793">V8 代理解析工具</translation>
-<translation id="6185617499004995178">CUPS IPP 验证程序</translation>
 <translation id="3077708072777965506">Brave 操作系统输入法</translation>
 <translation id="7171242884588191792">Brave 文件实用程序</translation>
 <translation id="3061707000357573562">修补服务</translation>
@@ -300,7 +296,6 @@
 <translation id="1545775234664667895">已安装主题背景“<ph name="THEME_NAME"/>”</translation>
 <translation id="2079545284768500474">撤消</translation>
 <translation id="2256115617011615191">立即重新启动</translation>
-<translation id="795025003224538582">不重新启动</translation>
 <translation id="4545028762441890696">要重新启用它，请接受新权限：</translation>
 <translation id="3009487527589249344">Brave Software 已将“<ph name="EXTENSION_NAME"/>”标记为恶意扩展程序并已阻止系统安装它</translation>
 <translation id="6790497603648687708">已远程添加“<ph name="EXTENSION_NAME"/>”</translation>
@@ -496,9 +491,7 @@
 <translation id="3987348946546879621">节省了数据流量</translation>
 <translation id="6228516488918914827">页面加载速度更快了</translation>
 <translation id="9137013805542155359">显示原始网页</translation>
-<translation id="71243390042171582">上次更新时间：<ph name="MINUTES"/> 分钟前</translation>
 <translation id="8743864605301774756">上次更新时间：1 小时前</translation>
-<translation id="5638497698949808140">上次更新时间：<ph name="HOURS"/> 小时前</translation>
 <translation id="1329584516321524826">上次更新时间：刚才</translation>
 <translation id="224940702122312781">此网页会消耗很多网络数据流量。</translation>
 <translation id="3861241522664181545">已暂停加载网页资源。</translation>
@@ -773,9 +766,6 @@
 <translation id="2445484935443597917">创建新的个人资料</translation>
 <translation id="2606246518223360146">关联数据</translation>
 <translation id="473546211690256853">此帐号由 <ph name="DOMAIN"/> 管理</translation>
-<translation id="3661054927247347545">登录证书无效，窗口将在 <ph name="MINUTES"/> 分 <ph name="SECONDS"/> 秒后关闭</translation>
-<translation id="6522797484310591766">立即登录</translation>
-<translation id="5436822233913560332">如果您不登录，所有浏览器窗口很快都会自动关闭。</translation>
 <translation id="8168435359814927499">内容</translation>
 <translation id="7702907602086592255">域名</translation>
 <translation id="3202131003361292969">路径</translation>
@@ -843,15 +833,6 @@
 <translation id="3074037959626057712">您已登录并已启用同步</translation>
 <translation id="1231733316453485619">开启同步功能？</translation>
 <translation id="9125982323641182972">在 Brave 中畅享 Brave Software 的智能技术</translation>
-<translation id="7988117629517051942">畅享 Brave Software 的更多智能技术</translation>
-<translation id="5596627076506792578">更多选项</translation>
-<translation id="4419556793104466535">控制同步、个性化和其他服务</translation>
-<translation id="184568702928428857">Brave 中控制同步、个性化和其他 Brave Software 服务的设置已发生更改。这可能会影响您的当前设置。</translation>
-<translation id="4192273449750167573">在下一个屏幕上查看您的设置</translation>
-<translation id="685040365210406336">不做任何更改</translation>
-<translation id="6418273007044911016">您同步到 Brave Software 的数据和您使用的功能不会改变</translation>
-<translation id="8372733498235009300">开启同步、个性化和其他 Brave Software 服务</translation>
-<translation id="8340964510643644301">您可以随时在 Brave 设置中自定义此设置</translation>
 <translation id="3149880132460839085">Brave 浏览器同步</translation>
 <translation id="3796902758602917951">您的书签、历史记录、密码及其他设置均将同步到您的 Brave Software 帐号，以便您在自己的任意设备上使用</translation>
 <translation id="1371301976177520732">在您的所有设备上都能访问您的书签、密码、历史记录等信息</translation>
@@ -897,7 +878,6 @@
 <translation id="6812349420832218321">不能以根用户身份运行 <ph name="PRODUCT_NAME"/>。</translation>
 <translation id="2292848386125228270">请以普通用户的身份启动 <ph name="PRODUCT_NAME"/>。如果您出于开发目的，需要以根用户的身份运行 Brave，请使用 --no-sandbox 标记重新运行 Brave。</translation>
 <translation id="3122496702278727796">无法创建数据目录</translation>
-<translation id="602251597322198729">此网站试图下载多个文件。是否允许此操作？</translation>
 <translation id="691024665142758461">下载多个文件</translation>
 <translation id="7004499039102548441">最近打开的标签页</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 个标签页}other{# 个标签页}}</translation>
@@ -1230,7 +1210,6 @@
 <translation id="3596235046596950091">启用云服务</translation>
 <translation id="7649070708921625228">帮助</translation>
 <translation id="9011163749350026987">始终显示图标</translation>
-<translation id="9115487443206954631">管理投射设备</translation>
 <translation id="1706586824377653884">此图标是由管理员添加的</translation>
 <translation id="6467304607960172345">优化全屏视频</translation>
 <translation id="1597210476603167523">允许投射到 Brave Software 环聊等此类云端服务。</translation>
@@ -1294,7 +1273,6 @@
 <translation id="3340978935015468852">设置</translation>
 <translation id="5704875434923668958">同步到</translation>
 <translation id="6257602895346497974">开启同步功能…</translation>
-<translation id="8618141719844947886">未同步</translation>
 <translation id="5781092003150880845">以<ph name="ACCOUNT_FULL_NAME"/>的身份同步</translation>
 <translation id="1372841398847029212">同步到您的帐号中</translation>
 <translation id="2538361623464451692">同步功能已停用</translation>
@@ -1513,7 +1491,6 @@
 <translation id="386548886866354912">使用“<ph name="EXTENSION_NAME"/>”打包</translation>
 <translation id="3078461028045006476">使用“<ph name="EXTENSION_NAME"/>”分享</translation>
 <translation id="4197674956721858839">压缩选择</translation>
-<translation id="9215934040295798075">设置壁纸</translation>
 <translation id="204914487372604757">创建快捷方式</translation>
 <translation id="799547531016638432">删除快捷方式</translation>
 <translation id="5494920125229734069">全选</translation>
@@ -1659,7 +1636,6 @@
 <translation id="8671210955687109937">可以评论</translation>
 <translation id="799923393800005025">可以查看</translation>
 <translation id="7925686952655276919">不使用移动数据进行同步</translation>
-<translation id="4649168043999963079">显示 Brave Software 文档文件</translation>
 <translation id="7106346894903675391">购买更多存储空间...</translation>
 <translation id="3549797760399244642">转到 drive.google.com...</translation>
 <translation id="3451154303153932176">Brave Software 云端硬盘可用存储空间：<ph name="SPACE_AVAILABLE"/>。</translation>
@@ -1672,7 +1648,6 @@
 <translation id="7606199793785990727">无法访问 Brave Software 云端硬盘。请先<ph name="BEGIN_LINK"/>退出<ph name="END_LINK"/>，然后再重新登录。</translation>
 <translation id="585883343689351092">欢迎使用 Brave Software 云端硬盘！</translation>
 <translation id="1788440444874291920">免费获取 100 GB Brave Software 云端硬盘存储空间</translation>
-<translation id="5722262830411045381">获取 1 TB 免费的 Brave Software 云端硬盘存储空间</translation>
 <translation id="6862635236584086457">系统会自动在线备份保存在此文件夹中的所有文件</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>可随时随地访问文件，即使处于离线状态也没关系。<ph name="MARKUP_2"/>Brave Software 云端硬盘上的文件是最新的，并可通过任意设备访问。<ph name="MARKUP_3"/><ph name="MARKUP_4"/>可确保文件安全。<ph name="MARKUP_5"/>无论您的设备出现什么状况，您的文件都会安全地存储在 Brave Software 云端硬盘上。<ph name="MARKUP_6"/><ph name="MARKUP_7"/>文件集中存储，方便您与他人在同一个地方共享、创建和协作处理<ph name="MARKUP_8"/>文件。<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">检查资格</translation>
@@ -1684,9 +1659,6 @@
 <translation id="3096967955765855393">我们在不断寻找各种方式来提高上网安全。之前，任何网站都可以提示您在浏览器中添加扩展程序；而在最新版本的Brave Software Brave中，您必须明确告诉Brave您想要安装这些扩展程序（即：在“扩展程序”页添加它们）后才可以。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">无法使用$1打开</translation>
 <translation id="639777613761517128">要使用 $1 打开文件，请先将文件复制到“Linux 文件”文件夹。</translation>
-<translation id="5112009661904384591">与 Linux 共享文件</translation>
-<translation id="3186202398303525187">让 Linux 应用打开 $1。</translation>
-<translation id="1603300902586586390">让 Linux 应用打开 $1 个文件。</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> 文件</translation>
 <translation id="803771048473350947">文件</translation>
 <translation id="895586998699996576">$1 图片</translation>
@@ -1917,15 +1889,11 @@
 <translation id="6643016212128521049">清除</translation>
 <translation id="8465252176946159372">无效</translation>
 <translation id="8647834505253004544">网址无效</translation>
-<translation id="2149850907588596975">密码和表单</translation>
-<translation id="8639963783467694461">自动填充设置</translation>
 <translation id="7764225426217299476">添加地址</translation>
 <translation id="5595485650161345191">修改地址</translation>
 <translation id="6207937957461833379">国家/地区</translation>
 <translation id="4378154925671717803">电话机</translation>
 <translation id="5659593005791499971">电子邮件</translation>
-<translation id="5762172915276660232">信用卡设置</translation>
-<translation id="4499718683476608392">启用信用卡自动填充功能后，只需点击一次即可填写表单</translation>
 <translation id="9064275926664971810">启用自动填充功能后，只需点击一次即可填写多个表单</translation>
 <translation id="5029568752722684782">清除副本</translation>
 <translation id="2154484045852737596">修改支付卡</translation>
@@ -1940,11 +1908,9 @@
 <translation id="1149401351239820326">过期月份</translation>
 <translation id="8058655154417507695">到期年份</translation>
 <translation id="379082410132524484">您的卡已过期</translation>
-<translation id="5624120631404540903">管理密码</translation>
 <translation id="6644512095122093795">提示保存密码</translation>
 <translation id="2100273922101894616">自动登录</translation>
 <translation id="7513029293694390567">使用存储的凭据自动登录网站。停用该功能后，系统会在您每次登录网站时要求您进行确认。</translation>
-<translation id="1511388193702657997">询问是否保存您在网页上输入的密码</translation>
 <translation id="1375321115329958930">已保存的密码</translation>
 <translation id="152234381334907219">一律不保存</translation>
 <translation id="5137501176474113045">删除此项</translation>
@@ -1954,7 +1920,6 @@
 <translation id="8503813439785031346">用户名</translation>
 <translation id="6657585470893396449">密码</translation>
 <translation id="137651782282853227">已保存的地址将显示在这里</translation>
-<translation id="1529116897397289129">已保存的信用卡将显示在这里</translation>
 <translation id="7930294771522048157">已保存的付款方式会显示在这里</translation>
 <translation id="9124003689441359348">已保存的密码将显示在这里</translation>
 <translation id="4400367121200150367">一律不保存密码的网站将显示在这里</translation>
@@ -2368,8 +2333,6 @@
 <translation id="490074449735753175">使用网络服务帮助解决拼写错误</translation>
 <translation id="3523078749603005179">将您在浏览器中输入的内容发送给 Brave Software，以便提供更智能的拼写检查功能</translation>
 <translation id="2564653188463346023">增强的“拼写检查”功能</translation>
-<translation id="7469406957790636836">要启用此功能，请先在<ph name="BEGIN_LINK"/>语言和输入法<ph name="END_LINK"/>中启用拼写检查功能</translation>
-<translation id="8699566574894671540">要启用此功能，请先在“修改”菜单中选择“键入内容时检查拼写”</translation>
 <translation id="9079153198295609735">将使用情况统计信息和崩溃报告自动发送给 Brave Software</translation>
 <translation id="5941220456342415404">自动向 Brave Software 发送诊断数据和使用情况数据</translation>
 <translation id="918192811481327695">帮助我们改进 Brave 的功能和性能</translation>
@@ -2414,13 +2377,10 @@
 <translation id="1545786162090505744">网址（用“%s”代替搜索字词）</translation>
 <translation id="7136694880210472378">设为默认搜索引擎</translation>
 <translation id="6953878494808481632">相关信息</translation>
-<translation id="7258619945375359543">让 Brave Software 助理根据您屏幕上的内容提供建议</translation>
 <translation id="472896694312062378">“Ok Brave Software”</translation>
 <translation id="6236033368436682108">当屏幕处于开启状态时，您可以随时访问自己的 Brave Software 助理，只需说“Ok Brave Software”即可</translation>
 <translation id="2482878487686419369">通知</translation>
 <translation id="5355099869024327351">允许 Brave Software 助理向您显示通知</translation>
-<translation id="1127216846847548354">启动语音操作</translation>
-<translation id="3506093155988721483">使用语音（而非键盘）启动 Brave Software 助理</translation>
 <translation id="3908743412684152579">Brave Software 智能助理设置</translation>
 <translation id="4933484234309072027">嵌入 <ph name="URL"/></translation>
 <translation id="8427292751741042100">嵌入到任何主机上</translation>
@@ -2563,7 +2523,6 @@
 <translation id="1296497012903089238">证书类型</translation>
 <translation id="8553342806078037065">管理其他用户</translation>
 <translation id="8907706281008466056">Brave Software 个人资料照片</translation>
-<translation id="127138278192656016">使用同步功能和所有服务</translation>
 <translation id="2408955596600435184">输入您的 PIN 码</translation>
 <translation id="6619990499523117484">确认您的 PIN 码</translation>
 <translation id="2023167225947895179">该 PIN 码可能很容易被猜到</translation>
@@ -2638,10 +2597,8 @@
 <translation id="2731700343119398978">请稍候...</translation>
 <translation id="7529411698175791732">请检查您的互联网连接。如果问题仍然存在，请尝试退出帐号并重新登录。</translation>
 <translation id="4684427112815847243">同步所有数据类型</translation>
-<translation id="2709516037105925701">自动填充</translation>
 <translation id="1644574205037202324">历史记录</translation>
 <translation id="5117427536932535467">主题背景和壁纸</translation>
-<translation id="3259418918864581163">Brave Software Pay 中存储的信用卡和地址信息。</translation>
 <translation id="3268451620468152448">打开的标签页</translation>
 <translation id="5241892180459725878">Brave Software 云端硬盘搜索建议</translation>
 <translation id="2120297377148151361">活动和互动行为</translation>
@@ -2720,7 +2677,6 @@
 <translation id="258095186877893873">长</translation>
 <translation id="3511528412952710609">短</translation>
 <translation id="6545665334409411530">重复速度</translation>
-<translation id="9169496697824289689">查看键盘快捷键</translation>
 <translation id="6116921718742659598">更改语言和输入设置</translation>
 <translation id="8785622406424941542">触控笔</translation>
 <translation id="4673442866648850031">取出触控笔时打开触控笔工具</translation>
@@ -2817,7 +2773,6 @@
 <translation id="2307631131458143837">断开手机与 Bravebook 的连接</translation>
 <translation id="1146102139091738471">断开手机与 Bravebook 的连接。断开后，它们将无法再自动连接。</translation>
 <translation id="7878562273885520351">您的密码可能会被盗用</translation>
-<translation id="6582421931165117398">为了保护您的个人信息，请立即更改密码。不过，您必须先登录，然后才能更改密码。</translation>
 <translation id="1089439967362294234">更改密码</translation>
 <translation id="4635398712689569051">访客用户无法使用“<ph name="PAGE_NAME"/>”页面。</translation>
 <translation id="4893522937062257019">在锁定屏幕上</translation>
@@ -2909,13 +2864,6 @@
 <translation id="720110658997053098">让此设备永久处于自助服务终端模式</translation>
 <translation id="1909880997794698664">您确定要让此设备永远处于自助服务终端模式吗？</translation>
 <translation id="1512210426710821809">要想撤消此操作，唯一的方法是重新安装 <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
-<translation id="4472575034687746823">开始使用</translation>
-<translation id="6060991652695587932">选择您的电子邮件服务以便快速访问</translation>
-<translation id="296137235951584143">定制您的专属 Brave</translation>
-<translation id="7835178595033117206">已移除书签</translation>
-<translation id="2785008241190445880">已替换书签</translation>
-<translation id="2950533317914339731">为您最喜爱的 Brave Software 应用添加书签</translation>
-<translation id="8846319957959474018">利用书签轻松打开应用</translation>
 <translation id="5939847200023027600">PDF 合成器服务</translation>
 <translation id="5877584842898320529">所选打印机不可用或未正确安装。<ph name="BR"/>请检查打印机，或尝试另选一台打印机。</translation>
 <translation id="1526560967942511387">无标题文档</translation>

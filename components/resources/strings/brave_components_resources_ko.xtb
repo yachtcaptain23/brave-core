@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">제거</translation>
 <translation id="3157931365184549694">복구하기</translation>
 <translation id="3626186271103896082">지갑 백업</translation>
-<translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요. 브라우저나 컴퓨터에 문제가 생길 때, 이 키를 사용하여 언제나 월렛을 복구할 수 있습니다. 하지만 잘 보관하셔야 합니다 — 이 키를 얻는 사람은 누구나 당신의 월렛을 가져갈 수 있습니다. 종이나 중요한 정보를 보관하는 곳에 기록해 두는 것이 가장 안전할 수 있습니다.</translation>
 <translation id="5522744783101549748">팁을 보내서 이 사이트를 지원할 수 있습니다. 팁은 훌륭한 콘텐츠를 만드는 분들에게 감사를 표하는 방법입니다. 콘텐츠 크리에이터는 매월 첫 주에 팁을 돈으로 받습니다.</translation>
 <translation id="1704859330137112950">지속적으로 이 사이트를 지원하고 싶으면, 월간 팁을 설정할 수 있습니다.</translation>
 <translation id="3074127054582480056">관심도</translation>
 <translation id="822513417008209372">귀하는 현재 지원하고 계십니다</translation>
-<translation id="797446268269282651">구버전 브라우저에서는 신경 쓰며 광고를 시청함으로써 인터넷 검색 비용을 지불했습니다. 당신은 소중한 개인 정보를 광고주에게 전송하는 침투성 광고 기술을 다운로드하면서 귀중한 시간을 허비했습니다 —</translation>
 <translation id="5010112177773747965">당신의 동의 없이요.</translation>
 <translation id="7147673045905733351">오늘, Brave가 여러분을 새로운 인터넷 세상으로 초대합니다.</translation>
 <translation id="1350763070659630336">여러분의 시간이 가치 있게 여겨지고, 개인 데이터가 비공개로 유지되며, 관심이 실제 수익 창출로 이어지는 곳.</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">Brave Rewards는 Basic Attention Token을 바탕으로 설계되었습니다. BAT에 관해 자세히 알아보세요</translation>
 <translation id="7823359893981882407">여기</translation>
 <translation id="4483635855837696643">지갑 복구</translation>
-<translation id="459721429458957031">월렛을 복구하려면 복구 키를 사용하세요. 복구 키로 복구하면 기존 월렛을 교체합니다. 복구 전에 기존 월렛을 비우거나 백업하셔야 합니다.</translation>
-<translation id="4600052736217630789">복구 키를 입력하세요</translation>
 <translation id="3494964159182650590">보상 요약</translation>
 <translation id="63956545637156715">왜 Brave Rewards일까요?</translation>
 <translation id="1738658589626889850">파일로 저장하기</translation>
