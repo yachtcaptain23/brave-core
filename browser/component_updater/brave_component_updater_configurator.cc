@@ -35,6 +35,9 @@ namespace component_updater {
 
 namespace {
 
+const base::Feature kFeatureUpdateClientUseJSON{
+  "UpdateClientUseJSON", base::FEATURE_DISABLED_BY_DEFAULT};
+
 class BraveConfigurator : public update_client::Configurator {
  public:
   BraveConfigurator(const base::CommandLine* cmdline,
@@ -67,6 +70,7 @@ class BraveConfigurator : public update_client::Configurator {
   bool IsPerUserInstall() const override;
   std::vector<uint8_t> GetRunActionKeyHash() const override;
   std::string GetAppGuid() const override;
+  std::unique_ptr<update_client::ProtocolHandlerFactory> GetProtocolHandlerFactory() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;
@@ -197,6 +201,13 @@ std::vector<uint8_t> BraveConfigurator::GetRunActionKeyHash() const {
 
 std::string BraveConfigurator::GetAppGuid() const {
   return configurator_impl_.GetAppGuid();
+}
+
+std::unique_ptr<update_client::ProtocolHandlerFactory>
+BraveConfigurator::GetProtocolHandlerFactory() const {
+  if (base::FeatureList::IsEnabled(kFeatureUpdateClientUseJSON))
+    return std::make_unique<update_client::ProtocolHandlerFactoryJSON>();
+  return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
 }
 
 }  // namespace

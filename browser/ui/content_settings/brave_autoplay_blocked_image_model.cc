@@ -18,8 +18,7 @@ BraveAutoplayBlockedImageModel::BraveAutoplayBlockedImageModel()
     : ContentSettingSimpleImageModel(ImageType::PLUGINS,
                                      CONTENT_SETTINGS_TYPE_AUTOPLAY) {}
 
-void BraveAutoplayBlockedImageModel::UpdateFromWebContents(
-    WebContents* web_contents) {
+void BraveAutoplayBlockedImageModel::Update(WebContents* web_contents) {
   set_visible(false);
   if (!web_contents)
     return;

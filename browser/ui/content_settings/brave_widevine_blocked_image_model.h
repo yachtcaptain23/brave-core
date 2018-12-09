@@ -11,7 +11,7 @@ class BraveWidevineBlockedImageModel : public ContentSettingSimpleImageModel {
  public:
   BraveWidevineBlockedImageModel(ImageType image_type,
                                                ContentSettingsType content_type);
-  void UpdateFromWebContents(content::WebContents* web_contents) override;
+  void Update(content::WebContents* web_contents) override;
   ContentSettingBubbleModel* CreateBubbleModelImpl(
     ContentSettingBubbleModel::Delegate* delegate,
     content::WebContents* web_contents,

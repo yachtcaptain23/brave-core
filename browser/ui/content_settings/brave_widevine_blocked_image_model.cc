@@ -25,8 +25,7 @@ BraveWidevineBlockedImageModel::BraveWidevineBlockedImageModel(
     ContentSettingsType content_type)
     : ContentSettingSimpleImageModel(image_type, content_type) {}
 
-void BraveWidevineBlockedImageModel::UpdateFromWebContents(
-    WebContents* web_contents) {
+void BraveWidevineBlockedImageModel::Update(WebContents* web_contents) {
   set_visible(false);
   if (!web_contents)
     return;
