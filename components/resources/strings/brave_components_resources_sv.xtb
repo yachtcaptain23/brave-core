@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">Ta bort</translation>
 <translation id="3157931365184549694">Återställ</translation>
 <translation id="3626186271103896082">Säkerhetskopiera din plånbok</translation>
-<translation id="5717619667204259673">Spara denna återställningsnyckel och håll den säker. Du kan alltid använda denna nyckel för att få tillbaka plånboken om något skulle hända din dator eller webbläsare. Se bara till att skydda den, för om någon annan får tillgång till denna nyckel så kan de stjäla din plånbok. Det är förmodligen säkrast att skriva ner den på ett papper eller någon annan stans där du har viktig information.</translation>
 <translation id="5522744783101549748">Du kan stödja den här webbplatsen genom att skicka ett bidrag. Det är ett sätt att tacka dem för att producera bra innehåll. Innehållsskaparna får betalt första veckan av varje kalendermånad.</translation>
 <translation id="1704859330137112950">Om du vill kan du schemalägga månatliga bidrag för att stödja den här webbplatsen på kontinuerlig basis.</translation>
 <translation id="3074127054582480056">Observera</translation>
 <translation id="822513417008209372">Du stödjer för närvarande</translation>
-<translation id="797446268269282651">Med din gamla webbläsare betalade du för att surfa på nätet genom att titta på annonser med din värdefulla uppmärksamhet. Du spenderade din värdefulla tid med att lada ned invasiv annonsteknologi som skickade dina värdefulla privata data till annonsörer —</translation>
 <translation id="5010112177773747965">utan ditt medgivande.</translation>
 <translation id="7147673045905733351">Idag välkomnar Brave dig till ett nytt internet.</translation>
 <translation id="1350763070659630336">En där din tid värderas, dina personuppgifter hålls privata och där du faktiskt får betalt för din uppmärksamhet.</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">Brave Rewards är byggt på Basic Attention Token. Läs mer om BAT</translation>
 <translation id="7823359893981882407">här</translation>
 <translation id="4483635855837696643">Återställ din plånbok</translation>
-<translation id="459721429458957031">Använd återställningsnyckeln för att återställa din plånbok. Återställning kommer att ersätta din nuvarande plånbok. Se till att tömma eller ha en säkerhetskopia av din gamla plånbok.</translation>
-<translation id="4600052736217630789">Skriv in din återställningsnyckel eller</translation>
 <translation id="3494964159182650590">Belöningssammanfattning</translation>
 <translation id="63956545637156715">Varför Brave belöningar?</translation>
 <translation id="1738658589626889850">Spara som fil</translation>

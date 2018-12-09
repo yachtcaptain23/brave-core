@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">删除</translation>
 <translation id="3157931365184549694">恢复</translation>
 <translation id="3626186271103896082">将钱包备份</translation>
-<translation id="5717619667204259673">保持此恢复密钥的安全性。如果您的浏览器或计算机出现问题，您可以随时使用此密钥来恢复您的钱包。但一定要保护它的安全性。任何获得此密钥的人都可以偷走您的钱包。把它写在一张纸上，或者其他您保存重要信息的地方，这可能是最安全的。</translation>
 <translation id="5522744783101549748">您可以通过打赏来支持此网站。这’是一种感谢他们制作精彩内容的方式。内容作者在每月的第一周获得他们的打赏。</translation>
 <translation id="1704859330137112950">如果您愿意，可以设置每月打赏以持续支持本网站。</translation>
 <translation id="3074127054582480056">注意力</translation>
 <translation id="822513417008209372">您当前支持</translation>
-<translation id="797446268269282651">使用旧版浏览器，您需要用宝贵的精力看广告，付费浏览网页。您用宝贵的时间下载侵入式广告技术，该技术将您有价值的私人数据传输给广告商—。</translation>
 <translation id="5010112177773747965">未经您同意。</translation>
 <translation id="7147673045905733351">现在，Brave欢迎您进入新的互联网。</translation>
 <translation id="1350763070659630336">在这里，您的时间极具价值，您的个人资料获得保密，您的付出的精力获得收益。</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">Brave 奖励建立在注意力币基础上。了解更多有关BAT的信息</translation>
 <translation id="7823359893981882407">此处</translation>
 <translation id="4483635855837696643">恢复您的钱包</translation>
-<translation id="459721429458957031">使用您的回复密钥回复您的钱包。使用恢复密钥将取代您当前的钱包。在您恢复前确保您清空或备份了当前的钱包。</translation>
-<translation id="4600052736217630789">输入恢复密钥或</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
 <translation id="63956545637156715">为什么选择 Brave 奖励？</translation>
 <translation id="1738658589626889850">保存为文件</translation>

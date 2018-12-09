@@ -165,11 +165,8 @@
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; によりダウンロードされました</translation>
 <translation id="6395403722585816044">シークレット モードでダウンロード</translation>
 <translation id="8028803902702117856"><ph name="FILE_NAME"/> をダウンロードしています。<ph name="SIZE"/> 完了</translation>
-<translation id="4644818355646995778">ダウンロードしています。<ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">ダウンロードしています。<ph name="STATUS"/></translation>
 <translation id="1834503245783133039"><ph name="FILE_NAME"/> をダウンロードできませんでした</translation>
-<translation id="6577284282025554716"><ph name="FILE_NAME"/> のダウンロードがキャンセルされました</translation>
-<translation id="348999362308956431"><ph name="FILE_NAME"/> のダウンロードが完了しました</translation>
 <translation id="2743387203779672305">クリップボードにコピー</translation>
 <translation id="883911313571074303">画像に注釈を付ける</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{ダウンロードが進行中です}other{ダウンロードが進行中です}}</translation>
@@ -291,7 +288,6 @@
 <translation id="6398765197997659313">全画面表示を終了</translation>
 <translation id="8559694214572302298">イメージ デコーダー</translation>
 <translation id="8191453843330043793">V8 プロキシ リゾルバ</translation>
-<translation id="6185617499004995178">CUPS IPP 検証ツール</translation>
 <translation id="3077708072777965506">Brave OS の入力方法</translation>
 <translation id="7171242884588191792">Brave ファイル ユーティリティ</translation>
 <translation id="3061707000357573562">サービスへのパッチの適用</translation>
@@ -300,7 +296,6 @@
 <translation id="1545775234664667895">テーマ「<ph name="THEME_NAME"/>」をインストールしました</translation>
 <translation id="2079545284768500474">元に戻す</translation>
 <translation id="2256115617011615191">今すぐ再起動</translation>
-<translation id="795025003224538582">再起動しない</translation>
 <translation id="4545028762441890696">再度有効にするには次の新しい権限を許可してください。</translation>
 <translation id="3009487527589249344">「<ph name="EXTENSION_NAME"/>」は、不正な拡張機能として認識されているためインストールされませんでした</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> がリモートで追加されました</translation>
@@ -496,9 +491,7 @@
 <translation id="3987348946546879621">データの使用量が削減されました</translation>
 <translation id="6228516488918914827">高速化のためプレビュー ページを表示しています</translation>
 <translation id="9137013805542155359">原文のページを表示</translation>
-<translation id="71243390042171582"><ph name="MINUTES"/> 分前に更新されました</translation>
 <translation id="8743864605301774756">1 時間前に更新されました</translation>
-<translation id="5638497698949808140"><ph name="HOURS"/> 時間前に更新されました</translation>
 <translation id="1329584516321524826">たった今更新されました</translation>
 <translation id="224940702122312781">このページでは大量のデータが使用されます。</translation>
 <translation id="3861241522664181545">ページの読み込みが一時停止されました。</translation>
@@ -773,9 +766,6 @@
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
 <translation id="2606246518223360146">データをリンク</translation>
 <translation id="473546211690256853">このアカウントは <ph name="DOMAIN"/> によって管理されています。</translation>
-<translation id="3661054927247347545">ログインの認証情報が有効ではありません。ウィンドウは <ph name="MINUTES"/> 分 <ph name="SECONDS"/> 秒後に閉じられます</translation>
-<translation id="6522797484310591766">今すぐログイン</translation>
-<translation id="5436822233913560332">すべてのブラウザ ウィンドウがまもなく自動的に閉じられます（ログインしていないウィンドウを含む）。</translation>
 <translation id="8168435359814927499">コンテンツ</translation>
 <translation id="7702907602086592255">ドメイン</translation>
 <translation id="3202131003361292969">パス</translation>
@@ -843,15 +833,6 @@
 <translation id="3074037959626057712">ログインして同期を有効にしました</translation>
 <translation id="1231733316453485619">同期を有効にしますか？</translation>
 <translation id="9125982323641182972">Brave で Brave Software の最先端技術を活用</translation>
-<translation id="7988117629517051942">Brave Software の最先端技術をさらに活用</translation>
-<translation id="5596627076506792578">その他のオプション</translation>
-<translation id="4419556793104466535">同期、カスタマイズ、その他の管理</translation>
-<translation id="184568702928428857">Brave で同期、カスタマイズ、その他の Brave Software サービスを管理する設定を変更しました。これにより、現在の設定に影響が生じる可能性があります。</translation>
-<translation id="4192273449750167573">次の画面で設定を確認する</translation>
-<translation id="685040365210406336">変更を行わない</translation>
-<translation id="6418273007044911016">Brave Software に同期しているデータと使用している機能は変更されません</translation>
-<translation id="8372733498235009300">同期、カスタマイズ、その他の Brave Software サービスを有効にする</translation>
-<translation id="8340964510643644301">この設定は Brave の [設定] ページでいつでもカスタマイズできます</translation>
 <translation id="3149880132460839085">Brave の同期</translation>
 <translation id="3796902758602917951">ブックマーク、履歴、パスワード、その他の設定が Brave Software アカウントに同期され、どの端末でも利用できるようになります</translation>
 <translation id="1371301976177520732">すべての端末で同じブックマーク、パスワード、その他の設定を使用できます</translation>
@@ -897,7 +878,6 @@
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> を root で実行することはできません。</translation>
 <translation id="2292848386125228270">通常のユーザーとして <ph name="PRODUCT_NAME"/> を起動してください。開発の目的でルートとして実行する必要がある場合は、--no-sandbox フラグを指定して再実行してください。</translation>
 <translation id="3122496702278727796">データ ディレクトリの作成に失敗しました</translation>
-<translation id="602251597322198729">このサイトは複数のファイルをダウンロードしようとしています。許可しますか？</translation>
 <translation id="691024665142758461">複数ファイルのダウンロード</translation>
 <translation id="7004499039102548441">最近使ったタブ</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 個のタブ}other{# 個のタブ}}</translation>
@@ -1230,7 +1210,6 @@
 <translation id="3596235046596950091">クラウド サービスを有効にする</translation>
 <translation id="7649070708921625228">ヘルプ</translation>
 <translation id="9011163749350026987">アイコンを常に表示</translation>
-<translation id="9115487443206954631">キャスト デバイスを管理</translation>
 <translation id="1706586824377653884">管理者により追加</translation>
 <translation id="6467304607960172345">動画の全画面表示を最適化</translation>
 <translation id="1597210476603167523">Brave Software ハングアウトなどクラウドベースのサービスのキャストを有効にします。</translation>
@@ -1294,7 +1273,6 @@
 <translation id="3340978935015468852">設定</translation>
 <translation id="5704875434923668958">同期しています:</translation>
 <translation id="6257602895346497974">同期を有効にする...</translation>
-<translation id="8618141719844947886">同期していません</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> として同期</translation>
 <translation id="1372841398847029212">アカウントに同期</translation>
 <translation id="2538361623464451692">同期が無効</translation>
@@ -1513,7 +1491,6 @@
 <translation id="386548886866354912"><ph name="EXTENSION_NAME"/> を同梱</translation>
 <translation id="3078461028045006476"><ph name="EXTENSION_NAME"/> と共有</translation>
 <translation id="4197674956721858839">zip 圧縮</translation>
-<translation id="9215934040295798075">壁紙を設定</translation>
 <translation id="204914487372604757">ショートカットを作成</translation>
 <translation id="799547531016638432">ショートカットを削除</translation>
 <translation id="5494920125229734069">すべて選択する</translation>
@@ -1659,7 +1636,6 @@
 <translation id="8671210955687109937">閲覧者（コメント可）</translation>
 <translation id="799923393800005025">閲覧者</translation>
 <translation id="7925686952655276919">モバイル データを使用して同期しない</translation>
-<translation id="4649168043999963079">Brave Software ドキュメントのファイルを表示する</translation>
 <translation id="7106346894903675391">追加容量を購入...</translation>
 <translation id="3549797760399244642">drive.google.com にアクセスします...</translation>
 <translation id="3451154303153932176">Brave Software ドライブの残容量: <ph name="SPACE_AVAILABLE"/></translation>
@@ -1672,7 +1648,6 @@
 <translation id="7606199793785990727">Brave Software ドライブにアクセスできませんでした。<ph name="BEGIN_LINK"/>ログアウト<ph name="END_LINK"/>してもう一度ログインしてください。</translation>
 <translation id="585883343689351092">Brave Software ドライブへようこそ。</translation>
 <translation id="1788440444874291920">Brave Software ドライブでは 100 GB を無料でご利用いただけます</translation>
-<translation id="5722262830411045381">Brave Software ドライブは 1TB まで無料</translation>
 <translation id="6862635236584086457">このフォルダに保存されているすべてのファイルが自動的にオンラインにバックアップされます。</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>どこからでも、オフラインでもファイルにアクセス<ph name="MARKUP_2"/>
         Brave Software ドライブでは最新の状態のファイルをどの端末からでも利用できます。<ph name="MARKUP_3"/>
@@ -1689,9 +1664,6 @@
 <translation id="3096967955765855393">Brave Software では、より安全にウェブを閲覧できる方法を常に追求しています。以前は、どのウェブサイトでも、ブラウザに拡張機能を追加するように指示することができました。Brave Software Brave の最新バージョンでは、ユーザーのインストールの意思をより明確に確認するため、拡張機能の追加は拡張機能ページで行うこととなりました。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">「$1」で開くことができません</translation>
 <translation id="639777613761517128">$1 でファイルを開くには、まず [Linux ファイル] フォルダにコピーします。</translation>
-<translation id="5112009661904384591">Linux とファイルを共有します</translation>
-<translation id="3186202398303525187">Linux アプリで $1 を開きます。</translation>
-<translation id="1603300902586586390">Linux アプリで $1 件のファイルを開きます。</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> ファイル</translation>
 <translation id="803771048473350947">ファイル</translation>
 <translation id="895586998699996576">$1 画像</translation>
@@ -1922,15 +1894,11 @@
 <translation id="6643016212128521049">クリア</translation>
 <translation id="8465252176946159372">無効です</translation>
 <translation id="8647834505253004544">有効なウェブアドレスではありません</translation>
-<translation id="2149850907588596975">パスワードとフォーム</translation>
-<translation id="8639963783467694461">自動入力の設定</translation>
 <translation id="7764225426217299476">住所を追加</translation>
 <translation id="5595485650161345191">住所の編集</translation>
 <translation id="6207937957461833379">国/地域</translation>
 <translation id="4378154925671717803">電話</translation>
 <translation id="5659593005791499971">メール</translation>
-<translation id="5762172915276660232">クレジット カードの設定</translation>
-<translation id="4499718683476608392">フォームにクレジット カード情報をワンクリックで自動入力できるようにします</translation>
 <translation id="9064275926664971810">フォームにワンクリックで自動入力できるようにします</translation>
 <translation id="5029568752722684782">コピーを消去</translation>
 <translation id="2154484045852737596">カードを編集</translation>
@@ -1945,11 +1913,9 @@
 <translation id="1149401351239820326">有効期限（月）</translation>
 <translation id="8058655154417507695">有効期限（年）</translation>
 <translation id="379082410132524484">カードの有効期限が切れています</translation>
-<translation id="5624120631404540903">パスワードを管理</translation>
 <translation id="6644512095122093795">パスワードを保存できるようにする</translation>
 <translation id="2100273922101894616">自動ログイン</translation>
 <translation id="7513029293694390567">保存されている認証情報を使用してウェブサイトに自動的にログインします。この機能が無効になっている場合は、ウェブサイトにログインするときに毎回確認を求められます。</translation>
-<translation id="1511388193702657997">ウェブ パスワードの保存を確認します</translation>
 <translation id="1375321115329958930">保存したパスワード</translation>
 <translation id="152234381334907219">常に保存しない</translation>
 <translation id="5137501176474113045">このアイテムを削除</translation>
@@ -1959,7 +1925,6 @@
 <translation id="8503813439785031346">ユーザー名</translation>
 <translation id="6657585470893396449">パスワード</translation>
 <translation id="137651782282853227">保存した住所がここに表示されます</translation>
-<translation id="1529116897397289129">保存したカードがここに表示されます</translation>
 <translation id="7930294771522048157">保存したお支払い方法がここに表示されます</translation>
 <translation id="9124003689441359348">保存したパスワードがここに表示されます</translation>
 <translation id="4400367121200150367">パスワードを保存していないサイトがここに表示されます</translation>
@@ -2373,8 +2338,6 @@
 <translation id="490074449735753175">ウェブ サービスを使用してスペル ミスの解決を支援する</translation>
 <translation id="3523078749603005179">ユーザーがブラウザに入力した内容を Brave Software に送信し、高度なスペルチェックを行います</translation>
 <translation id="2564653188463346023">拡張スペルチェック</translation>
-<translation id="7469406957790636836">この機能をオンにするには、まず [<ph name="BEGIN_LINK"/>言語と入力<ph name="END_LINK"/>] でスペルチェックを有効にします</translation>
-<translation id="8699566574894671540">この機能をオンにするには、まず [編集] メニューの [入力中にスペルチェック] を選択します</translation>
 <translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信します</translation>
 <translation id="5941220456342415404">診断と使用状況のデータを Brave Software に自動送信する</translation>
 <translation id="918192811481327695">Brave の機能と動作の改善に協力する</translation>
@@ -2419,13 +2382,10 @@
 <translation id="1545786162090505744">URL（%s=検索語句）</translation>
 <translation id="7136694880210472378">デフォルトに設定</translation>
 <translation id="6953878494808481632">関連情報</translation>
-<translation id="7258619945375359543">画面に表示されているコンテンツに基づくおすすめの情報をアシスタントから取得します</translation>
 <translation id="472896694312062378">「OK Brave Software」</translation>
 <translation id="6236033368436682108">画面がオンの状態で「OK Brave Software」と話すといつでもアシスタントにアクセスできます</translation>
 <translation id="2482878487686419369">通知</translation>
 <translation id="5355099869024327351">アシスタントによる通知の表示を許可する</translation>
-<translation id="1127216846847548354">音声認識</translation>
-<translation id="3506093155988721483">キーボードの代わりに音声入力でアシスタントを起動する</translation>
 <translation id="3908743412684152579">Brave Software アシスタントの設定</translation>
 <translation id="4933484234309072027"><ph name="URL"/> に埋め込まれたページ</translation>
 <translation id="8427292751741042100">ホストに埋め込まれたページ</translation>
@@ -2568,7 +2528,6 @@
 <translation id="1296497012903089238">証明書の種類</translation>
 <translation id="8553342806078037065">他のユーザーを管理</translation>
 <translation id="8907706281008466056">Brave Software プロフィール写真</translation>
-<translation id="127138278192656016">同期とすべてのサービスを使用する</translation>
 <translation id="2408955596600435184">PIN を入力してください</translation>
 <translation id="6619990499523117484">PIN を確認してください</translation>
 <translation id="2023167225947895179">推測されやすい PIN です</translation>
@@ -2643,10 +2602,8 @@
 <translation id="2731700343119398978">お待ちください...</translation>
 <translation id="7529411698175791732">インターネット接続を確認してください。問題が解消しない場合は、ログアウトして再度ログインしてみてください。</translation>
 <translation id="4684427112815847243">すべてを同期する</translation>
-<translation id="2709516037105925701">自動入力</translation>
 <translation id="1644574205037202324">履歴</translation>
 <translation id="5117427536932535467">テーマと壁紙</translation>
-<translation id="3259418918864581163">Brave Software Pay のクレジット カードと住所</translation>
 <translation id="3268451620468152448">開いているタブ</translation>
 <translation id="5241892180459725878">Brave Software ドライブの検索候補</translation>
 <translation id="2120297377148151361">アクティビティと操作</translation>
@@ -2725,7 +2682,6 @@
 <translation id="258095186877893873">長い</translation>
 <translation id="3511528412952710609">短い</translation>
 <translation id="6545665334409411530">リピート回数 / 秒</translation>
-<translation id="9169496697824289689">キーボード ショートカットの表示</translation>
 <translation id="6116921718742659598">言語と入力の設定を変更</translation>
 <translation id="8785622406424941542">タッチペン</translation>
 <translation id="4673442866648850031">タッチペンを取り外したらタッチペン ツールを開く</translation>
@@ -2822,7 +2778,6 @@
 <translation id="2307631131458143837">Bravebook からスマートフォンを切断します</translation>
 <translation id="1146102139091738471">Bravebook からスマートフォンを切断します。以降、自動接続は行われなくなります。</translation>
 <translation id="7878562273885520351">パスワードが不正使用される可能性があります</translation>
-<translation id="6582421931165117398">個人情報を保護するために、今すぐパスワードを変更してください。パスワードを変更する際は、まずログインが求められます。</translation>
 <translation id="1089439967362294234">パスワードを変更</translation>
 <translation id="4635398712689569051">ゲストユーザーは <ph name="PAGE_NAME"/> を利用できません。</translation>
 <translation id="4893522937062257019">ロック画面</translation>
@@ -2914,13 +2869,6 @@
 <translation id="720110658997053098">この端末をキオスクモードに固定する</translation>
 <translation id="1909880997794698664">このデバイスをキオスク モードに固定してもよろしいですか？</translation>
 <translation id="1512210426710821809">この設定を元に戻すには、<ph name="IDS_SHORT_PRODUCT_OS_NAME"/> の再インストールが必要になります</translation>
-<translation id="4472575034687746823">利用を開始</translation>
-<translation id="6060991652695587932">メールサービスを選択すると、すばやくアクセスできるようになります</translation>
-<translation id="296137235951584143">Brave を独自にカスタマイズ</translation>
-<translation id="7835178595033117206">ブックマークを削除しました</translation>
-<translation id="2785008241190445880">ブックマークを置き換えました</translation>
-<translation id="2950533317914339731">お気に入りの Brave Software アプリへのブックマークを追加します</translation>
-<translation id="8846319957959474018">ブックマークを使って簡単にアプリを開くことができます</translation>
 <translation id="5939847200023027600">PDF コンポジター サービス</translation>
 <translation id="5877584842898320529">選択したプリンタは利用できないか、正しくインストールされていません。<ph name="BR"/>プリンタを確認するか、別のプリンタを選択してみてください。</translation>
 <translation id="1526560967942511387">無題のドキュメント</translation>

@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">odstrani</translation>
 <translation id="3157931365184549694">Obnovi</translation>
 <translation id="3626186271103896082">Varnostno kopiranje vaše denarnice</translation>
-<translation id="5717619667204259673">Poskrbite za ustrezno varnost tega obnovitvenega ključa. Ta ključ lahko vedno uporabite za povrnitev vaše denarnice, če se kaj zgodi vašemu brskalniku ali računalniku. Vendar morate ključ ustrezno varovati — vsakdo, ki dobi ta ključ, lahko namreč ukrade vašo denarnico. Verjetno je najvarnejše, če ključ napišete na papir ali ga shranite na istem mestu kot druge pomembne informacije.</translation>
 <translation id="5522744783101549748">To spletno stran lahko podprete z donacijo. S tem se lahko na nek način zahvalite za odlično vsebino, ki jo ustvarjajo. Ustvarjalci vsebine prejmejo plačilo prejetih donacij v prvem tednu vsakega koledarskega meseca.</translation>
 <translation id="1704859330137112950">Če želite, lahko nastavite ponavljajoče se mesečne donacije in redno podpirate izbrane spletne strani.</translation>
 <translation id="3074127054582480056">Pozornost</translation>
 <translation id="822513417008209372">Trenutno podpirate</translation>
-<translation id="797446268269282651">Pri svojem starem brskalniku ste za brskanje po spletu plačevali tako, da ste si ogledali oglase in jim namenili svojo dragoceno pozornost. Pri tem ste svoj čas porabili za prenos invazivne tehnologije oglasov, ki je vaše dragocene zasebne podatke posredovala oglaševalcem.</translation>
 <translation id="5010112177773747965">brez vaše vsebine.</translation>
 <translation id="7147673045905733351">Brskalnik Brave vas lepo pozdravlja v novi dobi interneta.</translation>
 <translation id="1350763070659630336">Tukaj je vaš čas cenjen, vaši osebni podatki varni, za oglede oglasov pa boste prejeli celo plačilo.</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">Storitev Brave Rewards temelji na platformi Basic Attention Token. Več o BAT lahko izveste</translation>
 <translation id="7823359893981882407">tukaj</translation>
 <translation id="4483635855837696643">Obnovi denarnico</translation>
-<translation id="459721429458957031">Če želite obnoviti svojo denarnico, uporabite obnovitveni ključ. Obnovitev s ključem pomeni, da bo vaša trenutna denarnica zamenjana. Prepričajte se, da je denarnica prazna, ali pa ustvarite varnostno kopijo denarnice še pred obnovitvijo.</translation>
-<translation id="4600052736217630789">Vnesite svoje obnovitveno geslo ali</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
 <translation id="63956545637156715">Zakaj nagrade Brave Rewards?</translation>
 <translation id="1738658589626889850">Shrani kot datoteko</translation>

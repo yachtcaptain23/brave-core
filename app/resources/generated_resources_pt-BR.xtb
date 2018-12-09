@@ -165,11 +165,8 @@
 <translation id="3612673635130633812">Download feito por &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Download feito no modo anônimo</translation>
 <translation id="8028803902702117856">Fazendo o download de <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
-<translation id="4644818355646995778">Fazendo o download, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Fazendo o download, <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Falha no download: <ph name="FILE_NAME"/></translation>
-<translation id="6577284282025554716">Download cancelado: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Download concluído: <ph name="FILE_NAME"/></translation>
 <translation id="2743387203779672305">Copiar para a área de trabalho</translation>
 <translation id="883911313571074303">Fazer anotações na imagem</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{O download está em andamento}one{O download está em andamento}other{Os downloads estão em andamento}}</translation>
@@ -292,7 +289,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6398765197997659313">Sair do modo tela cheia</translation>
 <translation id="8559694214572302298">Decodificador de imagem</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
-<translation id="6185617499004995178">Validador de CUPS IPP</translation>
 <translation id="3077708072777965506">Método de entrada do Brave OS</translation>
 <translation id="7171242884588191792">Utilitários de arquivos do Brave</translation>
 <translation id="3061707000357573562">Aplicar patch ao serviço</translation>
@@ -301,7 +297,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="1545775234664667895">Tema "<ph name="THEME_NAME"/>" instalado</translation>
 <translation id="2079545284768500474">Desfazer</translation>
 <translation id="2256115617011615191">Reiniciar agora</translation>
-<translation id="795025003224538582">Não reiniciar</translation>
 <translation id="4545028762441890696">Para reativar, aceite as novas permissões:</translation>
 <translation id="3009487527589249344">O Brave Software sinalizou a extensão "<ph name="EXTENSION_NAME"/>" como maliciosa e impediu a instalação</translation>
 <translation id="6790497603648687708">A extensão <ph name="EXTENSION_NAME"/> foi adicionada remotamente</translation>
@@ -497,9 +492,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="3987348946546879621">Dados salvos</translation>
 <translation id="6228516488918914827">Página carregada mais rapidamente</translation>
 <translation id="9137013805542155359">Mostrar original</translation>
-<translation id="71243390042171582">Atualizada <ph name="MINUTES"/> minutos atrás</translation>
 <translation id="8743864605301774756">Atualizada 1 hora atrás</translation>
-<translation id="5638497698949808140">Atualizada <ph name="HOURS"/> horas atrás</translation>
 <translation id="1329584516321524826">Atualizada agora</translation>
 <translation id="224940702122312781">Esta página usará muitos dados.</translation>
 <translation id="3861241522664181545">Página pausada.</translation>
@@ -774,9 +767,6 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="2445484935443597917">Criar um novo perfil</translation>
 <translation id="2606246518223360146">Vincular dados</translation>
 <translation id="473546211690256853">Esta conta é gerenciada por <ph name="DOMAIN"/></translation>
-<translation id="3661054927247347545">A certificação de login não é válida. Janela fechando em <ph name="MINUTES"/>:<ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">Fazer login agora</translation>
-<translation id="5436822233913560332">Todas as janelas do navegador serão fechadas automaticamente sem login.</translation>
 <translation id="8168435359814927499">Conteúdo</translation>
 <translation id="7702907602086592255">Domínio</translation>
 <translation id="3202131003361292969">Caminho</translation>
@@ -844,15 +834,6 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="3074037959626057712">Você fez login e ativou a sincronização</translation>
 <translation id="1231733316453485619">Ativar sincronização?</translation>
 <translation id="9125982323641182972">A tecnologia Brave Software no Brave</translation>
-<translation id="7988117629517051942">Aproveite mais a tecnologia do Brave Software</translation>
-<translation id="5596627076506792578">Mais opções</translation>
-<translation id="4419556793104466535">Controle a sincronização, personalização e muito mais</translation>
-<translation id="184568702928428857">As configurações que controlam sincronização, personalização e outros serviços do Brave Software no Brave foram alteradas. Isso pode afetar suas configurações atuais.</translation>
-<translation id="4192273449750167573">Revisar as configurações na próxima tela</translation>
-<translation id="685040365210406336">Não fazer alterações</translation>
-<translation id="6418273007044911016">Os dados sincronizados com o Brave Software e os recursos usados não serão alterados</translation>
-<translation id="8372733498235009300">Ativar sincronização, personalização e outros serviços do Brave Software</translation>
-<translation id="8340964510643644301">Você pode alterar isso a qualquer momento nas configurações do Brave</translation>
 <translation id="3149880132460839085">Sincronização do Brave Software Brave</translation>
 <translation id="3796902758602917951">Seus favoritos, histórico, senhas e outras configurações serão sincronizados com sua Conta do Brave Software para que seja possível usá-los em todos os seus dispositivos</translation>
 <translation id="1371301976177520732">Seus favoritos, senhas, histórico e muito mais em todos os seus dispositivos</translation>
@@ -898,7 +879,6 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> não pode ser executado como raiz.</translation>
 <translation id="2292848386125228270">Inicie o <ph name="PRODUCT_NAME"/> como um usuário normal. Se precisar executar como raiz para desenvolvimento, execute novamente com a sinalização --no-sandbox.</translation>
 <translation id="3122496702278727796">Falha ao criar o diretório de dados</translation>
-<translation id="602251597322198729">Este site está tentando fazer o download de vários arquivos. Você deseja permitir isso?</translation>
 <translation id="691024665142758461">Fazer o download de vários arquivos</translation>
 <translation id="7004499039102548441">Guias recentes</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 guia}one{# guias}other{# guias}}</translation>
@@ -1231,7 +1211,6 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="3596235046596950091">Ativar serviços em nuvem</translation>
 <translation id="7649070708921625228">Ajuda</translation>
 <translation id="9011163749350026987">Sempre mostrar ícone</translation>
-<translation id="9115487443206954631">Gerenciar dispositivos de transmissão</translation>
 <translation id="1706586824377653884">Adicionado pelo seu administrador</translation>
 <translation id="6467304607960172345">Otimizar vídeos em tela cheia</translation>
 <translation id="1597210476603167523">Ativar transmissão para serviços baseados na nuvem, como o Brave Software Hangouts.</translation>
@@ -1296,7 +1275,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="3340978935015468852">configurações</translation>
 <translation id="5704875434923668958">Sincronizando com</translation>
 <translation id="6257602895346497974">Ativar a sincronização…</translation>
-<translation id="8618141719844947886">Não está sincronizando</translation>
 <translation id="5781092003150880845">Sincronizar como <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sincronizar com sua conta</translation>
 <translation id="2538361623464451692">Sincronização desativada</translation>
@@ -1515,7 +1493,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="386548886866354912">Compactar com <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Compartilhar com <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">Compactar seleção</translation>
-<translation id="9215934040295798075">Definir plano de fundo</translation>
 <translation id="204914487372604757">Criar atalho</translation>
 <translation id="799547531016638432">Remover atalho</translation>
 <translation id="5494920125229734069">Selecionar tudo</translation>
@@ -1661,7 +1638,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="8671210955687109937">Pode comentar</translation>
 <translation id="799923393800005025">Pode ver</translation>
 <translation id="7925686952655276919">Não usar dados móveis na sincronização</translation>
-<translation id="4649168043999963079">Mostrar arquivos do Brave Software Docs</translation>
 <translation id="7106346894903675391">Adquirir mais espaço de armazenamento...</translation>
 <translation id="3549797760399244642">Ir para drive.google.com...</translation>
 <translation id="3451154303153932176">Espaço restante no Brave Software Drive: <ph name="SPACE_AVAILABLE"/>.</translation>
@@ -1674,7 +1650,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="7606199793785990727">Não foi possível acessar o Brave Software Drive. <ph name="BEGIN_LINK"/>Saia<ph name="END_LINK"/> e faça login novamente.</translation>
 <translation id="585883343689351092">Bem-vindo ao Brave Software Drive!</translation>
 <translation id="1788440444874291920">Ganhe 100 GB de espaço livre com o Brave Software Drive</translation>
-<translation id="5722262830411045381">Obtenha 1 TB gratuitos no Brave Software Drive</translation>
 <translation id="6862635236584086457">Todos os arquivos salvos nessa pasta são salvos em backup on-line automaticamente</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Acesse arquivos de qualquer lugar, até mesmo off-line.<ph name="MARKUP_2"/>
     Os arquivos do Brave Software Drive estão atualizados e podem ser acessados em qualquer dispositivo.<ph name="MARKUP_3"/>
@@ -1691,9 +1666,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="3096967955765855393">Estamos constantemente à procura de maneiras para tornar sua navegação mais segura. Anteriormente, qualquer website podia pedir que você adicionasse uma extensão no seu navegador. Nas versões mais recentes do Brave Software Brave, você deve dizer explicitamente ao Brave que deseja instalar essas extensões, adicionando-as através da página de extensões. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Não é possível abrir com $1</translation>
 <translation id="639777613761517128">Para abrir arquivos com $1, primeiro você precisa copiá-los para a pasta de arquivos do Linux.</translation>
-<translation id="5112009661904384591">Compartilhar arquivos com o Linux</translation>
-<translation id="3186202398303525187">Permita que apps do Linux abram $1.</translation>
-<translation id="1603300902586586390">Permita que apps do Linux abram $1 arquivos.</translation>
 <translation id="4572815280350369984">Arquivo <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">Arquivo</translation>
 <translation id="895586998699996576">Imagem $1</translation>
@@ -1924,15 +1896,11 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="6643016212128521049">Limpar</translation>
 <translation id="8465252176946159372">Entrada inválida</translation>
 <translation id="8647834505253004544">Não é um endereço da Web válido</translation>
-<translation id="2149850907588596975">Senhas e formulários</translation>
-<translation id="8639963783467694461">Configurações de preenchimento automático</translation>
 <translation id="7764225426217299476">Adicionar endereço</translation>
 <translation id="5595485650161345191">Editar endereço</translation>
 <translation id="6207937957461833379">País/Região</translation>
 <translation id="4378154925671717803">Telefone</translation>
 <translation id="5659593005791499971">E-mail</translation>
-<translation id="5762172915276660232">Configurações de cartão de crédito</translation>
-<translation id="4499718683476608392">Ativa o preenchimento automático de cartão de crédito para preencher formulários com um único clique</translation>
 <translation id="9064275926664971810">Ativar o Preenchimento automático e preencher formulários com um clique</translation>
 <translation id="5029568752722684782">Limpar cópia</translation>
 <translation id="2154484045852737596">Editar cartão</translation>
@@ -1947,11 +1915,9 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="1149401351239820326">Mês de expiração</translation>
 <translation id="8058655154417507695">Ano de expiração</translation>
 <translation id="379082410132524484">Seu cartão expirou</translation>
-<translation id="5624120631404540903">Gerenciar senhas</translation>
 <translation id="6644512095122093795">Oferecer salvar senhas</translation>
 <translation id="2100273922101894616">Login automático</translation>
 <translation id="7513029293694390567">Faça login automaticamente nos websites que usam credenciais armazenadas. Quando o recurso estiver desativado, será necessário fornecer uma confirmação todas as vezes antes de fazer login em um website.</translation>
-<translation id="1511388193702657997">Oferecer para salvar suas senhas da Web</translation>
 <translation id="1375321115329958930">Senhas salvas</translation>
 <translation id="152234381334907219">Nunca salvas</translation>
 <translation id="5137501176474113045">Excluir este item</translation>
@@ -1961,7 +1927,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="8503813439785031346">Nome de usuário</translation>
 <translation id="6657585470893396449">Senha</translation>
 <translation id="137651782282853227">Os endereços salvos são exibidos aqui</translation>
-<translation id="1529116897397289129">Os cards salvos serão exibidos aqui</translation>
 <translation id="7930294771522048157">As formas de pagamento salvas serão exibidas aqui</translation>
 <translation id="9124003689441359348">As senhas salvas aparecerão aqui</translation>
 <translation id="4400367121200150367">Sites que nunca salvam senhas serão mostrados aqui</translation>
@@ -2375,8 +2340,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="490074449735753175">Utilizar um serviço da web para ajudar a solucionar erros de ortografia</translation>
 <translation id="3523078749603005179">Verificação ortográfica mais inteligente, enviando ao Brave Software as informações que você digita no navegador</translation>
 <translation id="2564653188463346023">Verificação ortográfica aprimorada</translation>
-<translation id="7469406957790636836">Para ativar essa configuração, primeiro ative a verificação ortográfica em <ph name="BEGIN_LINK"/>Idiomas e entrada<ph name="END_LINK"/></translation>
-<translation id="8699566574894671540">Para ativar essa configuração, primeiro selecione "Verificar ortografia ao digitar" no menu "Editar"</translation>
 <translation id="9079153198295609735">Envia estatísticas de uso e relatórios de erros ao Brave Software automaticamente</translation>
 <translation id="5941220456342415404">Enviar automaticamente dados de uso e diagnóstico ao Brave Software</translation>
 <translation id="918192811481327695">Ajude a melhorar os recursos e o desempenho do Brave</translation>
@@ -2421,13 +2384,10 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="1545786162090505744">URL com %s no lugar da consulta</translation>
 <translation id="7136694880210472378">Tornar padrão</translation>
 <translation id="6953878494808481632">Informações relacionadas</translation>
-<translation id="7258619945375359543">Permita que o Assistente faça sugestões com base no que está na tela</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Acesse seu Assistente a qualquer momento, dizendo "Ok Brave Software" quando a tela estiver ativada</translation>
 <translation id="2482878487686419369">Notificações</translation>
 <translation id="5355099869024327351">Permitir que o Assistente mostre notificações</translation>
-<translation id="1127216846847548354">Ativação por voz</translation>
-<translation id="3506093155988721483">Use a voz em vez do teclado ao iniciar seu Assistente</translation>
 <translation id="3908743412684152579">Configurações do Brave Software Assistente</translation>
 <translation id="4933484234309072027">incorporado em <ph name="URL"/></translation>
 <translation id="8427292751741042100">incorporado em qualquer host</translation>
@@ -2570,7 +2530,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="1296497012903089238">Tipo de certificado</translation>
 <translation id="8553342806078037065">Gerenciar outras pessoas</translation>
 <translation id="8907706281008466056">Foto do perfil do Brave Software</translation>
-<translation id="127138278192656016">Usar a sincronização e todos os serviços</translation>
 <translation id="2408955596600435184">Informe seu PIN</translation>
 <translation id="6619990499523117484">Confirme seu PIN</translation>
 <translation id="2023167225947895179">O PIN pode ser facilmente descoberto</translation>
@@ -2645,10 +2604,8 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="2731700343119398978">Aguarde...</translation>
 <translation id="7529411698175791732">Verifique sua conexão com a Internet. Se o problema continuar, tente sair e fazer login novamente.</translation>
 <translation id="4684427112815847243">Sincronizar tudo</translation>
-<translation id="2709516037105925701">Preenchimento automático</translation>
 <translation id="1644574205037202324">Histórico</translation>
 <translation id="5117427536932535467">Temas e planos de fundo</translation>
-<translation id="3259418918864581163">Cartões de crédito e endereços que usam o Brave Software Pay.</translation>
 <translation id="3268451620468152448">Guias abertas</translation>
 <translation id="5241892180459725878">Sugestões de pesquisa do Brave Software Drive</translation>
 <translation id="2120297377148151361">Atividade e interações</translation>
@@ -2727,7 +2684,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="258095186877893873">Longo</translation>
 <translation id="3511528412952710609">Pequeno</translation>
 <translation id="6545665334409411530">Taxa de repetição</translation>
-<translation id="9169496697824289689">Ver atalhos de teclado</translation>
 <translation id="6116921718742659598">Alterar configurações de idioma e de entrada</translation>
 <translation id="8785622406424941542">Stylus</translation>
 <translation id="4673442866648850031">Abrir ferramentas da stylus quando a stylus for removida</translation>
@@ -2824,7 +2780,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="2307631131458143837">Desconecta o smartphone do Bravebook</translation>
 <translation id="1146102139091738471">Desconecte o smartphone do Bravebook. Eles não serão mais conectados automaticamente.</translation>
 <translation id="7878562273885520351">Sua senha pode estar comprometida</translation>
-<translation id="6582421931165117398">Para proteger suas informações pessoais, altere sua senha agora. Antes de alterar sua senha, você precisará fazer login.</translation>
 <translation id="1089439967362294234">Alterar senha</translation>
 <translation id="4635398712689569051"><ph name="PAGE_NAME"/> não está disponível para usuários visitantes.</translation>
 <translation id="4893522937062257019">Na tela de bloqueio</translation>
@@ -2916,13 +2871,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="720110658997053098">Manter este dispositivo permanentemente no modo quiosque</translation>
 <translation id="1909880997794698664">Tem certeza que quer manter permanentemente este dispositivo no modo  quiosque?</translation>
 <translation id="1512210426710821809">A única maneira de desfazer essa ação é reinstalando o <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
-<translation id="4472575034687746823">Primeiros passos</translation>
-<translation id="6060991652695587932">Escolha seu serviço de e-mail para acesso rápido</translation>
-<translation id="296137235951584143">Deixe o Brave do seu jeito</translation>
-<translation id="7835178595033117206">Favorito removido</translation>
-<translation id="2785008241190445880">Favorito substituído</translation>
-<translation id="2950533317914339731">Adicione favoritos aos apps do Brave Software que você mais usa</translation>
-<translation id="8846319957959474018">Abra apps facilmente com os favoritos</translation>
 <translation id="5939847200023027600">Serviço de criação de PDF</translation>
 <translation id="5877584842898320529">A impressora selecionada não está disponível ou não foi instalada corretamente. <ph name="BR"/> Verifique a impressora ou selecione outra.</translation>
 <translation id="1526560967942511387">Documento sem título</translation>

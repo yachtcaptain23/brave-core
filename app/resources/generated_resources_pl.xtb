@@ -165,11 +165,8 @@
 <translation id="3612673635130633812">Pobrane przez &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Pobrano w trybie incognito</translation>
 <translation id="8028803902702117856">Pobieram <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
-<translation id="4644818355646995778">Pobieram, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Pobieram, <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Nie udało się pobrać: <ph name="FILE_NAME"/></translation>
-<translation id="6577284282025554716">Anulowano pobieranie: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Ukończono pobieranie: <ph name="FILE_NAME"/></translation>
 <translation id="2743387203779672305">Skopiuj do schowka</translation>
 <translation id="883911313571074303">Dodaj notatkę na grafice</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Trwa pobieranie pliku}few{Trwa pobieranie plików}many{Trwa pobieranie plików}other{Trwa pobieranie plików}}</translation>
@@ -291,7 +288,6 @@
 <translation id="6398765197997659313">Zamknij pełny ekran</translation>
 <translation id="8559694214572302298">Dekoder obrazów</translation>
 <translation id="8191453843330043793">Program do rozpoznawania serwera proxy V8</translation>
-<translation id="6185617499004995178">Walidator CUPS IPP</translation>
 <translation id="3077708072777965506">Metoda wprowadzania Brave OS</translation>
 <translation id="7171242884588191792">Narzędzia do plików w Brave</translation>
 <translation id="3061707000357573562">Zastosowanie poprawki do usługi</translation>
@@ -300,7 +296,6 @@
 <translation id="1545775234664667895">Zainstalowano motyw „<ph name="THEME_NAME"/>”</translation>
 <translation id="2079545284768500474">Cofnij</translation>
 <translation id="2256115617011615191">Uruchom ponownie teraz</translation>
-<translation id="795025003224538582">Nie uruchamiaj ponownie</translation>
 <translation id="4545028762441890696">Aby ponownie je włączyć, zaakceptuj nowe uprawnienia:</translation>
 <translation id="3009487527589249344">Brave Software uznaje rozszerzenie „<ph name="EXTENSION_NAME"/>” za złośliwe, dlatego nie dopuściliśmy do jego zainstalowania</translation>
 <translation id="6790497603648687708">Dodano zdalnie: <ph name="EXTENSION_NAME"/></translation>
@@ -496,9 +491,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3987348946546879621">Zmniejszono zużycie danych</translation>
 <translation id="6228516488918914827">Wczytano szybszą stronę</translation>
 <translation id="9137013805542155359">Pokaż tekst oryginalny</translation>
-<translation id="71243390042171582">Zaktualizowano <ph name="MINUTES"/> min temu</translation>
 <translation id="8743864605301774756">Zaktualizowano przed godziną</translation>
-<translation id="5638497698949808140">Zaktualizowano <ph name="HOURS"/> godz. temu</translation>
 <translation id="1329584516321524826">Właśnie zaktualizowano</translation>
 <translation id="224940702122312781">Ta strona będzie przesyłać bardzo dużo danych.</translation>
 <translation id="3861241522664181545">Strona została wstrzymana.</translation>
@@ -773,9 +766,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2445484935443597917">Utwórz nowy profil</translation>
 <translation id="2606246518223360146">Połącz dane</translation>
 <translation id="473546211690256853">To konto jest zarządzane w domenie <ph name="DOMAIN"/></translation>
-<translation id="3661054927247347545">Certyfikat logowania jest nieprawidłowy, okno zamknie się za <ph name="MINUTES"/>:<ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">Zaloguj się teraz</translation>
-<translation id="5436822233913560332">Wszystkie okna przeglądarki wkrótce zamkną się automatycznie bez logowania.</translation>
 <translation id="8168435359814927499">Treści</translation>
 <translation id="7702907602086592255">Domena</translation>
 <translation id="3202131003361292969">Ścieżka</translation>
@@ -843,15 +833,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3074037959626057712">Jesteś zalogowany, a synchronizacja jest włączona</translation>
 <translation id="1231733316453485619">Włączyć synchronizację?</translation>
 <translation id="9125982323641182972">Inteligentne rozwiązania Brave Software w Brave</translation>
-<translation id="7988117629517051942">Więcej inteligentnych rozwiązań Brave Software</translation>
-<translation id="5596627076506792578">Więcej opcji</translation>
-<translation id="4419556793104466535">Konfiguracja synchronizacji, personalizacji i innych opcji</translation>
-<translation id="184568702928428857">Zostały zmienione ustawienia synchronizacji, personalizacji i innych usług Brave Software w Brave. Może to wpłynąć na Twoje bieżące ustawienia.</translation>
-<translation id="4192273449750167573">Przejrzyj ustawienia na następnym ekranie</translation>
-<translation id="685040365210406336">Nie wprowadzaj żadnych zmian</translation>
-<translation id="6418273007044911016">Dane, które synchronizujesz z Brave Software, i funkcje, których używasz, nie zostaną zmienione</translation>
-<translation id="8372733498235009300">Włącz synchronizację, personalizację i inne usługi Brave Software</translation>
-<translation id="8340964510643644301">Możesz w dowolnym momencie zmienić tę opcję w Ustawieniach Brave</translation>
 <translation id="3149880132460839085">Synchronizacja Brave</translation>
 <translation id="3796902758602917951">Zakładki, historia, hasła i inne ustawienia zostaną zsynchronizowane z kontem Brave Software, by można było z nich korzystać na dowolnym urządzeniu.</translation>
 <translation id="1371301976177520732">Twoje zakładki, hasła, historia i inne dane na wszystkich Twoich urządzeniach</translation>
@@ -897,7 +878,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6812349420832218321">Przeglądarki <ph name="PRODUCT_NAME"/> nie możesz uruchamiać jako użytkownik root.</translation>
 <translation id="2292848386125228270">Uruchom <ph name="PRODUCT_NAME"/> jako normalny użytkownik. Jeśli jesteś programistą i chcesz skorzystać z konta roota, uruchom program jeszcze raz z flagą --no-sandbox.</translation>
 <translation id="3122496702278727796">Nie można utworzyć katalogu danych</translation>
-<translation id="602251597322198729">Witryna próbuje pobrać wiele plików. Czy chcesz na to zezwolić?</translation>
 <translation id="691024665142758461">pobrać wiele plików</translation>
 <translation id="7004499039102548441">Ostatnie karty</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 karta}few{# karty}many{# kart}other{# karty}}</translation>
@@ -1230,7 +1210,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3596235046596950091">Włącz usługi w chmurze</translation>
 <translation id="7649070708921625228">Pomoc</translation>
 <translation id="9011163749350026987">Zawsze pokazuj ikonę</translation>
-<translation id="9115487443206954631">Zarządzaj urządzeniami przesyłającymi</translation>
 <translation id="1706586824377653884">Dodane przez administratora</translation>
 <translation id="6467304607960172345">Zoptymalizuj filmy na pełnym ekranie</translation>
 <translation id="1597210476603167523">Włącz przesyłanie do usług w chmurze takich jak Brave Software Hangouts.</translation>
@@ -1295,7 +1274,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3340978935015468852">ustawienia</translation>
 <translation id="5704875434923668958">Synchronizowanie z</translation>
 <translation id="6257602895346497974">Włącz synchronizację…</translation>
-<translation id="8618141719844947886">Niezsynchronizowane</translation>
 <translation id="5781092003150880845">Synchronizuj z kontem: <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Zsynchronizuj ze swoim kontem</translation>
 <translation id="2538361623464451692">Synchronizacja wyłączona</translation>
@@ -1515,7 +1493,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="386548886866354912">Spakuj, używając rozszerzenia <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Udostępnij w rozszerzeniu <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">Spakuj wybrane do pliku ZIP</translation>
-<translation id="9215934040295798075">Ustaw tapetę</translation>
 <translation id="204914487372604757">Utwórz skrót</translation>
 <translation id="799547531016638432">Usuń skrót</translation>
 <translation id="5494920125229734069">Wybierz wszystko</translation>
@@ -1661,7 +1638,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8671210955687109937">Może komentować</translation>
 <translation id="799923393800005025">Może wyświetlać</translation>
 <translation id="7925686952655276919">Nie synchronizuj przez połączenie komórkowe</translation>
-<translation id="4649168043999963079">Pokazuj pliki Dokumentów Brave Software</translation>
 <translation id="7106346894903675391">Kup więcej miejsca...</translation>
 <translation id="3549797760399244642">Wejdź na drive.google.com...</translation>
 <translation id="3451154303153932176">Na Dysku Brave Software pozostało <ph name="SPACE_AVAILABLE"/> wolnego miejsca.</translation>
@@ -1674,7 +1650,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7606199793785990727">Nie można uzyskać dostępu do Dysku Brave Software. <ph name="BEGIN_LINK"/>Wyloguj się<ph name="END_LINK"/> i ponownie zaloguj.</translation>
 <translation id="585883343689351092">Dysk Brave Software – witamy</translation>
 <translation id="1788440444874291920">Bezpłatne 100 GB miejsca na Dysku Brave Software</translation>
-<translation id="5722262830411045381">Uzyskaj 1 TB miejsca na Dysku Brave Software za darmo</translation>
 <translation id="6862635236584086457">Wszystkie pliki przechowywane w tym folderze są automatycznie zapisywane online</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Korzystaj z plików, gdziekolwiek jesteś – nawet offline.<ph name="MARKUP_2"/>
     Pliki zapisane na Dysku Brave Software są zawsze aktualne i dostępne z dowolnego urządzenia.<ph name="MARKUP_3"/>
@@ -1691,9 +1666,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3096967955765855393">Stale szukamy rozwiązań, dzięki którym przeglądanie internetu będzie bezpieczniejsze. Wcześniej każda strona mogła poprosić o dodanie rozszerzenia do przeglądarki. W nowszych wersjach Brave Software Brave musisz dodać rozszerzenie na stronie Rozszerzenia, by wyraźnie poinformować przeglądarkę, że chcesz je zainstalować. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Nie można otworzyć w: $1</translation>
 <translation id="639777613761517128">Aby otworzyć plik w aplikacji $1, najpierw skopiuj go do folderu Pliki Linuksa.</translation>
-<translation id="5112009661904384591">Udostępnij pliki Linuksowi</translation>
-<translation id="3186202398303525187">Otwórz plik $1 w aplikacji na Linuksa.</translation>
-<translation id="1603300902586586390">Otwórz pliki ($1) w aplikacjach na Linuksa.</translation>
 <translation id="4572815280350369984">Plik <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">Plik</translation>
 <translation id="895586998699996576">Plik graficzny ($1)</translation>
@@ -1924,15 +1896,11 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6643016212128521049">Wyczyść</translation>
 <translation id="8465252176946159372">Nieważne</translation>
 <translation id="8647834505253004544">Nieprawidłowy adres internetowy</translation>
-<translation id="2149850907588596975">Hasła i formularze</translation>
-<translation id="8639963783467694461">Ustawienia autouzupełniania</translation>
 <translation id="7764225426217299476">Dodaj adres</translation>
 <translation id="5595485650161345191">Edytuj adres</translation>
 <translation id="6207937957461833379">Kraj/region</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-mail</translation>
-<translation id="5762172915276660232">Ustawienia kart kredytowych</translation>
-<translation id="4499718683476608392">Włącz autouzupełnianie danych karty kredytowej, by wypełniać formularze jednym kliknięciem</translation>
 <translation id="9064275926664971810">Włącz autouzupełnianie, by jednym kliknięciem wypełniać formularze</translation>
 <translation id="5029568752722684782">Usuń kopię</translation>
 <translation id="2154484045852737596">Edytowanie karty</translation>
@@ -1947,11 +1915,9 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1149401351239820326">Miesiąc utraty ważności</translation>
 <translation id="8058655154417507695">Rok utraty ważności</translation>
 <translation id="379082410132524484">Twoja karta straciła ważność</translation>
-<translation id="5624120631404540903">Zarządzaj hasłami</translation>
 <translation id="6644512095122093795">Proponuj zapisywanie haseł</translation>
 <translation id="2100273922101894616">Autologowanie</translation>
 <translation id="7513029293694390567">Automatycznie loguj się na stronach, używając zapisanych danych logowania. Jeśli ta funkcja jest wyłączona, przed każdym zalogowaniem się zobaczysz prośbę o potwierdzenie.</translation>
-<translation id="1511388193702657997">Proponuj zapisywanie haseł internetowych</translation>
 <translation id="1375321115329958930">Zapisane hasła</translation>
 <translation id="152234381334907219">Nigdy nie zapisane</translation>
 <translation id="5137501176474113045">Usuń ten element</translation>
@@ -1961,7 +1927,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8503813439785031346">Nazwa użytkownika</translation>
 <translation id="6657585470893396449">Hasło</translation>
 <translation id="137651782282853227">Tutaj pojawią się zapisane adresy</translation>
-<translation id="1529116897397289129">Tutaj pojawią się zapisane karty</translation>
 <translation id="7930294771522048157">Tutaj pojawią się zapisane formy płatności</translation>
 <translation id="9124003689441359348">Tutaj pojawią się zapisane hasła</translation>
 <translation id="4400367121200150367">Tutaj będą wyświetlane strony, które nigdy nie zapisują haseł</translation>
@@ -2376,8 +2341,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="490074449735753175">Używaj usługi internetowej, aby poprawiać błędy ortograficzne</translation>
 <translation id="3523078749603005179">Bardziej inteligentne sprawdzanie pisowni przez wysyłanie tekstu wpisywanego w przeglądarce do Brave Software</translation>
 <translation id="2564653188463346023">Ulepszone sprawdzanie pisowni</translation>
-<translation id="7469406957790636836">Aby włączyć tę funkcję, najpierw włącz sprawdzanie pisowni w sekcji <ph name="BEGIN_LINK"/>Języki i metody wprowadzania<ph name="END_LINK"/></translation>
-<translation id="8699566574894671540">Aby włączyć tę funkcję, najpierw w menu Edytuj włącz Sprawdzaj pisownię w trakcie pisania</translation>
 <translation id="9079153198295609735">Automatycznie przesyłaj do Brave Software statystyki użytkowania i raporty o awariach</translation>
 <translation id="5941220456342415404">Automatycznie wysyłaj do Brave Software dane diagnostyczne i informacje o użytkowaniu</translation>
 <translation id="918192811481327695">Pomóż w ulepszaniu funkcji i działania Brave</translation>
@@ -2423,13 +2386,10 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1545786162090505744">URL z parametrem %s (zapytanie)</translation>
 <translation id="7136694880210472378">Ustaw jako domyślną</translation>
 <translation id="6953878494808481632">Powiązane informacje</translation>
-<translation id="7258619945375359543">Pozwól Asystentowi podawać sugestie na podstawie zawartości ekranu</translation>
 <translation id="472896694312062378">„OK Brave Software”</translation>
 <translation id="6236033368436682108">Uruchamiaj Asystenta, mówiąc „OK Brave Software”, gdy ekran jest włączony</translation>
 <translation id="2482878487686419369">Powiadomienia</translation>
 <translation id="5355099869024327351">Pozwól Asystentowi wyświetlać powiadomienia</translation>
-<translation id="1127216846847548354">Aktywacja głosu</translation>
-<translation id="3506093155988721483">Używaj mowy zamiast klawiatury po uruchomieniu Asystenta</translation>
 <translation id="3908743412684152579">Ustawienia Asystenta Brave Software</translation>
 <translation id="4933484234309072027">umieszczone w witrynie <ph name="URL"/></translation>
 <translation id="8427292751741042100">umieszczone na dowolnym hoście</translation>
@@ -2572,7 +2532,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1296497012903089238">Typ certyfikatu</translation>
 <translation id="8553342806078037065">Zarządzaj innymi osobami</translation>
 <translation id="8907706281008466056">Zdjęcie z profilu Brave Software</translation>
-<translation id="127138278192656016">Używaj synchronizacji i wszystkich usług</translation>
 <translation id="2408955596600435184">Wpisz kod PIN</translation>
 <translation id="6619990499523117484">Potwierdź kod PIN</translation>
 <translation id="2023167225947895179">Ten kod PIN może być łatwy do odgadnięcia</translation>
@@ -2647,10 +2606,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2731700343119398978">Czekaj...</translation>
 <translation id="7529411698175791732">Sprawdź połączenie z internetem. Jeśli problem nie ustąpi, wyloguj się i zaloguj ponownie.</translation>
 <translation id="4684427112815847243">Synchronizuj wszystko</translation>
-<translation id="2709516037105925701">Autouzupełnianie</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="5117427536932535467">Motywy i tapety</translation>
-<translation id="3259418918864581163">Karty kredytowe i adresy z Brave Software Pay.</translation>
 <translation id="3268451620468152448">Otwarte karty</translation>
 <translation id="5241892180459725878">Podpowiedzi z Dysku Brave Software podczas wyszukiwania</translation>
 <translation id="2120297377148151361">Aktywność i interakcje</translation>
@@ -2729,7 +2686,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="258095186877893873">Długie</translation>
 <translation id="3511528412952710609">Krótkie</translation>
 <translation id="6545665334409411530">Szybkość powtarzania</translation>
-<translation id="9169496697824289689">Pokaż skróty klawiszowe</translation>
 <translation id="6116921718742659598">Zmień język i ustawienia wprowadzania</translation>
 <translation id="8785622406424941542">Rysik</translation>
 <translation id="4673442866648850031">Po wyjęciu rysika otwórz jego narzędzia</translation>
@@ -2826,7 +2782,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2307631131458143837">Rozłącz swój telefon i Bravebooka</translation>
 <translation id="1146102139091738471">Odłącz telefon od Bravebooka. Te urządzenia nie będą już łączyć się ze sobą automatycznie.</translation>
 <translation id="7878562273885520351">Ktoś mógł poznać Twoje hasło</translation>
-<translation id="6582421931165117398">Aby chronić swoje dane osobowe, zmień teraz hasło. Najpierw zobaczysz prośbę, by się zalogować.</translation>
 <translation id="1089439967362294234">Zmień hasło</translation>
 <translation id="4635398712689569051">Strona <ph name="PAGE_NAME"/> jest niedostępna dla gości.</translation>
 <translation id="4893522937062257019">Na ekranie blokady</translation>
@@ -2918,13 +2873,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="720110658997053098">Trwale utrzymuj to urządzenie w trybie kiosku</translation>
 <translation id="1909880997794698664">Czy na pewno chcesz trwale utrzymywać to urządzenie w trybie kiosku?</translation>
 <translation id="1512210426710821809">Jedynym sposobem cofnięcia tej czynności jest ponowna instalacja systemu <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
-<translation id="4472575034687746823">Rozpocznij</translation>
-<translation id="6060991652695587932">Wybierz swoją usługę e-mail, by mieć do niej szybki dostęp</translation>
-<translation id="296137235951584143">Dostosuj Brave do swoich potrzeb</translation>
-<translation id="7835178595033117206">Zakładka została usunięta</translation>
-<translation id="2785008241190445880">Zakładka została zastąpiona</translation>
-<translation id="2950533317914339731">Dodaj zakładki do swoich ulubionych aplikacji Brave Software</translation>
-<translation id="8846319957959474018">Łatwo otwieraj aplikacje dzięki zakładkom</translation>
 <translation id="5939847200023027600">Usługa PDF Compositor</translation>
 <translation id="5877584842898320529">Wybrana drukarka jest niedostępna lub nieprawidłowo zainstalowana. <ph name="BR"/> Sprawdź ją lub wybierz inną.</translation>
 <translation id="1526560967942511387">Dokument bez tytułu</translation>

@@ -2,7 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
 <translation id="689261804992965033">Reklamy zablokowane</translation>
-<translation id="1663506596135222606">Trackery zablokowane</translation>
+<translation id="1663506596135222606">Skrypty śledzące zablokowane</translation>
 <translation id="2313532038420432247">Aktualizacje HTTPS</translation>
 <translation id="7679428712334662192">Szacowany zaoszczędzony czas</translation>
 <translation id="3772054137575942265">Usunięto miniaturę.</translation>
@@ -142,11 +142,11 @@
 <translation id="3866249974567520381">Opis</translation>
 <translation id="2157162992285072267">Przeciągnij i upuść to logo na</translation>
 <translation id="4805054577224376281">cel</translation>
-<translation id="1346059596910821859">Donacja</translation>
-<translation id="245015745140252435">Wysokość wpłaty</translation>
+<translation id="1346059596910821859">Napiwek</translation>
+<translation id="245015745140252435">Wysokość napiwka</translation>
 <translation id="3520817231440482449">Przekazuj tej stronie comiesięczne dotacje</translation>
 <translation id="1827184134638345603">Przekaż donację.</translation>
-<translation id="7277134233385925078">Ustaw wysokość miesięcznych donacji</translation>
+<translation id="7277134233385925078">Ustaw wysokość miesięcznych napiwków</translation>
 <translation id="8003573781961874199">Pobierz jako PDF</translation>
 <translation id="298067735430872465">Zarobki z reklam</translation>
 <translation id="8764029012618014430">Włącz napiwki</translation>
@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">usuń</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="3626186271103896082">Stwórz kopię zapasową swojego portfela</translation>
-<translation id="5717619667204259673">Zachowaj swój klucz odzyskiwania danych. Zawsze będziesz mógł go użyć, aby odzyskać swój portfel, jeśli coś się stanie z Twoją przeglądarką lub komputerem. Ale upewnij się, aby go chronić — każdy, kto zdobędzie ten klucz będzie mógł wykraść Twój portfel. Prawdopodobnie najbezpieczniej będzie jest zapisać go na kartce papieru lub tam, gdzie przechowujesz ważne informacje.</translation>
 <translation id="5522744783101549748">Możesz wesprzeć tę stronę dokonując wpłaty. To sposób podziękowania jej twórcom za treści, którymi się dzielą. Twórcy treści otrzymują swoje napiwki w pierwszym tygodniu każdego miesiąca.</translation>
 <translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
 <translation id="822513417008209372">Aktualnie wspierasz</translation>
-<translation id="797446268269282651">Korzystając ze starej przeglądarki, płaciłeś za przeglądanie stron internetowych poprzez oglądanie reklam. Traciłeś cenny czas na pobieranie inwazyjnych technologii reklamowych, które przesyłały Twoje prywatne dane do reklamodawców —</translation>
 <translation id="5010112177773747965">bez Twojej zgody.</translation>
 <translation id="7147673045905733351">Dziś, Brave wita Cię w nowym Internecie.</translation>
 <translation id="1350763070659630336">Jest to tryb, w którym Twój czas ma znaczenie, Twoje dane pozostają poufne, a Ty otrzymujesz pieniądze za poświęcony czas.</translation>
@@ -218,14 +216,12 @@
 <translation id="6401272292123354754">Nagrody Brave opierają się na Basic Attention Token. Dowiedz się więcej o BAT</translation>
 <translation id="7823359893981882407">tutaj</translation>
 <translation id="4483635855837696643">Przywróć swój portfel</translation>
-<translation id="459721429458957031">Użyj klucza odzyskiwania, aby przywrócić swój portfel. Przywracanie za pomocą klucza odzyskiwania zastąpi obecny portfel. Upewnij się, że opróżniłeś lub wykonałeś kopię zapasową aktualnego portfela przed przywróceniem.</translation>
-<translation id="4600052736217630789">Wprowadź swój klucz odzyskiwania lub</translation>
 <translation id="3494964159182650590">Podsumowanie Płatności</translation>
 <translation id="63956545637156715">Dlaczego nagrody Brave?</translation>
 <translation id="1738658589626889850">Zapisz jako plik</translation>
 <translation id="259138486959961679">Zobacz wszystkie elementy, w liczbie: {{numitems}}</translation>
 <translation id="7857284676033058221">Zobacz wszystkie strony, w liczbie {{numSites}}</translation>
-<translation id="3536298624341433814">Przekaż donację</translation>
+<translation id="3536298624341433814">Przekaż napiwek</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="1792148354504719133">strona</translation>
 <translation id="5944430251223015324">strony</translation>

@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">odstrániť</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
 <translation id="3626186271103896082">Navýšiť peňaženku</translation>
-<translation id="5717619667204259673">Uchovávajte tento obnovovací kľúč v bezpečí. Vždy môžete použiť tento kľúč, aby ste dostali naspäť svoju peňaženku v prípade, že sa niečo stane s vaším prehliadačom alebo počítačom.  Nezabudnite ho však chrániť. Ktokoľvek, kto by získal tento kľúč, by mohol ukradnúť vašu peňaženku. Asi najbezpečnejšie bude, keď si ho napíšete na kus papiera alebo na akékoľvek iné miesto, kde máte dôležité informácie.</translation>
 <translation id="5522744783101549748">Túto stránku môžete podporiť zaslaním príspevku. Je to spôsob, ako im poďakovať, že vytvárajú skvelý obsah. Tvorcovia obsahu sú zaplatení za ich príspevky počas prvého týždňa každého kalendárneho mesiaca.</translation>
 <translation id="1704859330137112950">Ak chcete, môžete naplánovať pravidelné mesačné príspevky na podporu tejto stránky.</translation>
 <translation id="3074127054582480056">Pozornosť</translation>
 <translation id="822513417008209372">Práve podporujete</translation>
-<translation id="797446268269282651">Pri vašom starom prehliadači ste platili za prezeranie webu pozeraním reklám s vašou cennou pozornosťou. Míňali ste svoj drahocenný čas na sťahovanie invazívnej reklamnej technológie, ktorá prenášala vaše cenné súkromné údaje inzerentom</translation>
 <translation id="5010112177773747965">bez vášho súhlasu.</translation>
 <translation id="7147673045905733351">Brave vás dnes víta v novom internete.</translation>
 <translation id="1350763070659630336">Taký, ktorý si cení váš čas, pri ktorom sú vaše osobné údaje chránené a dokonca dostávate zaplatené za svoju pozornosť.</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">Odmeny Brave sú postavené na žetóne základnej pozornosti. Zistite viac o BAT</translation>
 <translation id="7823359893981882407">tu</translation>
 <translation id="4483635855837696643">Obnoviť svoju peňaženku</translation>
-<translation id="459721429458957031">Na opätovné spustenie svojej peňaženky použite svoj obnovovací kľúč. Toto opätovné spustenie cez obnovovací kľúč nahradí vašu súčasnú peňaženku. Pred obnovením si overte, či je vaša peňaženka prázdna alebo či ste vykonali jej zálohovanie.</translation>
-<translation id="4600052736217630789">Zadajte svoj kľúč na obnovenie alebo</translation>
 <translation id="3494964159182650590">Súhrn odmien</translation>
 <translation id="63956545637156715">Prečo odmeny Brave?</translation>
 <translation id="1738658589626889850">Uložiť ako súbor</translation>

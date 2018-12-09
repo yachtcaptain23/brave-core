@@ -198,12 +198,10 @@
 <translation id="1110535155349301542">eltávolítás</translation>
 <translation id="3157931365184549694">Helyreállítás</translation>
 <translation id="3626186271103896082">Mentse el tárcáját</translation>
-<translation id="5717619667204259673">Őrizd meg ezt a visszaállítási kulcsot. Ezzel a kulccsal bármikor visszaszerezheted pénztárcádat, ha valami történik böngésződdel vagy számítógépeddel. Ne feledj gondoskodni védelméről, mert bárki ellophatja pénztárcádat, ha megszerzi ezt a kulcsot. Talán az a legbiztonságosabb, ha leírod egy papírra, vagy más fontos adatok tárolására szolgáló helyre.</translation>
 <translation id="5522744783101549748">Adomány küldésével támogathatod ezt az oldalt. Így mondhatsz köszönetet a kiváló tartalmakért. A tartalomkészítők a naptári hónapok első hetén kapják meg az adományokat.</translation>
 <translation id="1704859330137112950">Amennyiben úgy dönt, havi rendszerességű hozzájárulást állíthat be az oldal rendszeres támogatása céljából.</translation>
 <translation id="3074127054582480056">Figyelem</translation>
 <translation id="822513417008209372">Jelenleg a következőket támogatja:</translation>
-<translation id="797446268269282651">Korábbi böngészőjével ön fizetett a web böngészéséért azzal, hogy értékes figyelmét hirdetések megtekintésére használta. Értékes idejét olyan tolakodó hirdetési technológiák letöltésére pazarolta, amelyek értékes személyes adatait továbbították hirdetőknek —</translation>
 <translation id="5010112177773747965">beleegyezésed nélkül</translation>
 <translation id="7147673045905733351">A mai napon az új interneten köszönt a Brave</translation>
 <translation id="1350763070659630336">Egy olyan, ahol idődet értékelik, személyes adataidat biztonságban tartják, és figyelmedet megfizetik.</translation>
@@ -218,8 +216,6 @@
 <translation id="6401272292123354754">A Brave jutalmakat az Alap figyelmi tokenekre építették. Tudjon meg többet a BAT-ról.</translation>
 <translation id="7823359893981882407">itt</translation>
 <translation id="4483635855837696643">Tárcája helyreállítása</translation>
-<translation id="459721429458957031">Pénztárcád visszaállításához használd a visszaállítási kulcsot. A visszaállítási kulcs használatával lecseréled a jelenlegi pénztárcádat. Ürítsd ki, vagy mentsd el jelenlegi pénztárcádat a visszaállítás előtt.</translation>
-<translation id="4600052736217630789">Adja meg helyreállítási kódját, vagy</translation>
 <translation id="3494964159182650590">Jutalmak összefoglalója</translation>
 <translation id="63956545637156715">Miért a Breve jutalmak?</translation>
 <translation id="1738658589626889850">Elmentés fájlként</translation>
