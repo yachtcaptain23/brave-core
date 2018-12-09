@@ -25,38 +25,35 @@ BraveWidevineBlockedImageModel::BraveWidevineBlockedImageModel(
     ContentSettingsType content_type)
     : ContentSettingSimpleImageModel(image_type, content_type) {}
 
-void BraveWidevineBlockedImageModel::UpdateFromWebContents(
-    WebContents* web_contents) {
-  set_visible(false);
+bool BraveWidevineBlockedImageModel::UpdateAndGetVisibility(WebContents* web_contents) {
   if (!web_contents)
-    return;
+    return false;
 
   // If the user alraedy opted in, don't show more UI
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   if (prefs->GetBoolean(kWidevineOptedIn)) {
-    return;
+    return false;
   }
 
   // If the URL isn't one that we whitelist as a site that gets UI for
   // Widevine to be installable, then don't show naything.
   GURL url = web_contents->GetURL();
   if (!brave::IsWidevineInstallableURL(url)) {
-    return;
+    return false;
   }
 
-  set_visible(true);
   const gfx::VectorIcon* badge_id = &kBlockedBadgeIcon;
   const gfx::VectorIcon* icon = &kExtensionIcon;
   set_icon(*icon, *badge_id);
   set_explanatory_string_id(IDS_WIDEVINE_NOT_INSTALLED_MESSAGE);
   set_tooltip(l10n_util::GetStringUTF16(IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT));
+  return true;
 }
 
-ContentSettingBubbleModel*
+std::unique_ptr<ContentSettingBubbleModel>
 BraveWidevineBlockedImageModel::CreateBubbleModelImpl(
     ContentSettingBubbleModel::Delegate* delegate,
-    WebContents* web_contents,
-    Profile* profile) {
-  return new BraveWidevineContentSettingPluginBubbleModel(delegate,
-      web_contents, profile);
+    WebContents* web_contents) {
+  return std::make_unique<BraveWidevineContentSettingPluginBubbleModel>(delegate,
+      web_contents);
 }
