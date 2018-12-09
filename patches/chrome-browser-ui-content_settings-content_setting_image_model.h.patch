@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.h b/chrome/browser/ui/content_settings/content_setting_image_model.h
+index 35c4c21419a1520ced240ee8f15e5fff7da2a568..8ea677b6bb78536784db71aed8bc5909bff491d0 100644
+--- a/chrome/browser/ui/content_settings/content_setting_image_model.h
++++ b/chrome/browser/ui/content_settings/content_setting_image_model.h
+@@ -67,6 +67,7 @@ class ContentSettingImageModel {
+   static std::unique_ptr<ContentSettingImageModel> CreateForContentType(
+       ImageType image_type);
+ 
++  virtual
+   void Update(content::WebContents* contents);
+ 
+   // Creates the model for the bubble that will be attached to this image.

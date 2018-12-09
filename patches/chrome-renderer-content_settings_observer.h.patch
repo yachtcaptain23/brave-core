@@ -1,12 +1,12 @@
 diff --git a/chrome/renderer/content_settings_observer.h b/chrome/renderer/content_settings_observer.h
-index b77c34d973c8c0760894620cda8673adeb699a40..f387b0a7780b358dfe776105f1a38cf3f5888008 100644
+index b77c34d973c8c0760894620cda8673adeb699a40..d66af2773929cbf802ec41cdcf5bff6acdac5504 100644
 --- a/chrome/renderer/content_settings_observer.h
 +++ b/chrome/renderer/content_settings_observer.h
 @@ -102,6 +102,7 @@ class ContentSettingsObserver
        const blink::WebEnabledClientHints& enabled_client_hints,
        base::TimeDelta duration,
        const blink::WebURL& url) override;
-+  bool ContentSettingsClient::AllowFingerprinting(bool enabled_per_settings) override;
++  bool AllowFingerprinting(bool enabled_per_settings) override;
    void GetAllowedClientHintsFromSource(
        const blink::WebURL& url,
        blink::WebEnabledClientHints* client_hints) const override;
