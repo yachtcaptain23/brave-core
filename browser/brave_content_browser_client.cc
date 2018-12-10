@@ -169,7 +169,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       ui::PageTransition page_transition,
       bool has_user_gesture,
       const std::string& method,
-      const net::HttpRequestHeaders& headers) override {
+      const net::HttpRequestHeaders& headers) {
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
         page_transition, has_user_gesture)) {
     return true;

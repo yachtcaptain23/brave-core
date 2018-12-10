@@ -15,14 +15,13 @@
 #include "ui/base/l10n/l10n_util.h"
 
 BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
-    Delegate* delegate, content::WebContents* web_contents, Profile* profile)
+    Delegate* delegate, content::WebContents* web_contents, ContentSettingsType content_type)
     : ContentSettingSimpleBubbleModel(delegate,
                                       web_contents,
-                                      profile,
-                                      CONTENT_SETTINGS_TYPE_PLUGINS), profile_(profile) {
+                                      content_type) {
   content_settings::SettingInfo info;
   HostContentSettingsMap* map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
+      HostContentSettingsMapFactory::GetForProfile(GetProfile());
   GURL url = web_contents->GetURL();
   std::unique_ptr<base::Value> value =
       map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
@@ -30,7 +29,7 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
   set_show_learn_more(true);
 
   // Do not show "Run flash this time" and "Manage" button in Tor profile.
-  if (profile->IsTorProfile()) {
+  if (GetProfile()->IsTorProfile()) {
     set_manage_text_style(ContentSettingBubbleModel::ManageTextStyle::kNone);
     return;
   }
@@ -62,7 +61,7 @@ void BraveContentSettingPluginBubbleModel::RunPluginsOnPage() {
     return;
 
   HostContentSettingsMap* map =
-      HostContentSettingsMapFactory::GetForProfile(profile_);
+      HostContentSettingsMapFactory::GetForProfile(GetProfile());
   map->SetContentSettingDefaultScope(
       web_contents()->GetURL(),
       GURL(),
