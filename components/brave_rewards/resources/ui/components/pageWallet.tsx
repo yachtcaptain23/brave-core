@@ -5,19 +5,19 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-
 // Components
 import {
   ModalActivity,
   ModalBackupRestore,
   ModalPending,
-  WalletWrapper,
   WalletEmpty,
-  WalletSummary
+  WalletSummary,
+  WalletWrapper
 } from 'brave-ui/features/rewards'
 import { WalletAddIcon } from 'brave-ui/components/icons'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
-
+import { Provider } from 'brave-ui/features/rewards/profile'
+import { DetailRow as PendingDetailRow, PendingType } from 'brave-ui/features/rewards/tablePending'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
@@ -304,9 +304,44 @@ class PageWallet extends React.Component<Props, State> {
     return result
   }
 
-  // TODO remove
-  doNothing = () => {
-    console.log('nothing')
+  getPendingRows = (): PendingDetailRow[] => {
+    const { walletInfo, pendingContributions} = this.props.rewardsData
+    const expireDay = 90 * 24 * 60 * 60
+    return pendingContributions.map((item: Rewards.PendingContribution) => {
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      if (item.favIcon && item.verified) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
+      let type: PendingType = 'ac'
+
+      if (item.category === 8) {
+        type = 'tip'
+      } else if (item.category === 16) {
+        type = 'recurring'
+      }
+
+      const date = (item.addedDate + expireDay) * 1000
+
+      return {
+        profile: {
+          name: item.name,
+          verified: item.verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
+          src: faviconUrl
+        },
+        url: item.url,
+        type,
+        amount: {
+          tokens: item.amount.toFixed(1),
+          converted: utils.convertBalance(item.amount.toString(), walletInfo.rates)
+        },
+        date: new Date(date).toLocaleDateString(),
+        onRemove: () => {
+          this.actions.removePendingContribution(item.publisherKey, item.viewingId)
+        }
+      }
+    })
   }
 
   render () {
@@ -323,8 +358,7 @@ class PageWallet extends React.Component<Props, State> {
     const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
     const addressArray = utils.getAddresses(addresses)
 
-    const pendingTotal = parseFloat(
-      (pendingContributionTotal || 0).toFixed(1))
+    const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
 
     return (
       <>
@@ -385,55 +419,7 @@ class PageWallet extends React.Component<Props, State> {
           this.state.modalPendingContribution
             ? <ModalPending
               onClose={this.onModalPendingToggle}
-              rows={[
-                {
-                  profile: {
-                    name: 'Bart Baker',
-                    verified: false,
-                    provider: 'youtube',
-                    src: ""
-                  },
-                  url: 'https://brave.com',
-                  type: 'recurring',
-                  amount: {
-                    tokens: '2.0',
-                    converted: '0.20'
-                  },
-                  date: 'Jan 2',
-                  onRemove: this.doNothing
-                },
-                {
-                  profile: {
-                    verified: false,
-                    name: 'theguardian.com',
-                    src: ""
-                  },
-                  url: 'https://brave.com',
-                  type: 'tip',
-                  amount: {
-                    tokens: '12000.0',
-                    converted: '6000.20'
-                  },
-                  date: 'May 7',
-                  onRemove: this.doNothing
-                },
-                {
-                  profile: {
-                    verified: false,
-                    name: 'BrendanEich',
-                    provider: 'twitter',
-                    src: ""
-                  },
-                  url: 'https://brave.com',
-                  type: 'ac',
-                  amount: {
-                    tokens: '1.0',
-                    converted: '0.20'
-                  },
-                  date: 'May 2',
-                  onRemove: this.doNothing
-                }
-              ]}
+              rows={this.getPendingRows()}
             />
             : null
         }

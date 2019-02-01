@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -71,6 +72,8 @@ using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using GetPendingContributionsCallback = base::Callback<void(
+    const brave_rewards::PendingContributionInfoList&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -180,6 +183,9 @@ class RewardsService : public KeyedService {
       const GetAddressesCallback& callback) = 0;
   virtual void GetConfirmationsHistory(
       brave_rewards::ConfirmationsHistoryCallback callback) = 0;
+
+  virtual void GetPendingContributions(
+    const GetPendingContributionsCallback& callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

@@ -20,6 +20,12 @@ declare namespace Rewards {
     GRANT_NOT_FOUND = 13
   }
 
+  export enum RewardsCategory {
+    AUTO_CONTRIBUTE = 2,
+    DIRECT_DONATION = 8,
+    RECURRING_DONATION = 21
+  }
+
   export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
   export type Address = { address: string, qr: string | null }
 
@@ -44,6 +50,7 @@ declare namespace Rewards {
     firstLoad: boolean | null
     grants?: Grant[]
     excludedPublishersNumber: number
+    pendingContributions: PendingContribution[]
     pendingContributionTotal: number
     reconcileStamp: number
     recoveryKey: string
@@ -154,5 +161,20 @@ declare namespace Rewards {
     adsUIEnabled: boolean
     adsNotificationsReceived: number
     adsEstimatedEarnings: number
+  }
+
+  export interface PendingContribution {
+    publisherKey: string
+    percentage: number
+    verified: boolean
+    excluded: Status
+    url: string
+    name: string
+    provider: string
+    favIcon: string
+    amount: number
+    addedDate: number
+    category: RewardsCategory
+    viewingId: string
   }
 }

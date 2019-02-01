@@ -489,6 +489,7 @@
       <message name="IDS_BRAVE_UI_PENDING_TYPE_TIP" desc="Name of one-time tip type">One-time tip</message>
       <message name="IDS_BRAVE_UI_PENDING_TYPE_AC" desc="Name of auto contribute type">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_RESERVED_ALL_LINK" desc="Link that shows all pending contributions">Show all pending contributions</message>
+      <message name="IDS_BRAVE_UI_PENDING_UNTIL" desc="Table header for pending contribution date">Pending until</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

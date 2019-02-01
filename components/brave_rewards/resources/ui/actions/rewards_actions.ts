@@ -158,11 +158,12 @@ export const getAddresses = () => action(types.GET_ADDRESSES)
 
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
 
-export const getPendingContributionsTotal = () => action(types.GET_PENDING_CONTRIBUTION_TOTAL)
+export const getPendingContributions = () => action(types.GET_PENDING_CONTRIBUTIONS)
 
-export const onPendingContributionTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTION_TOTAL, {
-  amount
-})
+export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
+  action(types.ON_PENDING_CONTRIBUTIONS, {
+    list
+  })
 
 export const onRewardsEnabled = (enabled: boolean) => action(types.ON_REWARDS_ENABLED, {
   enabled
@@ -185,3 +186,8 @@ export const getConfirmationsHistory = () => action(types.GET_CONFIRMATIONS_HIST
 export const onConfirmationsHistoryChanged = () => action(types.ON_CONFIRMATIONS_HISTORY_CHANGED)
 
 export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)
+
+export const removePendingContribution = (publisherKey: string, viewingId: string) => action(types.REMOVE_PENDING_CONTRIBUTION, {
+  publisherKey,
+  viewingId
+})

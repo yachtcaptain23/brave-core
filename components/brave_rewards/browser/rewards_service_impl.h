@@ -189,6 +189,9 @@ class RewardsServiceImpl : public RewardsService,
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
   std::pair<uint64_t, uint64_t> GetEarningsRange();
 
+  void GetPendingContributions(
+    const GetPendingContributionsCallback& callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
 

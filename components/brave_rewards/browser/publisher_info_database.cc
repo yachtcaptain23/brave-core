@@ -942,6 +942,41 @@ double PublisherInfoDatabase::GetReservedAmount() {
   return amount;
 }
 
+void PublisherInfoDatabase::GetPendingContributions(
+    brave_rewards::PendingContributionInfoList* list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return;
+  }
+
+  sql::Statement info_sql(db_.GetUniqueStatement(
+      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+      "pi.verified, pi.provider, pc.amount, pc.added_date, "
+      "pc.viewing_id, pc.category "
+      "FROM pending_contribution as pc "
+      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id"));
+
+  while (info_sql.Step()) {
+    brave_rewards::PendingContributionInfo info;
+    info.publisher_key = info_sql.ColumnString(0);
+    info.name = info_sql.ColumnString(1);
+    info.url = info_sql.ColumnString(2);
+    info.favicon_url = info_sql.ColumnString(3);
+    info.verified = info_sql.ColumnBool(4);
+    info.provider = info_sql.ColumnString(5);
+    info.amount = info_sql.ColumnDouble(6);
+    info.added_date = info_sql.ColumnInt64(7);
+    info.viewing_id = info_sql.ColumnString(8);
+    info.category = info_sql.ColumnInt(9);
+
+    list->push_back(info);
+  }
+}
+
 int PublisherInfoDatabase::GetCurrentVersion() {
   if (testing_current_version_ != -1) {
     return testing_current_version_;

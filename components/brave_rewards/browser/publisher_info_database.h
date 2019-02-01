@@ -75,8 +75,13 @@ class PublisherInfoDatabase {
   void GetRecurringDonations(ledger::PublisherInfoList* list);
 
   bool RemoveRecurring(const std::string& publisher_key);
+
   bool InsertPendingContribution(const ledger::PendingContributionList& list);
+
   double GetReservedAmount();
+
+  void GetPendingContributions(
+      brave_rewards::PendingContributionInfoList* list);
 
 
   // Returns the current version of the publisher info database

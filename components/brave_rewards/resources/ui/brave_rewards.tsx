@@ -129,13 +129,9 @@ window.cr.define('brave_rewards', function () {
     getActions().onAdsData(adsData)
   }
 
-  function pendingContributionTotal (amount: number) {
-    getActions().onPendingContributionTotal(amount)
-  }
-
   function onPendingContributionSaved (result: number) {
     if (result === 0) {
-      getActions().getPendingContributionsTotal()
+      getActions().getPendingContributions()
     }
   }
 
@@ -153,6 +149,10 @@ window.cr.define('brave_rewards', function () {
 
   function confirmationsHistoryChanged () {
     getActions().onConfirmationsHistoryChanged()
+  }
+
+  function pendingContributions (list: Rewards.PendingContribution[]) {
+    getActions().onPendingContributions(list)
   }
 
   return {
@@ -177,7 +177,7 @@ window.cr.define('brave_rewards', function () {
     initAutoContributeSettings,
     imported,
     adsData,
-    pendingContributionTotal,
+    pendingContributions,
     onPendingContributionSaved,
     rewardsEnabled,
     addressesForPaymentId,
