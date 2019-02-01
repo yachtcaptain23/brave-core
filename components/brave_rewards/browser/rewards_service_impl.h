@@ -192,6 +192,10 @@ class RewardsServiceImpl : public RewardsService,
   void GetPendingContributions(
     const GetPendingContributionsCallback& callback) override;
 
+  void RemovePendingContribution(const std::string& publisher_key,
+                                 const std::string& viewing_id,
+                                 uint64_t added_date) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
 
@@ -278,6 +282,8 @@ class RewardsServiceImpl : public RewardsService,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
+
+  void OnRemovePendingContribution(bool result);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

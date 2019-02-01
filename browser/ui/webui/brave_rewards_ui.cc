@@ -116,6 +116,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetPendingContributions(const base::ListValue* args);
   void OnGetPendingContributions(
     const brave_rewards::PendingContributionInfoList& list);
+  void RemovePendingContribution(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -150,7 +151,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::ContentSiteList) override;
   void OnCurrentTips(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
-
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
       int result) override;
@@ -165,6 +165,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnConfirmationsHistoryChanged(
       brave_rewards::RewardsService* rewards_service) override;
+
+  void OnRemovePendingContribution(
+      brave_rewards::RewardsService* rewards_service,
+      int result) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -289,6 +293,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getPendingContributions",
       base::BindRepeating(&RewardsDOMHandler::GetPendingContributions,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.removePendingContribution",
+      base::BindRepeating(&RewardsDOMHandler::RemovePendingContribution,
                           base::Unretained(this)));
 }
 
@@ -936,10 +943,10 @@ void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
 void RewardsDOMHandler::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
     int result) {
-    if (web_ui()->CanCallJavascript()) {
-      web_ui()->CallJavascriptFunctionUnsafe(
-          "brave_rewards.onPendingContributionSaved", base::Value(result));
-    }
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.onPendingContributionSaved", base::Value(result));
+  }
 }
 
 void RewardsDOMHandler::OnRewardsMainEnabled(
@@ -1050,6 +1057,31 @@ void RewardsDOMHandler::OnGetPendingContributions(
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.pendingContributions",
                                            *contributions);
+  }
+}
+
+void RewardsDOMHandler::RemovePendingContribution(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    std::string publisher_key;
+    std::string viewing_id;
+    int added_date;
+    args->GetString(0, &publisher_key);
+    args->GetString(1, &viewing_id);
+    args->GetInteger(2, &added_date);
+    rewards_service_->RemovePendingContribution(
+        publisher_key,
+        viewing_id,
+        static_cast<uint64_t>(added_date));
+  }
+}
+
+void RewardsDOMHandler::OnRemovePendingContribution(
+    brave_rewards::RewardsService* rewards_service,
+    int result) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.onRemovePendingContribution", base::Value(result));
   }
 }
 

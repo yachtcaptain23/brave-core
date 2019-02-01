@@ -63,3 +63,11 @@ chrome.braveRewards.onPublisherListNormalized.addListener((properties: RewardsEx
 chrome.braveRewards.onExcludedSitesChanged.addListener((properties: RewardsExtension.ExcludedSitesChanged) => {
   rewardsPanelActions.onExcludedSitesChanged(properties)
 })
+
+chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
+  if (result === 0) {
+    chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
+      rewardsPanelActions.OnPendingContributionsTotal(amount)
+    }))
+  }
+})

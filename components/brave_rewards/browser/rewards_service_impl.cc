@@ -2751,4 +2751,45 @@ void RewardsServiceImpl::GetPendingContributions(
       callback);
 }
 
+bool RemovePendingContributionOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->RemovePendingContributions(publisher_key,
+                                             viewing_id,
+                                             added_date);
+}
+
+void RewardsServiceImpl::RemovePendingContribution(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&RemovePendingContributionOnFileTaskRunner,
+                 publisher_info_backend_.get(),
+                 publisher_key,
+                 viewing_id,
+                 added_date),
+      base::Bind(&RewardsServiceImpl::OnRemovePendingContribution,
+                 AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnRemovePendingContribution(bool result) {
+  ledger::Result result_new = result
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR;
+
+  for (auto& observer : observers_) {
+    observer.OnRemovePendingContribution(this, result_new);
+  }
+}
+
+
 }  // namespace brave_rewards

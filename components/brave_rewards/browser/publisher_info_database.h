@@ -83,6 +83,10 @@ class PublisherInfoDatabase {
   void GetPendingContributions(
       brave_rewards::PendingContributionInfoList* list);
 
+  bool RemovePendingContributions(const std::string& publisher_key,
+                                  const std::string& viewing_id,
+                                  uint64_t added_date);
+
 
   // Returns the current version of the publisher info database
   int GetCurrentVersion();

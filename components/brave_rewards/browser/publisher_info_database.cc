@@ -921,7 +921,7 @@ bool PublisherInfoDatabase::InsertPendingContribution
 }
 
 double PublisherInfoDatabase::GetReservedAmount() {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
@@ -975,6 +975,31 @@ void PublisherInfoDatabase::GetPendingContributions(
 
     list->push_back(info);
   }
+}
+
+bool PublisherInfoDatabase::RemovePendingContributions(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM pending_contribution "
+      "WHERE publisher_id = ? AND viewing_id=? AND added_date=?"));
+
+  statement.BindString(0, publisher_key);
+  statement.BindString(1, viewing_id);
+  statement.BindInt64(2, added_date);
+
+  return statement.Run();
 }
 
 int PublisherInfoDatabase::GetCurrentVersion() {

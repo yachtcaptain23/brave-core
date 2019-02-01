@@ -236,11 +236,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.REMOVE_PENDING_CONTRIBUTION: {
-      // chrome.send('brave_rewards.removePendingContribution', [
-      //   action.payload.publisherKey,
-      //   action.payload.viewingId
-      // ])
-      // TODO
+      chrome.send('brave_rewards.removePendingContribution', [
+        action.payload.publisherKey,
+        action.payload.viewingId,
+        action.payload.addedDate
+      ])
       break
     }
     case types.GET_ADDRESSES_FOR_PAYMENT_ID: {
