@@ -342,7 +342,7 @@ void BraveSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
 
   brave_sync::client_data::Config config;
   config.api_version = sync_prefs_->GetApiVersion();
-  config.server_url = "https://sync.brave.com";
+  config.server_url = "https://sync-staging.brave.com";
   config.debug = true;
   sync_client_->SendGotInitData(seed, device_id, config, sync_words_);
 }
