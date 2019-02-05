@@ -305,7 +305,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getPendingRows = (): PendingDetailRow[] => {
-    const { walletInfo, pendingContributions} = this.props.rewardsData
+    const { walletInfo, pendingContributions } = this.props.rewardsData
     const expireDay = 90 * 24 * 60 * 60
     return pendingContributions.map((item: Rewards.PendingContribution) => {
       let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
