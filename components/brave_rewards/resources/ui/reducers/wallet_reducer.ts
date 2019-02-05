@@ -261,6 +261,10 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     }
+    case types.REMOVE_ALL_PENDING_CONTRIBUTION: {
+      chrome.send('brave_rewards.removeAllPendingContribution')
+      break
+    }
   }
 
   return state

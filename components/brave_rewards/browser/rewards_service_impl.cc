@@ -2791,5 +2791,34 @@ void RewardsServiceImpl::OnRemovePendingContribution(bool result) {
   }
 }
 
+bool RemoveAllPendingContributionOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->RemoveAllPendingContributions();
+}
+
+void RewardsServiceImpl::RemoveAllPendingContribution() {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&RemoveAllPendingContributionOnFileTaskRunner,
+                 publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRemoveAllPendingContribution,
+                 AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnRemoveAllPendingContribution(bool result) {
+  ledger::Result result_new = result
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR;
+
+  for (auto& observer : observers_) {
+    observer.OnRemovePendingContribution(this, result_new);
+  }
+}
+
 
 }  // namespace brave_rewards

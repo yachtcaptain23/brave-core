@@ -491,6 +491,7 @@
       <message name="IDS_BRAVE_UI_RESERVED_ALL_LINK" desc="Link that shows all pending contributions">Show all pending contributions</message>
       <message name="IDS_BRAVE_UI_PENDING_UNTIL" desc="Table header for pending contribution date">Pending until</message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY" desc="Text for empty pending table">No pending contributions…</message>
+      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL" desc="Text for remove all button">Remove All</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

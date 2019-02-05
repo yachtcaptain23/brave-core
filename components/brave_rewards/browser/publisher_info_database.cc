@@ -1002,6 +1002,23 @@ bool PublisherInfoDatabase::RemovePendingContributions(
   return statement.Run();
 }
 
+bool PublisherInfoDatabase::RemoveAllPendingContributions() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM pending_contribution"));
+
+  return statement.Run();
+}
+
 int PublisherInfoDatabase::GetCurrentVersion() {
   if (testing_current_version_ != -1) {
     return testing_current_version_;

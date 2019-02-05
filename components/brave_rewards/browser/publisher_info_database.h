@@ -87,6 +87,8 @@ class PublisherInfoDatabase {
                                   const std::string& viewing_id,
                                   uint64_t added_date);
 
+  bool RemoveAllPendingContributions();
+
 
   // Returns the current version of the publisher info database
   int GetCurrentVersion();

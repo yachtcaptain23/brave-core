@@ -198,3 +198,5 @@ export const removePendingContribution = (publisherKey: string, viewingId: strin
     viewingId,
     addedDate
   })
+
+export const removeAllPendingContribution = () => action(types.REMOVE_ALL_PENDING_CONTRIBUTION)

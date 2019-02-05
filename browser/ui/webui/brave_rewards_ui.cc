@@ -117,6 +117,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetPendingContributions(
     const brave_rewards::PendingContributionInfoList& list);
   void RemovePendingContribution(const base::ListValue* args);
+  void RemoveAllPendingContribution(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -296,6 +297,9 @@ void RewardsDOMHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.removePendingContribution",
       base::BindRepeating(&RewardsDOMHandler::RemovePendingContribution,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.removeAllPendingContribution",
+      base::BindRepeating(&RewardsDOMHandler::RemoveAllPendingContribution,
                           base::Unretained(this)));
 }
 
@@ -1073,6 +1077,13 @@ void RewardsDOMHandler::RemovePendingContribution(
         publisher_key,
         viewing_id,
         static_cast<uint64_t>(added_date));
+  }
+}
+
+void RewardsDOMHandler::RemoveAllPendingContribution(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->RemoveAllPendingContribution();
   }
 }
 
