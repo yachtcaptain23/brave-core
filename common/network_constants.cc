@@ -23,7 +23,7 @@ const char kTwitterReferrer[] = "https://twitter.com/*";
 const char kTwitterRedirectURL[] = "https://mobile.twitter.com/i/nojs_router*";
 
 const char kCookieHeader[] = "Cookie";
-// Intentional misspelling on referrer to match HTTP spec
+// Intentional misspelling on referrer to match HTTP spec.
 const char kRefererHeader[] = "Referer";
 const char kUserAgentHeader[] = "User-Agent";
 const char kBravePartnerHeader[] = "X-Brave-Partner";
