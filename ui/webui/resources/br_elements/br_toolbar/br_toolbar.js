@@ -63,6 +63,12 @@ Polymer({
 
     closeMenuPromo: String,
 
+    noSearch: {
+      type: Boolean,
+      // boolean props on html attributes must default to false
+      value: false
+    },
+
     /** @private */
     showingSearch_: {
       type: Boolean,
