@@ -73,6 +73,17 @@ source_set("core") {
   }
 }
 
+source_set("chromium_sync") {
+  sources = [
+    "brave_sync_scheduler_impl.cc",
+    "brave_sync_scheduler_impl.h",
+  ]
+
+  deps = [
+    "//components/sync",
+  ]
+}
+
 source_set("brave_sync") {
   sources = [
     "brave_sync_service.cc",
@@ -83,6 +94,7 @@ source_set("brave_sync") {
   ]
 
   deps = [
+    ":chromium_sync",
     ":core",
     "//base",
     "//components/bookmarks/browser",
