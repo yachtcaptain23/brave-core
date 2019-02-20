@@ -75,6 +75,8 @@ source_set("core") {
 
 source_set("chromium_sync") {
   sources = [
+    "brave_sync_manager_factory.cc",
+    "brave_sync_manager_factory.h",
     "brave_sync_manager_impl.cc",
     "brave_sync_manager_impl.h",
     "brave_sync_scheduler_impl.cc",
@@ -82,6 +84,7 @@ source_set("chromium_sync") {
   ]
 
   deps = [
+    "//components/browser_sync",
     "//components/sync",
   ]
 }
