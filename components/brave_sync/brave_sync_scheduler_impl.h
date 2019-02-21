@@ -13,13 +13,18 @@
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "components/sync/engine_impl/cycle/nudge_tracker.h"
+#include "components/sync/engine_impl/cycle/sync_cycle_context.h"
 #include "components/sync/engine_impl/sync_scheduler.h"
+#include "components/sync/engine_impl/syncer.h"
 
 namespace brave_sync {
 
 class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
  public:
-  explicit BraveSyncSchedulerImpl(const std::string& name);
+  BraveSyncSchedulerImpl(const std::string& name,
+                         syncer::SyncCycleContext* context,
+                         syncer::Syncer* syncer);
 
   // Calls Stop().
   ~BraveSyncSchedulerImpl() override;
@@ -51,9 +56,9 @@ class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
   void OnTypesBackedOff(syncer::ModelTypeSet types) override {}
   bool IsAnyThrottleOrBackoff() override;
   void OnReceivedShortPollIntervalUpdate(
-      const base::TimeDelta& new_interval) override {}
+      const base::TimeDelta& new_interval) override;
   void OnReceivedLongPollIntervalUpdate(
-      const base::TimeDelta& new_interval) override {}
+      const base::TimeDelta& new_interval) override;
   void OnReceivedCustomNudgeDelays(
       const std::map<syncer::ModelType,
       base::TimeDelta>& nudge_delays) override {}
@@ -64,11 +69,74 @@ class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
   void OnReceivedMigrationRequest(syncer::ModelTypeSet types) override {}
 
  private:
-  // Set in Start(), unset in Stop().
-  bool started_;
+  static const char* GetModeString(Mode mode);
+
+  // Invoke the syncer to perform a nudge job.
+  void DoNudgeSyncCycleJob();
+
+  // Invoke the syncer to perform a configuration job.
+  void DoConfigurationSyncCycleJob();
+
+  void DoClearServerDataSyncCycleJob();
+
+  // Invoke the Syncer to perform a poll job.
+  void DoPollSyncCycleJob();
+
+  // Helper function to calculate poll interval.
+  base::TimeDelta GetPollInterval();
+
+  // Determines if we're allowed to contact the server right now.
+  bool CanRunNudgeJobNow();
+
+  // At the moment TrySyncCycleJob just posts call to TrySyncCycleJobImpl on
+  // current thread. In the future it will request access token here.
+  void TrySyncCycleJob();
+  void TrySyncCycleJobImpl();
+
+  // Returns the set of types that are enabled and not currently throttled and
+  // backed off.
+  syncer::ModelTypeSet GetEnabledAndUnblockedTypes();
+
+  // Called as we are started to broadcast an initial cycle snapshot
+  // containing data like initial_sync_ended.  Important when the client starts
+  // up and does not need to perform an initial sync.
+  void SendInitialSnapshot();
+
+  // Computes the last poll time the system should assume on start-up.
+  static base::Time ComputeLastPollOnStart(base::Time last_poll,
+                                           base::TimeDelta poll_interval,
+                                           base::Time now);
 
   // Used for logging.
   const std::string name_;
+
+  // Set in Start(), unset in Stop().
+  bool started_;
+
+  // Modifiable versions of kDefaultLongPollIntervalSeconds which can be
+  // updated by the server.
+  base::TimeDelta syncer_short_poll_interval_seconds_;
+  base::TimeDelta syncer_long_poll_interval_seconds_;
+
+  // The mode of operation.
+  Mode mode_;
+
+  // Storage for variables related to an in-progress configure request.  Note
+  // that (mode_ != CONFIGURATION_MODE) \implies !pending_configure_params_.
+  std::unique_ptr<syncer::ConfigurationParams> pending_configure_params_;
+
+  // Keeps track of work that the syncer needs to handle.
+  syncer::NudgeTracker nudge_tracker_;
+
+  // Invoked to run through the sync cycle.
+  std::unique_ptr<syncer::Syncer> syncer_;
+
+  syncer::SyncCycleContext* cycle_context_;
+
+  // TryJob might get called for multiple reasons. It should only call
+  // DoPollSyncCycleJob after some time since the last attempt.
+  // last_poll_reset_ keeps track of when was last attempt.
+  base::TimeTicks last_poll_reset_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

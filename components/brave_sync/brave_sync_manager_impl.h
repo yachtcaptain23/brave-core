@@ -209,6 +209,10 @@ class BraveSyncManagerImpl
   // This state changes when entering or exiting a configuration cycle.
   std::unique_ptr<syncer::ModelTypeRegistry> model_type_registry_;
 
+  // A container of various bits of information used by the SyncScheduler to
+  // create SyncCycles.  Must outlive the SyncScheduler.
+  std::unique_ptr<syncer::SyncCycleContext> cycle_context_;
+
   // The scheduler that runs the Syncer. Needs to be explicitly
   // Start()ed.
   std::unique_ptr<syncer::SyncScheduler> scheduler_;

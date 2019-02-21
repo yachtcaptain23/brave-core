@@ -29,6 +29,7 @@
 #include "components/sync/engine_impl/cycle/directory_type_debug_info_emitter.h"
 #include "components/sync/engine_impl/model_type_connector_proxy.h"
 #include "components/sync/engine_impl/sync_scheduler.h"
+#include "components/sync/engine_impl/syncer.h"
 #include "components/sync/engine_impl/syncer_types.h"
 #include "components/sync/engine_impl/uss_migrator.h"
 #include "components/sync/protocol/sync.pb.h"
@@ -154,6 +155,10 @@ void BraveSyncManagerImpl::ConfigureSyncer(ConfigureReason reason,
 
   scheduler_->Start(SyncScheduler::CONFIGURATION_MODE, base::Time());
   scheduler_->ScheduleConfiguration(params);
+  if (sync_feature_state != SyncFeatureState::INITIALIZING) {
+    cycle_context_->set_is_sync_feature_enabled(sync_feature_state ==
+                                                SyncFeatureState::ON);
+  }
 }
 
 void BraveSyncManagerImpl::Init(InitArgs* args) {
@@ -236,7 +241,20 @@ void BraveSyncManagerImpl::Init(InitArgs* args) {
       args->cancelation_signal);
   sync_encryption_handler_->AddObserver(model_type_registry_.get());
 
-  scheduler_ = std::make_unique<BraveSyncSchedulerImpl>(name_);
+  // Build a SyncCycleContext and store the worker in it.
+  DVLOG(1) << "Sync is bringing up SyncCycleContext.";
+  std::vector<syncer::SyncEngineEventListener*> listeners;
+  listeners.push_back(&allstatus_);
+  cycle_context_ = args->engine_components_factory->BuildContext(
+      nullptr, directory(), args->extensions_activity,
+      listeners, &debug_info_event_listener_, model_type_registry_.get(),
+      args->invalidator_client_id, args->short_poll_interval,
+      args->long_poll_interval);
+
+  //TODO(darkdh): BraveSyncer
+  scheduler_ = std::make_unique<BraveSyncSchedulerImpl>(name_,
+                                                        cycle_context_.get(),
+                                                        new syncer::Syncer(args->cancelation_signal));
 
   scheduler_->Start(SyncScheduler::CONFIGURATION_MODE, base::Time());
 
@@ -433,6 +451,7 @@ void BraveSyncManagerImpl::ShutdownOnSyncThread() {
   js_mutation_event_observer_.InvalidateWeakPtrs();
 
   scheduler_.reset();
+  cycle_context_.reset();
 
   if (model_type_registry_)
     sync_encryption_handler_->RemoveObserver(model_type_registry_.get());
@@ -761,6 +780,8 @@ void BraveSyncManagerImpl::ClearServerData(const base::Closure& callback) {
 void BraveSyncManagerImpl::OnCookieJarChanged(bool account_mismatch,
                                          bool empty_jar) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  cycle_context_->set_cookie_jar_mismatch(account_mismatch);
+  cycle_context_->set_cookie_jar_empty(empty_jar);
 }
 
 void BraveSyncManagerImpl::OnMemoryDump(
