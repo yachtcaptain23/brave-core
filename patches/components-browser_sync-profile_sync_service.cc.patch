@@ -1,5 +1,5 @@
 diff --git a/components/browser_sync/profile_sync_service.cc b/components/browser_sync/profile_sync_service.cc
-index a0355393caba17c8343ec2a771eeb29d731d27e4..7c5e0187864224660fd27189906237e1e0181558 100644
+index a0355393caba17c8343ec2a771eeb29d731d27e4..ea682d99792e63e70af4d20408b07dcbdc8375c0 100644
 --- a/components/browser_sync/profile_sync_service.cc
 +++ b/components/browser_sync/profile_sync_service.cc
 @@ -15,6 +15,7 @@
@@ -10,7 +10,24 @@ index a0355393caba17c8343ec2a771eeb29d731d27e4..7c5e0187864224660fd27189906237e1
  #include "components/autofill/core/common/autofill_features.h"
  #include "components/browser_sync/browser_sync_switches.h"
  #include "components/browser_sync/sync_auth_manager.h"
-@@ -548,7 +549,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+@@ -394,6 +395,7 @@ void ProfileSyncService::CredentialsChanged() {
+ }
+ 
+ bool ProfileSyncService::IsEngineAllowedToStart() const {
++  return true;
+   int disable_reasons = GetDisableReasons();
+   if (IsStandaloneTransportEnabled()) {
+     // USER_CHOICE (i.e. the Sync feature toggle) and PLATFORM_OVERRIDE (i.e.
+@@ -540,7 +542,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+                                ->GetSyncUserAgent();
+   params.http_factory_getter = MakeHttpPostProviderFactoryGetter();
+   params.credentials = auth_manager_->GetCredentials();
+-  DCHECK(!params.credentials.account_id.empty() || IsLocalSyncEnabled());
++  // DCHECK(!params.credentials.account_id.empty() || IsLocalSyncEnabled());
+   if (!base::FeatureList::IsEnabled(switches::kSyncE2ELatencyMeasurement)) {
+     invalidation::InvalidationService* invalidator =
+         sync_client_->GetInvalidationService();
+@@ -548,7 +550,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
          invalidator ? invalidator->GetInvalidatorClientId() : std::string();
    }
    params.sync_manager_factory =

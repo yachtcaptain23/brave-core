@@ -163,7 +163,7 @@ void BraveSyncManagerImpl::Init(InitArgs* args) {
   DCHECK(!args->short_poll_interval.is_zero());
   DCHECK(!args->long_poll_interval.is_zero());
   if (!args->enable_local_sync_backend) {
-    DCHECK(!args->credentials.account_id.empty());
+    // DCHECK(!args->credentials.account_id.empty());
   }
   DCHECK(args->cancelation_signal);
   DVLOG(1) << "SyncManager starting Init...";
@@ -401,7 +401,7 @@ void BraveSyncManagerImpl::UpdateCredentials(
     const SyncCredentials& credentials) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(initialized_);
-  DCHECK(!credentials.account_id.empty());
+  // DCHECK(!credentials.account_id.empty());
 
   observing_network_connectivity_changes_ = true;
 
