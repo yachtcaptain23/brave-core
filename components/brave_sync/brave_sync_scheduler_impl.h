@@ -69,6 +69,13 @@ class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
   void OnReceivedMigrationRequest(syncer::ModelTypeSet types) override {}
 
  private:
+  enum PollAdjustType {
+    // Restart the poll interval.
+    FORCE_RESET,
+    // Restart the poll interval only if its length has changed.
+    UPDATE_INTERVAL,
+  };
+
   static const char* GetModeString(Mode mode);
 
   // Invoke the syncer to perform a nudge job.
@@ -85,6 +92,10 @@ class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
   // Helper function to calculate poll interval.
   base::TimeDelta GetPollInterval();
 
+  // Adjusts the poll timer to account for new poll interval, and possibly
+  // resets the poll interval, depedning on the flag's value.
+  void AdjustPolling(PollAdjustType type);
+
   // Determines if we're allowed to contact the server right now.
   bool CanRunNudgeJobNow();
 
@@ -92,6 +103,9 @@ class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
   // current thread. In the future it will request access token here.
   void TrySyncCycleJob();
   void TrySyncCycleJobImpl();
+
+  // Creates a cycle for a poll and performs the sync.
+  void PollTimerCallback();
 
   // Returns the set of types that are enabled and not currently throttled and
   // backed off.
@@ -118,12 +132,19 @@ class BraveSyncSchedulerImpl : public syncer::SyncScheduler {
   base::TimeDelta syncer_short_poll_interval_seconds_;
   base::TimeDelta syncer_long_poll_interval_seconds_;
 
+  // Timer for polling. Restarted on each successful poll, and when entering
+  // normal sync mode or exiting an error state. Not active in configuration
+  // mode.
+  base::OneShotTimer poll_timer_;
+
   // The mode of operation.
   Mode mode_;
 
   // Storage for variables related to an in-progress configure request.  Note
   // that (mode_ != CONFIGURATION_MODE) \implies !pending_configure_params_.
   std::unique_ptr<syncer::ConfigurationParams> pending_configure_params_;
+
+  std::unique_ptr<syncer::ClearParams> pending_clear_params_;
 
   // Keeps track of work that the syncer needs to handle.
   syncer::NudgeTracker nudge_tracker_;

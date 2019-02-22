@@ -35,6 +35,7 @@ namespace {
 }  // namespace
 
 using syncer::ConfigurationParams;
+using syncer::ClearParams;
 using syncer::SyncCycle;
 using syncer::SyncCycleEvent;
 using syncer::ProtocolTypes;
@@ -114,7 +115,7 @@ void BraveSyncSchedulerImpl::Start(Mode mode, base::Time last_poll_time) {
     // We just got back to normal mode.  Let's try to run the work that was
     // queued up while we were configuring.
 
-    // AdjustPolling(UPDATE_INTERVAL);  // Will kick start poll timer if needed.
+    AdjustPolling(UPDATE_INTERVAL);  // Will kick start poll timer if needed.
 
     // Update our current time before checking IsRetryRequired().
     nudge_tracker_.SetSyncCycleStartTime(TimeTicks::Now());
@@ -145,6 +146,13 @@ void BraveSyncSchedulerImpl::ScheduleConfiguration(
 void BraveSyncSchedulerImpl::ScheduleClearServerData(
     const syncer::ClearParams& params) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_EQ(CLEAR_SERVER_DATA_MODE, mode_);
+  DCHECK(!pending_configure_params_);
+  DCHECK(!params.report_success_task.is_null());
+  DCHECK(started_) << "Scheduler must be running to clear.";
+
+  pending_clear_params_ = std::make_unique<ClearParams>(params);
+  TrySyncCycleJob();
 }
 
 void BraveSyncSchedulerImpl::ScheduleLocalNudge(
@@ -182,6 +190,8 @@ void BraveSyncSchedulerImpl::Stop() {
   // Kill any in-flight method calls.
   weak_ptr_factory_.InvalidateWeakPtrs();
   pending_configure_params_.reset();
+  pending_clear_params_.reset();
+  poll_timer_.Stop();
   if (started_)
     started_ = false;
 }
@@ -199,7 +209,7 @@ void BraveSyncSchedulerImpl::OnReceivedShortPollIntervalUpdate(
   SDVLOG(1) << "Updating short poll interval to " << new_interval.InMinutes()
             << " minutes.";
   syncer_short_poll_interval_seconds_ = new_interval;
-  // AdjustPolling(UPDATE_INTERVAL);
+  AdjustPolling(UPDATE_INTERVAL);
 }
 
 void BraveSyncSchedulerImpl::OnReceivedLongPollIntervalUpdate(
@@ -211,7 +221,7 @@ void BraveSyncSchedulerImpl::OnReceivedLongPollIntervalUpdate(
   SDVLOG(1) << "Updating long poll interval to " << new_interval.InMinutes()
             << " minutes.";
   syncer_long_poll_interval_seconds_ = new_interval;
-  // AdjustPolling(UPDATE_INTERVAL);
+  AdjustPolling(UPDATE_INTERVAL);
 }
 
 const char* BraveSyncSchedulerImpl::GetModeString(
@@ -239,7 +249,6 @@ void BraveSyncSchedulerImpl::DoNudgeSyncCycleJob() {
     SDVLOG(2) << "Nudge succeeded.";
     nudge_tracker_.RecordSuccessfulSyncCycle();
 
-#if 0
     // If this was a canary, we may need to restart the poll timer (the poll
     // timer may have fired while the scheduler was in an error state, ignoring
     // the poll).
@@ -247,7 +256,6 @@ void BraveSyncSchedulerImpl::DoNudgeSyncCycleJob() {
       SDVLOG(1) << "Canary succeeded, restarting polling.";
       AdjustPolling(UPDATE_INTERVAL);
     }
-#endif
   }
 }
 
@@ -282,10 +290,8 @@ void BraveSyncSchedulerImpl::DoClearServerDataSyncCycleJob() {
   }
 
   SDVLOG(2) << "Clear succeeded.";
-#if 0
   pending_clear_params_->report_success_task.Run();
   pending_clear_params_.reset();
-#endif
 }
 
 TimeDelta BraveSyncSchedulerImpl::GetPollInterval() {
@@ -293,6 +299,50 @@ TimeDelta BraveSyncSchedulerImpl::GetPollInterval() {
           !cycle_context_->ShouldFetchUpdatesBeforeCommit())
              ? syncer_short_poll_interval_seconds_
              : syncer_long_poll_interval_seconds_;
+}
+
+void BraveSyncSchedulerImpl::AdjustPolling(PollAdjustType type) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!started_)
+    return;
+
+  TimeDelta poll_interval = GetPollInterval();
+  TimeDelta poll_delay = poll_interval;
+  const TimeTicks now = TimeTicks::Now();
+
+  if (type == UPDATE_INTERVAL) {
+    if (!last_poll_reset_.is_null()) {
+      // Override the delay based on the last successful poll time (if it was
+      // set).
+      TimeTicks new_poll_time = poll_interval + last_poll_reset_;
+      poll_delay = new_poll_time - TimeTicks::Now();
+
+      if (poll_delay < TimeDelta()) {
+        // The desired poll time was in the past, so trigger a poll now (the
+        // timer will post the task asynchronously, so re-entrancy isn't an
+        // issue).
+        poll_delay = TimeDelta();
+      }
+    } else {
+      // There was no previous poll. Keep the delay set to the normal interval,
+      // as if we had just completed a poll.
+      DCHECK_EQ(GetPollInterval(), poll_delay);
+      last_poll_reset_ = now;
+    }
+  } else {
+    // Otherwise just restart the timer.
+    DCHECK_EQ(FORCE_RESET, type);
+    DCHECK_EQ(GetPollInterval(), poll_delay);
+    last_poll_reset_ = now;
+  }
+
+  SDVLOG(1) << "Updating polling delay to " << poll_delay.InMinutes()
+            << " minutes.";
+
+  // Adjust poll rate. Start will reset the timer if it was already running.
+  poll_timer_.Start(FROM_HERE, poll_delay, this,
+                    &BraveSyncSchedulerImpl::PollTimerCallback);
 }
 
 void BraveSyncSchedulerImpl::DoPollSyncCycleJob() {
@@ -304,7 +354,7 @@ void BraveSyncSchedulerImpl::DoPollSyncCycleJob() {
   // Only restart the timer if the poll succeeded. Otherwise rely on normal
   // failure handling to retry with backoff.
   if (success) {
-    // AdjustPolling(FORCE_RESET);
+    AdjustPolling(FORCE_RESET);
   } else {
   }
 }
@@ -347,11 +397,9 @@ void BraveSyncSchedulerImpl::TrySyncCycleJobImpl() {
       DoConfigurationSyncCycleJob();
     }
   } else if (mode_ == CLEAR_SERVER_DATA_MODE) {
-#if 0
     if (pending_clear_params_) {
       DoClearServerDataSyncCycleJob();
     }
-#endif
   } else if (CanRunNudgeJobNow()) {
     if (nudge_tracker_.IsSyncRequired()) {
       SDVLOG(2) << "Found pending nudge job";
@@ -368,6 +416,13 @@ void BraveSyncSchedulerImpl::TrySyncCycleJobImpl() {
   }
 
   // RestartWaiting();
+}
+
+void BraveSyncSchedulerImpl::PollTimerCallback() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!syncer_->IsSyncing());
+
+  TrySyncCycleJob();
 }
 
 // static
