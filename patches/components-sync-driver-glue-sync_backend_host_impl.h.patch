@@ -1,0 +1,34 @@
+diff --git a/components/sync/driver/glue/sync_backend_host_impl.h b/components/sync/driver/glue/sync_backend_host_impl.h
+index c9a8f8fd314da2b7b7621d5af97326b4241e6493..15fe56af16ba6add9523d4bfd03f822e18d91d91 100644
+--- a/components/sync/driver/glue/sync_backend_host_impl.h
++++ b/components/sync/driver/glue/sync_backend_host_impl.h
+@@ -31,6 +31,10 @@
+ #include "components/sync/protocol/encryption.pb.h"
+ #include "components/sync/protocol/sync_protocol_error.h"
+ 
++namespace extensions {
++class BraveSyncEventRouter;
++}
++
+ namespace invalidation {
+ class InvalidationService;
+ }  // namespace invalidation
+@@ -53,7 +57,8 @@ class SyncBackendHostImpl : public SyncEngine, public InvalidationHandler {
+                       SyncClient* sync_client,
+                       invalidation::InvalidationService* invalidator,
+                       const base::WeakPtr<SyncPrefs>& sync_prefs,
+-                      const base::FilePath& sync_data_folder);
++                      const base::FilePath& sync_data_folder,
++                      extensions::BraveSyncEventRouter* brave_sync_event_router);
+   ~SyncBackendHostImpl() override;
+ 
+   // SyncEngine implementation.
+@@ -229,6 +234,8 @@ class SyncBackendHostImpl : public SyncEngine, public InvalidationHandler {
+   ModelTypeSet last_enabled_types_;
+   bool sessions_invalidation_enabled_ = false;
+ 
++  extensions::BraveSyncEventRouter* const brave_sync_event_router_;
++
+   // Checks that we're on the same thread this was constructed on (UI thread).
+   SEQUENCE_CHECKER(sequence_checker_);
+ 

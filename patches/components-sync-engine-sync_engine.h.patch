@@ -1,0 +1,24 @@
+diff --git a/components/sync/engine/sync_engine.h b/components/sync/engine/sync_engine.h
+index 826cc5072e20b1760a64e8edca2933e83f797730..59a9245ab514e0858b7bbd0f75a277d272dce2bc 100644
+--- a/components/sync/engine/sync_engine.h
++++ b/components/sync/engine/sync_engine.h
+@@ -30,6 +30,10 @@
+ 
+ class GURL;
+ 
++namespace extensions {
++class BraveSyncEventRouter;
++}
++
+ namespace syncer {
+ 
+ class CancelationSignal;
+@@ -83,6 +87,8 @@ class SyncEngine : public ModelTypeConfigurer {
+     base::TimeDelta short_poll_interval;
+     base::TimeDelta long_poll_interval;
+ 
++    extensions::BraveSyncEventRouter* brave_sync_event_router = nullptr;
++
+    private:
+     DISALLOW_COPY_AND_ASSIGN(InitParams);
+   };

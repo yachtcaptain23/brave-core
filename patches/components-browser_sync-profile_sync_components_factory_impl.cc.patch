@@ -1,0 +1,33 @@
+diff --git a/components/browser_sync/profile_sync_components_factory_impl.cc b/components/browser_sync/profile_sync_components_factory_impl.cc
+index 942bf26cbbdb3f1f221cafcaef8a129144bb9518..339cd36d453fb139cabee4ad9686ce5ae1d1ef7d 100644
+--- a/components/browser_sync/profile_sync_components_factory_impl.cc
++++ b/components/browser_sync/profile_sync_components_factory_impl.cc
+@@ -116,7 +116,8 @@ ProfileSyncComponentsFactoryImpl::ProfileSyncComponentsFactoryImpl(
+     const scoped_refptr<autofill::AutofillWebDataService>&
+         web_data_service_in_memory,
+     const scoped_refptr<password_manager::PasswordStore>& password_store,
+-    sync_bookmarks::BookmarkSyncService* bookmark_sync_service)
++    sync_bookmarks::BookmarkSyncService* bookmark_sync_service,
++    extensions::BraveSyncEventRouter* brave_sync_event_router)
+     : sync_client_(sync_client),
+       channel_(channel),
+       history_disabled_pref_(history_disabled_pref),
+@@ -125,7 +126,8 @@ ProfileSyncComponentsFactoryImpl::ProfileSyncComponentsFactoryImpl(
+       web_data_service_on_disk_(web_data_service_on_disk),
+       web_data_service_in_memory_(web_data_service_in_memory),
+       password_store_(password_store),
+-      bookmark_sync_service_(bookmark_sync_service) {}
++      bookmark_sync_service_(bookmark_sync_service),
++      brave_sync_event_router_(brave_sync_event_router) {}
+ 
+ ProfileSyncComponentsFactoryImpl::~ProfileSyncComponentsFactoryImpl() {}
+ 
+@@ -442,7 +444,7 @@ ProfileSyncComponentsFactoryImpl::CreateSyncEngine(
+     const base::WeakPtr<syncer::SyncPrefs>& sync_prefs,
+     const base::FilePath& sync_data_folder) {
+   return std::make_unique<syncer::SyncBackendHostImpl>(
+-      name, sync_client_, invalidator, sync_prefs, sync_data_folder);
++      name, sync_client_, invalidator, sync_prefs, sync_data_folder, brave_sync_event_router_);
+ }
+ 
+ syncer::SyncApiComponentFactory::SyncComponents

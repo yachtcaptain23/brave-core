@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.h b/chrome/browser/sync/chrome_sync_client.h
+index ae728503c195e1c9cf6da57ce08641632d8ae3ae..7db4ec8d6352873546e493546c7270c914adff39 100644
+--- a/chrome/browser/sync/chrome_sync_client.h
++++ b/chrome/browser/sync/chrome_sync_client.h
+@@ -20,6 +20,10 @@ namespace autofill {
+ class AutofillWebDataService;
+ }
+ 
++namespace extensions {
++class BraveSyncEventRouter;
++}
++
+ namespace password_manager {
+ class PasswordStore;
+ }
+@@ -79,6 +83,8 @@ class ChromeSyncClient : public syncer::SyncClient {
+   scoped_refptr<autofill::AutofillWebDataService> account_web_data_service_;
+   scoped_refptr<password_manager::PasswordStore> password_store_;
+ 
++  std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
++
+   // The task runner for the |web_data_service_|, if any.
+   scoped_refptr<base::SingleThreadTaskRunner> web_data_service_thread_;
+ 

@@ -1,0 +1,57 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
+index 8c36199a7b7514d1ac5e710a938287a167da91a5..e3991e043e10300df93b406dbbf491971bb126f7 100644
+--- a/chrome/browser/sync/chrome_sync_client.cc
++++ b/chrome/browser/sync/chrome_sync_client.cc
+@@ -12,11 +12,15 @@
+ #include "base/path_service.h"
+ #include "base/syslog_logging.h"
+ #include "base/task/post_task.h"
++#include "brave/browser/extensions/api/brave_sync_event_router.h"
++#include "brave/components/brave_sync/grit/brave_sync_resources.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/autofill/personal_data_manager_factory.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+ #include "chrome/browser/consent_auditor/consent_auditor_factory.h"
+ #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
++#include "chrome/browser/extensions/component_loader.h"
++#include "chrome/browser/extensions/extension_service.h"
+ #include "chrome/browser/favicon/favicon_service_factory.h"
+ #include "chrome/browser/history/history_service_factory.h"
+ #include "chrome/browser/invalidation/deprecated_profile_invalidation_provider_factory.h"
+@@ -82,6 +86,8 @@
+ #include "components/sync_sessions/session_sync_service.h"
+ #include "content/public/browser/browser_task_traits.h"
+ #include "content/public/browser/browser_thread.h"
++#include "extensions/browser/extension_registry.h"
++#include "extensions/browser/extension_system.h"
+ #include "extensions/browser/api/storage/backend_task_runner.h"
+ #include "extensions/buildflags/buildflags.h"
+ 
+@@ -188,6 +194,17 @@ void ChromeSyncClient::Initialize() {
+   password_store_ = PasswordStoreFactory::GetForProfile(
+       profile_, ServiceAccessType::IMPLICIT_ACCESS);
+ 
++  // TODO(darkdh): have equivalent BraveSyncClient subclass syncer::SyncClient
++  base::FilePath brave_sync_extension_path(FILE_PATH_LITERAL(""));
++  brave_sync_extension_path =
++      brave_sync_extension_path.Append(FILE_PATH_LITERAL("brave_sync"));
++  extensions::ExtensionSystem* system =
++    extensions::ExtensionSystem::Get(profile_);
++  extensions::ComponentLoader* component_loader =
++    system->extension_service()->component_loader();
++  component_loader->Add(IDR_BRAVE_SYNC_EXTENSION, brave_sync_extension_path);
++  brave_sync_event_router_ = std::make_unique<extensions::BraveSyncEventRouter>(profile_);
++
+   // Component factory may already be set in tests.
+   if (!GetSyncApiComponentFactory()) {
+     component_factory_ = std::make_unique<ProfileSyncComponentsFactoryImpl>(
+@@ -196,7 +213,8 @@ void ChromeSyncClient::Initialize() {
+             {content::BrowserThread::UI}),
+         web_data_service_thread_, profile_web_data_service_,
+         account_web_data_service_, password_store_,
+-        BookmarkSyncServiceFactory::GetForProfile(profile_));
++        BookmarkSyncServiceFactory::GetForProfile(profile_),
++        brave_sync_event_router_.get());
+   }
+ }
+ 

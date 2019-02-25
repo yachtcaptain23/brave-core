@@ -1,0 +1,24 @@
+diff --git a/components/sync/engine/sync_manager.h b/components/sync/engine/sync_manager.h
+index 514b05be4efe57ec9ae24c99186455456e56793b..2219cd4db98ed0b10e91198086715db09a3ed9dd 100644
+--- a/components/sync/engine/sync_manager.h
++++ b/components/sync/engine/sync_manager.h
+@@ -39,6 +39,10 @@ class ProcessMemoryDump;
+ }  // namespace trace_event
+ }  // namespace base
+ 
++namespace extensions {
++class BraveSyncEventRouter;
++}
++
+ namespace syncer {
+ 
+ class BaseTransaction;
+@@ -250,6 +254,8 @@ class SyncManager {
+     // Define the polling intervals. Must not be zero.
+     base::TimeDelta short_poll_interval;
+     base::TimeDelta long_poll_interval;
++
++    extensions::BraveSyncEventRouter* brave_sync_event_router = nullptr;
+   };
+ 
+   // The state of sync the feature. If the user turned on sync explicitly, it

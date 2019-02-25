@@ -1,0 +1,12 @@
+diff --git a/components/sync/driver/glue/sync_backend_host_core.cc b/components/sync/driver/glue/sync_backend_host_core.cc
+index 2bbe1dadae8202bb35eaac9fa069d6ab12b08ce6..53915153ebca1b8884f53a68591bc126010d9a92 100644
+--- a/components/sync/driver/glue/sync_backend_host_core.cc
++++ b/components/sync/driver/glue/sync_backend_host_core.cc
+@@ -354,6 +354,7 @@ void SyncBackendHostCore::DoInitialize(SyncEngine::InitParams params) {
+   args.saved_nigori_state = std::move(params.saved_nigori_state);
+   args.short_poll_interval = params.short_poll_interval;
+   args.long_poll_interval = params.long_poll_interval;
++  args.brave_sync_event_router = params.brave_sync_event_router;
+   sync_manager_->Init(&args);
+   base::trace_event::MemoryDumpManager::GetInstance()->RegisterDumpProvider(
+       this, "SyncDirectory", base::ThreadTaskRunnerHandle::Get());

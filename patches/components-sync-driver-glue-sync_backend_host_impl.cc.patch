@@ -1,0 +1,27 @@
+diff --git a/components/sync/driver/glue/sync_backend_host_impl.cc b/components/sync/driver/glue/sync_backend_host_impl.cc
+index 4c0bb4d0d0af424b46dd0cb1ab7bf38c7018b8a0..52537470a7d96ddcbb4f6bbdc29eb0968f9487fc 100644
+--- a/components/sync/driver/glue/sync_backend_host_impl.cc
++++ b/components/sync/driver/glue/sync_backend_host_impl.cc
+@@ -47,11 +47,13 @@ SyncBackendHostImpl::SyncBackendHostImpl(
+     SyncClient* sync_client,
+     invalidation::InvalidationService* invalidator,
+     const base::WeakPtr<SyncPrefs>& sync_prefs,
+-    const base::FilePath& sync_data_folder)
++    const base::FilePath& sync_data_folder,
++    extensions::BraveSyncEventRouter* brave_sync_event_router)
+     : sync_client_(sync_client),
+       name_(name),
+       sync_prefs_(sync_prefs),
+       invalidator_(invalidator),
++      brave_sync_event_router_(brave_sync_event_router),
+       weak_ptr_factory_(this) {
+   core_ = new SyncBackendHostCore(name_, sync_data_folder,
+                                   weak_ptr_factory_.GetWeakPtr());
+@@ -70,6 +72,7 @@ void SyncBackendHostImpl::Initialize(InitParams params) {
+   sync_task_runner_ = params.sync_task_runner;
+   host_ = params.host;
+   registrar_ = params.registrar.get();
++  params.brave_sync_event_router = brave_sync_event_router_;
+ 
+   sync_task_runner_->PostTask(
+       FROM_HERE, base::BindOnce(&SyncBackendHostCore::DoInitialize, core_,
