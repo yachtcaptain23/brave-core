@@ -123,9 +123,11 @@ void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
 
 void BraveSyncClientImpl::OnExtensionInitialized() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#if 0
   DCHECK(extension_loaded_);
   if (extension_loaded_)
     brave_sync_event_router_->LoadClient();
+#endif
 }
 
 void BraveSyncClientImpl::OnSyncEnabledChanged() {

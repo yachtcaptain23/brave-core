@@ -16,6 +16,7 @@
 #include "base/observer_list.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/values.h"
+#include "brave/components/brave_sync/brave_syncer.h"
 #include "components/sync/base/cancelation_signal.h"
 #include "components/sync/base/experiments.h"
 #include "components/sync/base/invalidation_interface.h"
@@ -251,10 +252,10 @@ void BraveSyncManagerImpl::Init(InitArgs* args) {
       args->invalidator_client_id, args->short_poll_interval,
       args->long_poll_interval);
 
-  //TODO(darkdh): BraveSyncer
   scheduler_ = std::make_unique<BraveSyncSchedulerImpl>(name_,
                                                         cycle_context_.get(),
-                                                        new syncer::Syncer(args->cancelation_signal));
+                                                        new BraveSyncer(args->cancelation_signal,
+                                                                        args->brave_sync_event_router));
 
   scheduler_->Start(SyncScheduler::CONFIGURATION_MODE, base::Time());
 

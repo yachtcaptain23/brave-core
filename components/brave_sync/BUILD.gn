@@ -81,11 +81,14 @@ source_set("chromium_sync") {
     "brave_sync_manager_impl.h",
     "brave_sync_scheduler_impl.cc",
     "brave_sync_scheduler_impl.h",
+    "brave_syncer.cc",
+    "brave_syncer.h",
   ]
 
   deps = [
     "//components/browser_sync",
     "//components/sync",
+    "//extensions/browser",
   ]
 }
 
