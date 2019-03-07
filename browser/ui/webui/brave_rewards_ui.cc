@@ -117,7 +117,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetPendingContributions(
     const brave_rewards::PendingContributionInfoList& list);
   void RemovePendingContribution(const base::ListValue* args);
-  void RemoveAllPendingContribution(const base::ListValue* args);
+  void RemoveAllPendingContributions(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -167,7 +167,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnConfirmationsHistoryChanged(
       brave_rewards::RewardsService* rewards_service) override;
 
-  void OnRemovePendingContribution(
+  void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
       int result) override;
 
@@ -299,7 +299,7 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::RemovePendingContribution,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.removeAllPendingContribution",
-      base::BindRepeating(&RewardsDOMHandler::RemoveAllPendingContribution,
+      base::BindRepeating(&RewardsDOMHandler::RemoveAllPendingContributions,
                           base::Unretained(this)));
 }
 
@@ -930,6 +930,7 @@ void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
 
 void RewardsDOMHandler::GetPendingContributionsTotal(
     const base::ListValue* args) {
+  // refactor this as total is not needed and we should just fetch all of them
   if (rewards_service_) {
     rewards_service_->GetPendingContributionsTotal(base::Bind(
           &RewardsDOMHandler::OnGetPendingContributionsTotal,
@@ -1038,6 +1039,15 @@ void RewardsDOMHandler::GetExcludedPublishersNumber(
   }
 }
 
+void RewardsDOMHandler::GetPendingContributions(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->GetPendingContributions(base::Bind(
+          &RewardsDOMHandler::OnGetPendingContributions,
+          weak_factory_.GetWeakPtr()));
+  }
+}
+
 void RewardsDOMHandler::OnGetPendingContributions(
     const brave_rewards::PendingContributionInfoList& list) {
   if (web_ui()->CanCallJavascript()) {
@@ -1080,14 +1090,14 @@ void RewardsDOMHandler::RemovePendingContribution(
   }
 }
 
-void RewardsDOMHandler::RemoveAllPendingContribution(
+void RewardsDOMHandler::RemoveAllPendingContributions(
     const base::ListValue* args) {
   if (rewards_service_) {
-    rewards_service_->RemoveAllPendingContribution();
+    rewards_service_->RemoveAllPendingContributions();
   }
 }
 
-void RewardsDOMHandler::OnRemovePendingContribution(
+void RewardsDOMHandler::OnPendingContributionRemoved(
     brave_rewards::RewardsService* rewards_service,
     int result) {
   if (web_ui()->CanCallJavascript()) {

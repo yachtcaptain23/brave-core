@@ -196,7 +196,7 @@ class RewardsServiceImpl : public RewardsService,
                                  const std::string& viewing_id,
                                  uint64_t added_date) override;
 
-  void RemoveAllPendingContribution() override;
+  void RemoveAllPendingContributions() override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -285,7 +285,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 
-  void OnRemovePendingContribution(bool result);
+  void OnPendingContributionRemoved(bool result);
 
   void OnRemoveAllPendingContribution(bool result);
 

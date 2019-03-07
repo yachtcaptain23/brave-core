@@ -325,7 +325,7 @@ void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnRemovePendingContribution(
+void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
     RewardsService* rewards_service,
     int result) {
   extensions::EventRouter* event_router =
@@ -335,11 +335,11 @@ void ExtensionRewardsServiceObserver::OnRemovePendingContribution(
   }
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnRemovePendingContribution::Create(result)
+      extensions::api::brave_rewards::OnPendingContributionRemoved::Create(result)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnRemovePendingContribution::kEventName,
+      extensions::api::brave_rewards::OnPendingContributionRemoved::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

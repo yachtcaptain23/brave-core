@@ -190,7 +190,7 @@ class RewardsService : public KeyedService {
   virtual void RemovePendingContribution(const std::string& publisher_key,
                                          const std::string& viewing_id,
                                          uint64_t added_date) = 0;
-  virtual void RemoveAllPendingContribution() = 0;
+  virtual void RemoveAllPendingContributions() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

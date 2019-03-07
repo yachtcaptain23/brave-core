@@ -81,7 +81,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       brave_rewards::ContentSiteList list) {}
   virtual void OnConfirmationsHistoryChanged(
       brave_rewards::RewardsService* rewards_service) {}
-  virtual void OnRemovePendingContribution(
+  virtual void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
       int result) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION

@@ -946,8 +946,6 @@ void PublisherInfoDatabase::GetPendingContributions(
     brave_rewards::PendingContributionInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  LOG(ERROR) << "GetPendingContributions";
-
   bool initialized = Init();
   DCHECK(initialized);
 

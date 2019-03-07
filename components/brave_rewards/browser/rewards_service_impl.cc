@@ -2777,17 +2777,17 @@ void RewardsServiceImpl::RemovePendingContribution(
                  publisher_key,
                  viewing_id,
                  added_date),
-      base::Bind(&RewardsServiceImpl::OnRemovePendingContribution,
+      base::Bind(&RewardsServiceImpl::OnPendingContributionRemoved,
                  AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnRemovePendingContribution(bool result) {
+void RewardsServiceImpl::OnPendingContributionRemoved(bool result) {
   ledger::Result result_new = result
       ? ledger::Result::LEDGER_OK
       : ledger::Result::LEDGER_ERROR;
 
   for (auto& observer : observers_) {
-    observer.OnRemovePendingContribution(this, result_new);
+    observer.OnPendingContributionRemoved(this, result_new);
   }
 }
 
@@ -2800,7 +2800,7 @@ bool RemoveAllPendingContributionOnFileTaskRunner(
   return backend->RemoveAllPendingContributions();
 }
 
-void RewardsServiceImpl::RemoveAllPendingContribution() {
+void RewardsServiceImpl::RemoveAllPendingContributions() {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
@@ -2816,7 +2816,7 @@ void RewardsServiceImpl::OnRemoveAllPendingContribution(bool result) {
       : ledger::Result::LEDGER_ERROR;
 
   for (auto& observer : observers_) {
-    observer.OnRemovePendingContribution(this, result_new);
+    observer.OnPendingContributionRemoved(this, result_new);
   }
 }
 

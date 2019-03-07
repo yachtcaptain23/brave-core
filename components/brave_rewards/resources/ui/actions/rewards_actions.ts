@@ -187,11 +187,6 @@ export const onConfirmationsHistoryChanged = () => action(types.ON_CONFIRMATIONS
 
 export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)
 
-export const removePendingContribution = (publisherKey: string, viewingId: string) => action(types.REMOVE_PENDING_CONTRIBUTION, {
-  publisherKey,
-  viewingId
-})
-
 export const removePendingContribution = (publisherKey: string, viewingId: string, addedDate: number) =>
   action(types.REMOVE_PENDING_CONTRIBUTION, {
     publisherKey,

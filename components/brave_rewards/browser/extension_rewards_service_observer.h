@@ -40,7 +40,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                               std::string publisher_key,
                               bool excluded) override;
 
-  void OnRemovePendingContribution(RewardsService* rewards_service,
+  void OnPendingContributionRemoved(RewardsService* rewards_service,
                                    int result) override;
 
   // RewardsServicePrivateObserver implementation
