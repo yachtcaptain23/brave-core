@@ -5,11 +5,10 @@
 // API
 import * as dataAPI from './api/data'
 import * as bookmarksAPI from './api/topSites/bookmarks'
-import { getLetterFromSite } from './helpers/newTabUtils'
+import { getLetterFromSite, isHttpOrHttps } from './helpers/newTabUtils'
 
 // Utils
 import { debounce } from '../common/debounce'
-import { isHttpOrHttps } from './helpers/newTabUtils'
 
 export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }
