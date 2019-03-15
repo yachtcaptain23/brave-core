@@ -5,24 +5,11 @@
 // API
 import * as dataAPI from './api/data'
 import * as bookmarksAPI from './api/topSites/bookmarks'
+import { getLetterFromSite } from './helpers/newTabUtils'
 
 // Utils
 import { debounce } from '../common/debounce'
 import { isHttpOrHttps } from './helpers/newTabUtils'
-
-/**
- * Obtains a letter / char that represents the current site
- */
-const getLetterFromSite = (site: NewTab.Site) => {
-  let name
-  try {
-    name = new window.URL(site.url || '').hostname
-  } catch (e) {
-    console.warn('getLetterFromSite', { url: site.url || '' })
-  }
-  name = site.title || name || '?'
-  return name.charAt(0).toUpperCase()
-}
 
 export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }
