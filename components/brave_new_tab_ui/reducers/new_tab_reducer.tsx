@@ -8,7 +8,7 @@ import { Reducer } from 'redux'
 import { types } from '../constants/new_tab_types'
 
 // API
-import { calculateGridSites } from '../api'
+import * as gridAPI from '../api/topSites/grid'
 import * as dataFetchAPI from '../api/dataFetch'
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
@@ -49,7 +49,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
     case types.NEW_TAB_TOP_SITES_DATA_UPDATED:
       state = { ...state, topSites: payload.topSites }
-      calculateGridSites(state)
+      gridAPI.calculateGridSites(state)
       break
 
     case types.NEW_TAB_SITE_PINNED: {
@@ -64,7 +64,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...state,
         pinnedTopSites
       }
-      calculateGridSites(state)
+      gridAPI.calculateGridSites(state)
       break
     }
 
@@ -78,7 +78,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
           pinnedTopSites
         }
       }
-      calculateGridSites(state)
+      gridAPI.calculateGridSites(state)
       break
 
     case types.NEW_TAB_SITE_IGNORED: {
@@ -90,7 +90,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ignoredTopSites,
         showSiteRemovalNotification: true
       }
-      calculateGridSites(state)
+      gridAPI.calculateGridSites(state)
       break
     }
 
@@ -102,7 +102,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ignoredTopSites,
         showSiteRemovalNotification: false
       }
-      calculateGridSites(state)
+      gridAPI.calculateGridSites(state)
       break
     }
 
@@ -112,7 +112,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ignoredTopSites: [],
         showSiteRemovalNotification: false
       }
-      calculateGridSites(state)
+      gridAPI.calculateGridSites(state)
       break
 
     case types.NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION:

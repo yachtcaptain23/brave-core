@@ -3,12 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // API
-import * as dataFetchAPI from './api/dataFetch'
-import * as bookmarksAPI from './api/topSites/bookmarks'
-import { getLetterFromSite, isHttpOrHttps } from './helpers/newTabUtils'
+import * as dataFetchAPI from '../dataFetch'
+import * as bookmarksAPI from './bookmarks'
+import { getLetterFromSite, isHttpOrHttps } from '../../helpers/newTabUtils'
 
 // Utils
-import { debounce } from '../common/debounce'
+import { debounce } from '../../../common/debounce'
 
 export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }

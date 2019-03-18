@@ -19,7 +19,7 @@ transpile_web_ui("brave_new_tab_ui") {
     "constants/new_tab_types.ts",
     "reducers/index.ts",
     "reducers/new_tab_reducer.tsx",
-    "api.ts",
+    "api/topSites/grid.ts",
     "api/dataFetch.ts",
     "api/topSites/bookmarks.ts",
     "api/topSites/dnd.ts",

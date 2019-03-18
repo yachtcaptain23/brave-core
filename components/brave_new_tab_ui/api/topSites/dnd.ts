@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { getGridSites } from '../../api'
+import * as gridAPI from './grid'
 
 export const onDraggedSite = (state: NewTab.State, url: string, destUrl: string) => {
-  const gridSitesWithoutPreview = getGridSites(state)
+  const gridSitesWithoutPreview = gridAPI.getGridSites(state)
   const currentPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === url)
   const finalPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === destUrl)
   let pinnedTopSites = state.pinnedTopSites.slice()
@@ -32,11 +32,11 @@ export const onDraggedSite = (state: NewTab.State, url: string, destUrl: string)
     return pinnedTopSite
   })
   state = { ...state, pinnedTopSites }
-  state = { ...state, gridSites: getGridSites(state) }
+  state = { ...state, gridSites: gridAPI.getGridSites(state) }
   return state
 }
 
 export const onDragEnd = (state: NewTab.State) => {
-  state = { ...state, gridSites: getGridSites(state) }
+  state = { ...state, gridSites: gridAPI.getGridSites(state) }
   return state
 }
