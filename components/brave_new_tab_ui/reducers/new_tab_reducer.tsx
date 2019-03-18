@@ -9,7 +9,7 @@ import { types } from '../constants/new_tab_types'
 
 // API
 import { calculateGridSites } from '../api'
-import * as dataAPI from '../api/data'
+import * as dataFetchAPI from '../api/dataFetch'
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
 
@@ -21,7 +21,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     state = storage.load()
 
     setImmediate(() => {
-      dataAPI.fetchTopSites()
+      dataFetchAPI.fetchTopSites()
     })
   }
 

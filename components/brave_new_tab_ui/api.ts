@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // API
-import * as dataAPI from './api/data'
+import * as dataFetchAPI from './api/dataFetch'
 import * as bookmarksAPI from './api/topSites/bookmarks'
 import { getLetterFromSite, isHttpOrHttps } from './helpers/newTabUtils'
 
@@ -49,5 +49,5 @@ export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) =
  * Calculates the top sites grid and calls an action with the results
  */
 export const calculateGridSites = debounce((state: NewTab.State) => {
-  dataAPI.getActions().gridSitesUpdated(getGridSites(state, true))
+  dataFetchAPI.getActions().gridSitesUpdated(getGridSites(state, true))
 }, 10)
