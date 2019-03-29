@@ -19,15 +19,14 @@ SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "brave/components/brave_sync/jslib_messages.h"
-#include "brave/components/brave_sync/tools.h"
 #include "components/sync/base/time.h"
 #include "components/sync/base/unique_position.h"
 
 namespace syncer {
 namespace {
 using brave_sync::jslib::SyncRecord;
+using brave_sync::jslib::MetaInfo;
 const char kBookmarkBarTag[] = "bookmark_bar";
-const char kOtherBookmarksTag[] = "other_bookmarks";
 
 void CreateSuccessfulCommitResponse(
     const sync_pb::SyncEntity& entity,
@@ -57,18 +56,7 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
     if (entity.specifics().has_bookmark()) {
       const sync_pb::BookmarkSpecifics& bm_specifics =
         entity.specifics().bookmark();
-      LOG(ERROR) << entity.name();
-      LOG(ERROR) << entity.version();
-      LOG(ERROR) << entity.id_string();
-      LOG(ERROR) << entity.parent_id_string();
-      LOG(ERROR) << entity.position_in_parent();
-      UniquePosition u_pos =
-        UniquePosition::FromProto(entity.unique_position());
-      LOG(ERROR) << u_pos.ToDebugString();
-      LOG(ERROR) << u_pos.GetSuffixForTest();
       auto record = std::make_unique<SyncRecord>();
-      // TODO(darkdh): fill it in ProfileSyncService
-      // record->deviceId = sync_prefs_->GetThisDeviceId();
       record->objectData = brave_sync::jslib_const::SyncObjectData_BOOKMARK;
 
       auto bookmark = std::make_unique<brave_sync::jslib::Bookmark>();
@@ -79,80 +67,79 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
       bookmark->site.creationTime =
         ProtoTimeToTime(bm_specifics.creation_time_us());
       bookmark->site.favicon = bm_specifics.icon_url();
-      // Url may have type OTHER_NODE if it is in Deleted Bookmarks
       bookmark->isFolder = entity.folder();
+      // only mattters for direct children of permanent nodes
       bookmark->hideInToolbar = entity.parent_id_string() != kBookmarkBarTag;
 
-      if (entity.parent_id_string() != kBookmarkBarTag &&
-          entity.parent_id_string() != kOtherBookmarksTag) {
-        bookmark->parentFolderObjectId = entity.parent_id_string();
-      }
-
+      std::string originator_cache_guid;
+      std::string originator_client_item_id;
       for (int i = 0; i < bm_specifics.meta_info_size(); ++i) {
         if (bm_specifics.meta_info(i).key() == "order") {
           bookmark->order = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "prev_object_id") {
+          bookmark->prevObjectId = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "prev_order") {
+          bookmark->prevOrder = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "next_order") {
+          bookmark->nextOrder = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "parent_order") {
+          bookmark->parentOrder = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "object_id") {
+          new_object_id = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "parent_object_id") {
+          bookmark->parentFolderObjectId = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "sync_timestamp") {
+          record->syncTimestamp = base::Time::FromJsTime(
+                                    std::stod(
+                                      bm_specifics.meta_info(i).value()));
+        } else if (bm_specifics.meta_info(i).key() == "originator_cache_guid") {
+          originator_cache_guid = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() ==
+                   "originator_client_item_id") {
+          originator_client_item_id = bm_specifics.meta_info(i).value();
         }
       }
 
-      if (bookmark->order.empty()) {
-        // TODO(darkdh): newly created locally, fill it in ProfileSyncService
-      }
-
+      int64_t version = entity.version();
       if (entity.version() == 0) {
-        new_object_id = brave_sync::tools::GenerateObjectId();
         record->objectId = new_object_id;
         record->action = brave_sync::jslib::SyncRecord::Action::A_CREATE;
       } else {
-        // TODO(darkdh): handle delete and update
         record->objectId = entity.id_string();
+        if (entity.deleted())
+          record->action = brave_sync::jslib::SyncRecord::Action::A_DELETE;
+        else
+          record->action = brave_sync::jslib::SyncRecord::Action::A_UPDATE;
       }
 
-      // originator_cache_guid and originator_client_item_id
-      bookmark->fields.push_back(cache_guid);
-      bookmark->fields.push_back(entity.id_string());
-#if 0
-      int index = node->parent()->GetIndexOf(node);
-      std::string prev_object_id;
-      GetPrevObjectId(node->parent(), index, &prev_object_id);
-      bookmark->prevObjectId = prev_object_id;
+      DCHECK(!record->objectId.empty());
 
-      std::string prev_order, next_order, parent_order;
-      GetOrder(node->parent(), index, &prev_order, &next_order, &parent_order);
-      if (parent_order.empty() && node->parent()->is_permanent_node())
-        parent_order =
-          sync_prefs_->GetBookmarksBaseOrder() + std::to_string(index);
-      bookmark->prevOrder = prev_order;
-      bookmark->nextOrder = next_order;
-      bookmark->parentOrder = parent_order;
-
-      auto* deleted_node = GetDeletedNodeRoot();
-      CHECK(deleted_node);
-      std::string sync_timestamp;
-      node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-
-      if (!sync_timestamp.empty()) {
-        record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
-      } else {
-        record->syncTimestamp = base::Time::Now();
+      MetaInfo metaInfo;
+      metaInfo.key = "originator_cache_guid";
+      if (originator_cache_guid.empty()) {
+        originator_cache_guid = cache_guid;
       }
+      metaInfo.value = originator_cache_guid;
+      bookmark->metaInfo.push_back(metaInfo);
 
-      // Situation below means the node was created and then deleted before send
-      // Should be ignored
-      if (record->objectId.empty() && node->HasAncestor(deleted_node)) {
-        return nullptr;
+      metaInfo.key = "originator_client_item_id";
+      if (originator_client_item_id.empty()) {
+        originator_client_item_id = entity.id_string();
       }
+      metaInfo.value = originator_client_item_id;
+      bookmark->metaInfo.push_back(metaInfo);
 
-      if (record->objectId.empty()) {
-        record->objectId = tools::GenerateObjectId();
-        record->action = jslib::SyncRecord::Action::A_CREATE;
-        bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
-      } else if (node->HasAncestor(deleted_node)) {
-        record->action = jslib::SyncRecord::Action::A_DELETE;
-      } else {
-        record->action = jslib::SyncRecord::Action::A_UPDATE;
-        DCHECK(!record->objectId.empty());
-      }
-#endif
+      metaInfo.key = "version";
+      metaInfo.value = std::to_string(version);
+      bookmark->metaInfo.push_back(metaInfo);
+
+      metaInfo.key = "mtime";
+      metaInfo.value = std::to_string(entity.mtime());
+      bookmark->metaInfo.push_back(metaInfo);
+
+      metaInfo.key = "ctime";
+      metaInfo.value = std::to_string(entity.ctime());
+      bookmark->metaInfo.push_back(metaInfo);
 
       record->SetBookmark(std::move(bookmark));
       record_list->push_back(std::move(record));
