@@ -218,6 +218,10 @@ class RewardsServiceImpl : public RewardsService,
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartAutoContributeForTest();
+  void CheckInsufficientFundsForTesting();
+  void SetContributionAmountForTesting(double amount) const;
+  void MaybeShowNotificationAddFundsForTesting(
+      base::OnceCallback<void(bool)> callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(RewardsServiceTest, OnWalletProperties);
