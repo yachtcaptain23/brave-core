@@ -14,5 +14,13 @@
         "scripts": [
             "scripts/example-star.js"
         ]
+    },
+    {
+        "urls": [
+            "http://www.a.com:*/*"
+        ],
+        "scripts": [
+            "scripts/a-com.js"
+        ]
     }
 ]

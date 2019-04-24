@@ -12,6 +12,9 @@
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/site_specific_script_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "content/public/test/browser_test_utils.h"
+#include "net/dns/mock_host_resolver.h"
 
 using extensions::ExtensionBrowserTest;
 
@@ -32,9 +35,14 @@ class SiteSpecificScriptServiceTest : public ExtensionBrowserTest {
   SiteSpecificScriptServiceTest() {}
 
   void SetUp() override {
+    InitEmbeddedTestServer();
     InitService();
-    brave::RegisterPathProvider();
     ExtensionBrowserTest::SetUp();
+  }
+
+  void SetUpOnMainThread() override {
+    ExtensionBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
   }
 
   void PreRunTestOnMainThread() override {
@@ -44,11 +52,19 @@ class SiteSpecificScriptServiceTest : public ExtensionBrowserTest {
                 IsInitialized());
   }
 
+  void InitEmbeddedTestServer() {
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
   void InitService() {
     brave_shields::LocalDataFilesService::
-        SetComponentIdAndBase64PublicKeyForTest(
-            kLocalDataFilesComponentTestId,
-            kLocalDataFilesComponentTestBase64PublicKey);
+      SetComponentIdAndBase64PublicKeyForTest(
+        kLocalDataFilesComponentTestId,
+        kLocalDataFilesComponentTestBase64PublicKey);
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -145,6 +161,12 @@ IN_PROC_BROWSER_TEST_F(SiteSpecificScriptServiceTest, RuleParsing) {
   // matches TLDs, not arbitrary domains)
   ASSERT_FALSE(ScriptsFor(GURL("https://www.example.evil.com/"), &scripts));
   EXPECT_EQ(scripts.size(), 0UL);
+
+  // URL should match one rule with one script (because of wildcard port
+  // and wildcard path)
+  ASSERT_TRUE(ScriptsFor(GURL("http://www.a.com:9876/simple.html"), &scripts));
+  ASSERT_EQ(scripts.size(), 1UL);
+  EXPECT_EQ(scripts[0].find("Altered"), 18UL);
 }
 
 // Ensure the site specific script service properly clears its cache of
@@ -162,4 +184,22 @@ IN_PROC_BROWSER_TEST_F(SiteSpecificScriptServiceTest, ClearCache) {
   // component update)
   ASSERT_TRUE(InstallSiteSpecificScriptExtension());
   EXPECT_EQ(size, GetRulesSize());
+}
+
+IN_PROC_BROWSER_TEST_F(SiteSpecificScriptServiceTest, ScriptInjection) {
+  ASSERT_TRUE(InstallSiteSpecificScriptExtension());
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(ExecuteScriptAndExtractString(
+                contents,
+                "window.domAutomationController.send("
+                "document.title)",
+                &title));
+  EXPECT_EQ(title, "Altered");
 }
