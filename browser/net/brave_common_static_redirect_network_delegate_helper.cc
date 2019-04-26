@@ -14,7 +14,7 @@
 #include "extensions/common/extension_urls.h"
 #include "extensions/common/url_pattern.h"
 
-namespace brave {
+namespace {
 
 // Update server checks happen from the profile context for admin policy
 // installed extensions. Update server checks happen from the system context for
@@ -33,11 +33,26 @@ bool IsUpdaterURL(const GURL& gurl) {
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
+bool IsPDFJsExtensionURL(const GURL& gurl) {
+  // We are using pdfium as a pdf viewer. So, we make user can use pdf.js as a
+  // primary pdf document viewer.
+  // To do that, pdfjs install request should bypass brave component server.
+  constexpr char kPdfJsExtensionId[] = "oemmndcbldboiebfnladdacbdfmadadm";
+  return gurl.spec().find(kPdfJsExtensionId) != std::string::npos;
+}
+
+}  // namespace
+
+namespace brave {
+
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  GURL::Replacements replacements;
   if (IsUpdaterURL(ctx->request_url)) {
+    if (IsPDFJsExtensionURL(ctx->request_url))
+      return net::OK;
+
+    GURL::Replacements replacements;
     replacements.SetQueryStr(ctx->request_url.query_piece());
     ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint)
                             .ReplaceComponents(replacements)
