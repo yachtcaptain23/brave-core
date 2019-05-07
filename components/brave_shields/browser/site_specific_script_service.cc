@@ -24,6 +24,42 @@
 
 namespace brave_shields {
 
+SiteSpecificScriptRule::SiteSpecificScriptRule(base::ListValue* urls_value,
+                                               base::ListValue* scripts_value,
+                                               const base::FilePath& root_dir) {
+  std::string error;
+  if (!urls_.Populate(*urls_value,
+                      URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS,
+                      /* allow_file_access */ false,
+                      &error)) {
+    LOG(ERROR) << "Malformed URL patterns in site-specific script configuration";
+    return;
+  }
+  for (const auto& scripts_it : scripts_value->GetList()) {
+    base::FilePath script_path = install_dir.AppendASCII(
+      SITE_SPECIFIC_SCRIPT_CONFIG_FILE_VERSION).AppendASCII(
+        scripts_it.GetString());
+    if (script_path.ReferencesParent()) {
+      LOG(ERROR) << "Malformed filenames in site-specific script configuration";
+    } else {
+      std::string contents;
+      if (base::ReadFileToString(script_path, &contents)) {
+        scripts_.push_back(contents);
+      }
+    }
+  }
+}
+
+SiteSpecificScriptRule::~SiteSpecificScriptRule() = default;
+
+bool SiteSpecificScriptRule::MatchesURL(const GURL& url) const {
+  return urls_.MatchesURL(url);
+}
+
+void SiteSpecificScriptRule::Populate(std::vector<std::string>* scripts) const {
+  *scripts = scripts_;
+}
+
 SiteSpecificScriptService::SiteSpecificScriptService()
     : weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
@@ -32,29 +68,15 @@ SiteSpecificScriptService::SiteSpecificScriptService()
 SiteSpecificScriptService::~SiteSpecificScriptService() {
 }
 
-SiteSpecificScriptService::SiteSpecificScriptRule::SiteSpecificScriptRule() =
-  default;
-SiteSpecificScriptService::SiteSpecificScriptRule::SiteSpecificScriptRule(
-  const SiteSpecificScriptRule& other) = default;
-SiteSpecificScriptService::SiteSpecificScriptRule::~SiteSpecificScriptRule() =
-  default;
-
 bool SiteSpecificScriptService::ScriptsFor(const GURL& primary_url,
                                            std::vector<std::string>* scripts) {
   bool any = false;
   scripts->clear();
   for (const auto& rule : rules_) {
-    for (const auto& pattern : rule.urls) {
-      if (pattern.MatchesURL(primary_url)) {
-        for (const auto& path : rule.scripts) {
-          std::string contents;
-          if (base::ReadFileToString(path, &contents)) {
-            scripts->push_back(contents);
-          }
-        }
-        any = true;
-        break;
-      }
+    if (rule->MatchesURL(primary_url)) {
+      rule->Populate(scripts);
+      any = true;
+      break;
     }
   }
   return any;
@@ -78,30 +100,15 @@ void SiteSpecificScriptService::OnDATFileDataReady() {
   for (base::Value& rule_it : root_list->GetList()) {
     base::DictionaryValue* rule_dict = nullptr;
     rule_it.GetAsDictionary(&rule_dict);
-    SiteSpecificScriptRule rule;
     base::ListValue* urls_value = nullptr;
     rule_dict->GetList("urls", &urls_value);
-    for (const auto& urls_it : urls_value->GetList()) {
-      URLPattern pattern;
-      pattern.SetValidSchemes(URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS);
-      pattern.Parse(urls_it.GetString(),
-                    URLPattern::ALLOW_WILDCARD_FOR_EFFECTIVE_TLD);
-      rule.urls.push_back(pattern);
-    }
     base::ListValue* scripts_value = nullptr;
     rule_dict->GetList("scripts", &scripts_value);
-    for (const auto& scripts_it : scripts_value->GetList()) {
-      base::FilePath script_path = install_dir_.AppendASCII(
-        SITE_SPECIFIC_SCRIPT_CONFIG_FILE_VERSION).AppendASCII(
-        scripts_it.GetString());
-      if (script_path.ReferencesParent()) {
-        LOG(ERROR) << "Malformed site-specific script configuration";
-        rules_.clear();
-        return;
-      }
-      rule.scripts.push_back(script_path);
-    }
-    rules_.push_back(rule);
+    std::unique_ptr<SiteSpecificScriptRule> rule =
+      std::make_unique<SiteSpecificScriptRule>(urls_value,
+                                               scripts_value,
+                                               install_dir_);
+    rules_.push_back(std::move(rule));
   }
 }
 

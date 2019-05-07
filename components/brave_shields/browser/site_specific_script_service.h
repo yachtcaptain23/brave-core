@@ -21,7 +21,7 @@
 #include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
-#include "extensions/common/url_pattern.h"
+#include "extensions/common/url_pattern_set.h"
 #include "url/gurl.h"
 
 #define SITE_SPECIFIC_SCRIPT_CONFIG_FILE "SiteSpecificScripts.json"
@@ -30,6 +30,21 @@
 class SiteSpecificScriptServiceTest;
 
 namespace brave_shields {
+
+class SiteSpecificScriptRule {
+ public:
+  SiteSpecificScriptRule(base::ListValue* urls_value,
+                         base::ListValue* scripts_value,
+                         const base::FilePath& root_dir);
+  ~SiteSpecificScriptRule();
+
+  bool MatchesURL(const GURL& url) const;
+  void Populate(std::vector<std::string>* scripts) const;
+
+ private:
+  extensions::URLPatternSet urls_;
+  std::vector<std::string> scripts_;
+};
 
 // The brave shields service in charge of site-specific script injection
 class SiteSpecificScriptService : public BaseLocalDataFilesObserver {
@@ -51,16 +66,8 @@ class SiteSpecificScriptService : public BaseLocalDataFilesObserver {
 
   void OnDATFileDataReady();
 
-  struct SiteSpecificScriptRule {
-    std::vector<URLPattern> urls;
-    std::vector<base::FilePath> scripts;
-    SiteSpecificScriptRule();
-    SiteSpecificScriptRule(const SiteSpecificScriptRule& other);
-    ~SiteSpecificScriptRule();
-  };
-
   std::string file_contents_;
-  std::vector<SiteSpecificScriptRule> rules_;
+  std::vector<std::unique_ptr<SiteSpecificScriptRule>> rules_;
   base::FilePath install_dir_;
 
   SEQUENCE_CHECKER(sequence_checker_);
