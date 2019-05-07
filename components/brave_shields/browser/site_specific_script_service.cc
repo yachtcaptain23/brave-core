@@ -36,7 +36,7 @@ SiteSpecificScriptRule::SiteSpecificScriptRule(base::ListValue* urls_value,
     return;
   }
   for (const auto& scripts_it : scripts_value->GetList()) {
-    base::FilePath script_path = install_dir.AppendASCII(
+    base::FilePath script_path = root_dir.AppendASCII(
       SITE_SPECIFIC_SCRIPT_CONFIG_FILE_VERSION).AppendASCII(
         scripts_it.GetString());
     if (script_path.ReferencesParent()) {
