@@ -26,38 +26,67 @@ namespace brave_shields {
 
 SiteSpecificScriptRule::SiteSpecificScriptRule(base::ListValue* urls_value,
                                                base::ListValue* scripts_value,
-                                               const base::FilePath& root_dir) {
-  std::string error;
-  if (!urls_.Populate(*urls_value,
-                      URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS,
-                      /* allow_file_access */ false,
-                      &error)) {
-    LOG(ERROR) << "Malformed URL patterns in site-specific script configuration";
-    return;
+                                               const base::FilePath& root_dir)
+  : weak_factory_(this) {
+  std::vector<std::string> patterns;
+  // Can't use URLPatternSet::Populate here because it does not expose
+  // any way to set the ParseOptions, which we need to do to support
+  // eTLD wildcarding.
+  for (const auto& urls_it : urls_value->GetList()) {
+    URLPattern pattern;
+    pattern.SetValidSchemes(URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS);
+    if (pattern.Parse(urls_it.GetString(),
+                      URLPattern::ALLOW_WILDCARD_FOR_EFFECTIVE_TLD) !=
+        URLPattern::ParseResult::kSuccess) {
+      LOG(ERROR) << "Malformed pattern in site-specific script configuration";
+      urls_.ClearPatterns();
+      return;
+    }
+    urls_.AddPattern(pattern);
   }
   for (const auto& scripts_it : scripts_value->GetList()) {
     base::FilePath script_path = root_dir.AppendASCII(
       SITE_SPECIFIC_SCRIPT_CONFIG_FILE_VERSION).AppendASCII(
         scripts_it.GetString());
     if (script_path.ReferencesParent()) {
-      LOG(ERROR) << "Malformed filenames in site-specific script configuration";
+      LOG(ERROR) << "Malformed filename in site-specific script configuration";
     } else {
-      std::string contents;
-      if (base::ReadFileToString(script_path, &contents)) {
-        scripts_.push_back(contents);
-      }
+      // Read script file on task runner to avoid file I/O on main thread.
+      auto script_contents = std::make_unique<std::string>();
+      std::string* buffer = script_contents.get();
+      base::PostTaskAndReplyWithResult(
+        GetTaskRunner().get(), FROM_HERE,
+        base::BindOnce(&base::ReadFileToString, script_path, buffer),
+        base::BindOnce(&SiteSpecificScriptRule::AddScriptAfterLoad,
+                       weak_factory_.GetWeakPtr(),
+                       std::move(script_contents)));
     }
   }
 }
 
 SiteSpecificScriptRule::~SiteSpecificScriptRule() = default;
 
+void SiteSpecificScriptRule::AddScriptAfterLoad(
+  std::unique_ptr<std::string> contents, bool did_load) {
+  if (!did_load || !contents) {
+    LOG(ERROR) << "Could not load site-specific script file";
+    return;
+  }
+  scripts_.push_back(*contents);
+}
+
 bool SiteSpecificScriptRule::MatchesURL(const GURL& url) const {
   return urls_.MatchesURL(url);
 }
 
 void SiteSpecificScriptRule::Populate(std::vector<std::string>* scripts) const {
-  *scripts = scripts_;
+  scripts->insert(scripts->end(), scripts_.begin(), scripts_.end());
+}
+
+scoped_refptr<base::SequencedTaskRunner>
+SiteSpecificScriptRule::GetTaskRunner() {
+  // We share the same task runner as ad-block code
+  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
 
 SiteSpecificScriptService::SiteSpecificScriptService()
@@ -76,14 +105,12 @@ bool SiteSpecificScriptService::ScriptsFor(const GURL& primary_url,
     if (rule->MatchesURL(primary_url)) {
       rule->Populate(scripts);
       any = true;
-      break;
     }
   }
   return any;
 }
 
 void SiteSpecificScriptService::OnDATFileDataReady() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   rules_.clear();
   if (file_contents_.empty()) {
     LOG(ERROR) << "Could not obtain site-specific script configuration";
@@ -121,14 +148,14 @@ void SiteSpecificScriptService::OnComponentReady(
     SITE_SPECIFIC_SCRIPT_CONFIG_FILE_VERSION).AppendASCII(
       SITE_SPECIFIC_SCRIPT_CONFIG_FILE);
   GetTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::Bind(&GetDATFileAsString, dat_file_path, &file_contents_),
-      base::Bind(&SiteSpecificScriptService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+    FROM_HERE,
+    base::Bind(&GetDATFileAsString, dat_file_path, &file_contents_),
+    base::Bind(&SiteSpecificScriptService::OnDATFileDataReady,
+               weak_factory_.GetWeakPtr()));
 }
 
 scoped_refptr<base::SequencedTaskRunner>
-  SiteSpecificScriptService::GetTaskRunner() {
+SiteSpecificScriptService::GetTaskRunner() {
   // We share the same task runner as ad-block code
   return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }

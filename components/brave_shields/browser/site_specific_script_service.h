@@ -42,8 +42,14 @@ class SiteSpecificScriptRule {
   void Populate(std::vector<std::string>* scripts) const;
 
  private:
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
+  void AddScriptAfterLoad(std::unique_ptr<std::string> contents,
+                          bool did_load);
+
   extensions::URLPatternSet urls_;
   std::vector<std::string> scripts_;
+  base::WeakPtrFactory<SiteSpecificScriptRule> weak_factory_;
+  DISALLOW_COPY_AND_ASSIGN(SiteSpecificScriptRule);
 };
 
 // The brave shields service in charge of site-specific script injection
@@ -65,6 +71,7 @@ class SiteSpecificScriptService : public BaseLocalDataFilesObserver {
   friend class ::SiteSpecificScriptServiceTest;
 
   void OnDATFileDataReady();
+  void LoadOnTaskRunner();
 
   std::string file_contents_;
   std::vector<std::unique_ptr<SiteSpecificScriptRule>> rules_;

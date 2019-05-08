@@ -98,7 +98,6 @@ class SiteSpecificScriptServiceTest : public ExtensionBrowserTest {
   }
 
   bool ScriptsFor(const GURL& primary_url, std::vector<std::string>* scripts) {
-    base::ScopedAllowBlockingForTesting allow_blocking;
     return g_brave_browser_process->site_specific_script_service()->
       ScriptsFor(primary_url, scripts);
   }
@@ -188,7 +187,6 @@ IN_PROC_BROWSER_TEST_F(SiteSpecificScriptServiceTest, ClearCache) {
 
 IN_PROC_BROWSER_TEST_F(SiteSpecificScriptServiceTest, ScriptInjection) {
   ASSERT_TRUE(InstallSiteSpecificScriptExtension());
-  base::ScopedAllowBlockingForTesting allow_blocking;
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
