@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/html/html_html_element.h b/third_party/blink/renderer/core/html/html_html_element.h
+index 1ba669ce9ea95c8623d10c3f9e52237d61bd1e7a..bb7bbf5ad04e63a15e35b657e71a17554c972cf5 100644
+--- a/third_party/blink/renderer/core/html/html_html_element.h
++++ b/third_party/blink/renderer/core/html/html_html_element.h
+@@ -41,6 +41,8 @@ class CORE_EXPORT HTMLHtmlElement final : public HTMLElement {
+ 
+   bool HasNonInBodyInsertionMode() const override { return true; }
+ 
++  void AttributeChanged(const AttributeModificationParams&) override;
++
+  private:
+   void MaybeSetupApplicationCache();
+ 

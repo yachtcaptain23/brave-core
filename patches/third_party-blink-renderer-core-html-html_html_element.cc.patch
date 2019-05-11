@@ -1,0 +1,41 @@
+diff --git a/third_party/blink/renderer/core/html/html_html_element.cc b/third_party/blink/renderer/core/html/html_html_element.cc
+index 7cc4857d439f055e3e3ed24d0f8ebd29a9a93fb9..082be842010cf84110d5b310490110f5b212a237 100644
+--- a/third_party/blink/renderer/core/html/html_html_element.cc
++++ b/third_party/blink/renderer/core/html/html_html_element.cc
+@@ -64,6 +64,36 @@ void HTMLHtmlElement::InsertedByParser() {
+   }
+ }
+ 
++void HTMLHtmlElement::AttributeChanged(const AttributeModificationParams& params) {
++  // Check to see if the following conditions are true, to work around
++  // the google tag manager (and related) block-the-screen stuff.
++  //   1) The element being modified is the <html> element
++  //   2) The change is not made by the parser
++  //   3) The class being added includes "async-hide"
++  // https://github.com/brave/brave-browser/issues/4402
++ #if defined(BRAVE_CHROMIUM_BUILD)
++  const StringView async_hide_class_token = StringView("async-hide");
++  const bool should_strip_async_hide_class = (
++      params.name == kClassAttr &&
++      params.reason == AttributeModificationReason::kDirectly &&
++      params.new_value.Find(async_hide_class_token) != kNotFound);
++
++  if (!should_strip_async_hide_class) {
++    HTMLElement::AttributeChanged(params);
++    return;
++  }
++
++  String prev_attr_value = params.new_value.GetString();
++  AtomicString new_value = AtomicString(prev_attr_value.Replace(
++    async_hide_class_token, StringView("")));
++
++  HTMLElement::AttributeChanged(AttributeModificationParams(
++    params.name, params.old_value, new_value, params.reason));
++#else
++  HTMLElement::AttributeChanged(params);
++#endif
++}
++
+ void HTMLHtmlElement::MaybeSetupApplicationCache() {
+   if (!GetDocument().GetFrame())
+     return;
