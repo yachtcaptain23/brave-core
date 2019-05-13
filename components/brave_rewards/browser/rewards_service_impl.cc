@@ -1289,8 +1289,9 @@ void RewardsServiceImpl::LoadURL(
   if (test_response_callback_) {
     std::string test_response;
     std::map<std::string, std::string> test_headers;
-    test_response_callback_.Run(url, &test_response, &test_headers),
-    callback(200, test_response, test_headers);
+    int code = 200;
+    test_response_callback_.Run(url, &code, &test_response, &test_headers),
+    callback(code, test_response, test_headers);
     return;
   }
 
