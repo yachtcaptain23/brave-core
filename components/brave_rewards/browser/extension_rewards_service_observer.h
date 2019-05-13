@@ -52,7 +52,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnPanelPublisherInfo(
       RewardsService* rewards_service,
       int error_code,
-      std::unique_ptr<ledger::PublisherInfo> info,
+      ledger::PublisherInfoPtr info,
       uint64_t windowId) override;
   void OnGrant(RewardsService* rewards_service,
                unsigned int result,

@@ -126,7 +126,7 @@ void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     int error_code,
-    std::unique_ptr<ledger::PublisherInfo> info,
+    ledger::PublisherInfoPtr info,
     uint64_t windowId) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
@@ -136,7 +136,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
 
   if (!info.get()) {
-    info.reset(new ledger::PublisherInfo());
+    info.reset();
     info->id = "";
   }
 
