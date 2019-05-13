@@ -17,10 +17,10 @@ NodeActor::~NodeActor() {}
 
 bool NodeActor::IsScript() const {
   return false;
-};
+}
 
 bool NodeActor::IsParser() const {
   return false;
-};
+}
 
 }  // namespace brave_page_graph

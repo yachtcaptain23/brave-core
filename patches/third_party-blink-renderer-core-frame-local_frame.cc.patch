@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
-index 9c8ffb99f78ef29df08e139551af984dc23e9de2..73417628933f2c27a1b1aeb7e113c8ea4db47156 100644
+index a7b483e821fe73f4d725ae21b3182778024c5bed..ecb0294e62d87b926e7b7be8067432d3bf035478 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.cc
 +++ b/third_party/blink/renderer/core/frame/local_frame.cc
-@@ -119,6 +119,12 @@
+@@ -121,6 +121,12 @@
  #include "third_party/blink/renderer/platform/scheduler/public/frame_scheduler.h"
  #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
  
@@ -15,8 +15,8 @@ index 9c8ffb99f78ef29df08e139551af984dc23e9de2..73417628933f2c27a1b1aeb7e113c8ea
  namespace blink {
  
  namespace {
-@@ -1754,4 +1760,24 @@ void LocalFrame::ForciblyPurgeV8Memory() {
-   Loader().StopAllLoaders();
+@@ -1841,4 +1847,24 @@ void LocalFrame::MaybeLogAdClickNavigation() {
+     UseCounter::Count(GetDocument(), WebFeature::kAdClickNavigation);
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)

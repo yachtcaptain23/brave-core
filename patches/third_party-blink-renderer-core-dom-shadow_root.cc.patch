@@ -1,14 +1,13 @@
 diff --git a/third_party/blink/renderer/core/dom/shadow_root.cc b/third_party/blink/renderer/core/dom/shadow_root.cc
-index 39d2eed15fc4eb5b942525eb127070c5505bcc62..400a789311d6ba4d549ad673a74cbd88b12343d2 100644
+index edec50e12ef40630ec554589aeec6db0bb057e7a..1e6a53f5d792bc7b60385b9dbf7d92f35f3745f2 100644
 --- a/third_party/blink/renderer/core/dom/shadow_root.cc
 +++ b/third_party/blink/renderer/core/dom/shadow_root.cc
-@@ -48,6 +48,13 @@
+@@ -48,6 +48,12 @@
  #include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
  #include "third_party/blink/renderer/platform/bindings/exception_state.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+#include "third_party/blink/renderer/core/dom/document.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
@@ -16,18 +15,19 @@ index 39d2eed15fc4eb5b942525eb127070c5505bcc62..400a789311d6ba4d549ad673a74cbd88
  namespace blink {
  
  void ShadowRoot::Distribute() {
-@@ -76,6 +83,16 @@ ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
+@@ -76,6 +82,17 @@ ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
        unused_(0) {
    if (IsV0())
      shadow_root_v0_ = MakeGarbageCollected<ShadowRootV0>(*this);
-+
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (document == nullptr) {
-+    return;
-+  }
-+  if (document.GetPageGraph() != nullptr) {
-+    document.GetPageGraph()->RegisterHTMLElementNodeCreated(
-+      DOMNodeIds::IdForNode(this), nodeName());
++  {
++    if (document == nullptr) {
++      return;
++    }
++    if (document.GetPageGraph() != nullptr) {
++      document.GetPageGraph()->RegisterHTMLElementNodeCreated(
++        DOMNodeIds::IdForNode(this), nodeName());
++    }
 +  }
 +#endif
  }

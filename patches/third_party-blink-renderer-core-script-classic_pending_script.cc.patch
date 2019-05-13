@@ -1,13 +1,14 @@
 diff --git a/third_party/blink/renderer/core/script/classic_pending_script.cc b/third_party/blink/renderer/core/script/classic_pending_script.cc
-index 65e1def936b4caa2252b95c92d592deaa59b5884..eeb06ad1674c03e5f14114c60908038ab1b9f9c9 100644
+index c373f6df702cdc92f55cd68877a6f98ce0047065..43b7300eea864d9866dc5f1deaf4b01002d02827 100644
 --- a/third_party/blink/renderer/core/script/classic_pending_script.cc
 +++ b/third_party/blink/renderer/core/script/classic_pending_script.cc
-@@ -28,6 +28,13 @@
+@@ -30,6 +30,14 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/functional.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/html/html_script_element.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -15,8 +16,8 @@ index 65e1def936b4caa2252b95c92d592deaa59b5884..eeb06ad1674c03e5f14114c60908038a
 +
  namespace blink {
  
- // <specdef href="https://html.spec.whatwg.org/#fetch-a-classic-script">
-@@ -62,8 +69,23 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
+ // <specdef href="https://html.spec.whatwg.org/C/#fetch-a-classic-script">
+@@ -64,8 +72,24 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
    // We allow streaming, as WatchForLoad() is always called when the script
    // needs to execute and the ScriptResource is not finished, so
    // SetClientIsWaitingForFinished is always set on the resource.
@@ -28,8 +29,9 @@ index 65e1def936b4caa2252b95c92d592deaa59b5884..eeb06ad1674c03e5f14114c60908038a
 +    ::brave_page_graph::PageGraph* page_graph = element->GetDocument()
 +      .GetPageGraph();
 +    if (page_graph != nullptr) {
++      HTMLScriptElement* script_elm = static_cast<HTMLScriptElement*>(element);
 +      page_graph->RegisterRequestStartFromElm(
-+        DOMNodeIds::IdForNode(static_cast<Node*>(element)), resource->InspectorId(), url,
++        DOMNodeIds::IdForNode(script_elm), resource->Identifier(), url,
 +        brave_page_graph::RequestType::kRequestTypeScriptClassic);
 +    }
 +  }
@@ -40,26 +42,27 @@ index 65e1def936b4caa2252b95c92d592deaa59b5884..eeb06ad1674c03e5f14114c60908038a
    pending_script->CheckState();
    return pending_script;
  }
-@@ -264,6 +286,18 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
-   }
+@@ -273,6 +297,19 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
+                                          GetResource()->Url().GetString()));
  
    bool error_occurred = GetResource()->ErrorOccurred() || integrity_failure_;
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (element->GetDocument().GetPageGraph() != nullptr) {
-+    if (error_occurred) {
-+      element->GetDocument().GetPageGraph()->RegisterRequestError(
-+        resource->InspectorId());
-+    } else {
-+      element->GetDocument().GetPageGraph()->RegisterRequestComplete(
-+        resource->InspectorId(),
-+        resource->GetType());
++  {
++    ::brave_page_graph::PageGraph* page_graph = element->GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      if (error_occurred) {
++        page_graph->RegisterRequestError(resource->Identifier());
++      } else {
++        page_graph->RegisterRequestComplete(resource->Identifier(),
++          resource->GetType());
++      }
 +    }
 +  }
 +#endif
    AdvanceReadyState(error_occurred ? kErrorOccurred : kReady);
  }
  
-@@ -362,6 +396,17 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
+@@ -376,6 +413,17 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
  
    ScriptSourceCode source_code(streamer_ready ? streamer : nullptr, resource,
                                 not_streamed_reason);
@@ -76,4 +79,4 @@ index 65e1def936b4caa2252b95c92d592deaa59b5884..eeb06ad1674c03e5f14114c60908038a
 +
    // The base URL for external classic script is
    //
-   // <spec href="https://html.spec.whatwg.org/#concept-script-base-url">
+   // <spec href="https://html.spec.whatwg.org/C/#concept-script-base-url">

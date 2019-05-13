@@ -12,10 +12,11 @@
 #include <vector>
 
 namespace blink {
-using DOMNodeId = uint64_t;
+using DOMNodeId = int;
 class KURL;
 enum class ResourceType : uint8_t;
 class ScriptSourceCode;
+class WebString;
 }  // namespace blink
 
 namespace WTF {
@@ -117,7 +118,7 @@ std::string request_status_to_string(const RequestStatus status) noexcept;
 
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
-typedef uint64_t ScriptId;
+typedef int ScriptId;
 
 typedef uint64_t PageGraphId;
 typedef std::string MethodName;
@@ -127,7 +128,7 @@ typedef std::string RequestUrl;
 typedef uint64_t InspectorId;
 typedef uint64_t ChildFrameId;
 
-const blink::DOMNodeId kRootNodeId = ULLONG_MAX;
+const blink::DOMNodeId kRootNodeId = INT_MAX;
 
 }  // namespace brave_page_graph
 

@@ -11,6 +11,7 @@ source_set("brave_page_graph") {
   ]
 
   public_deps = [
+    "//third_party/blink/public/common",
     "buildflags",
   ]
 
@@ -22,6 +23,8 @@ source_set("brave_page_graph") {
       "graph_item/node/node.h",
       "graph_item/node/node_actor.cc",
       "graph_item/node/node_actor.h",
+      "graph_item/node/node_extension.cc",
+      "graph_item/node/node_extension.h",
       "graph_item/node/node_html.cc",
       "graph_item/node/node_html.h",
       "graph_item/node/node_html_element.cc",
@@ -52,6 +55,8 @@ source_set("brave_page_graph") {
       "graph_item/edge/edge_attribute_set.h",
       "graph_item/edge/edge_attribute.cc",
       "graph_item/edge/edge_attribute.h",
+      "graph_item/edge/edge_execute.cc",
+      "graph_item/edge/edge_execute.h",
       "graph_item/edge/edge_call.cc",
       "graph_item/edge/edge_call.h",
       "graph_item/edge/edge_html.cc",

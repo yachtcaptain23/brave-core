@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document_type.cc b/third_party/blink/renderer/core/dom/document_type.cc
-index e28838c63990ff1f1be26c7ae9c8faa63d939806..18fe6c42ad2f594f6fb097b7f60b376373e3a4e2 100644
+index e28838c63990ff1f1be26c7ae9c8faa63d939806..57836f791d99a918e7c58422bceaef4872e324fe 100644
 --- a/third_party/blink/renderer/core/dom/document_type.cc
 +++ b/third_party/blink/renderer/core/dom/document_type.cc
 @@ -25,6 +25,12 @@
@@ -15,16 +15,18 @@ index e28838c63990ff1f1be26c7ae9c8faa63d939806..18fe6c42ad2f594f6fb097b7f60b3763
  namespace blink {
  
  DocumentType::DocumentType(Document* document,
-@@ -34,7 +40,14 @@ DocumentType::DocumentType(Document* document,
+@@ -34,7 +40,16 @@ DocumentType::DocumentType(Document* document,
      : Node(document, kCreateOther),
        name_(name),
        public_id_(public_id),
 -      system_id_(system_id) {}
 +      system_id_(system_id) {
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (GetDocument().GetPageGraph() != nullptr) {
-+    GetDocument().GetPageGraph()->RegisterHTMLElementNodeCreated(
-+      DOMNodeIds::IdForNode(this), name);
++  {
++    if (GetDocument().GetPageGraph() != nullptr) {
++      GetDocument().GetPageGraph()->RegisterHTMLElementNodeCreated(
++        DOMNodeIds::IdForNode(this), name);
++    }
 +  }
 +#endif
 +}

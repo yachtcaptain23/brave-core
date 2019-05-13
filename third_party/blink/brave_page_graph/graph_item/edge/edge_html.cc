@@ -26,7 +26,7 @@ EdgeHTML::EdgeHTML(PageGraph* const graph, NodeHTMLElement* const out_node,
 
 EdgeHTML::EdgeHTML(const NodeHTMLElement* const out_node,
     NodeHTML* const in_node) :
-      Edge(nullptr, out_node, in_node) {}
+      Edge(nullptr, const_cast<NodeHTMLElement*>(out_node), in_node) {}
 
 EdgeHTML::~EdgeHTML() {}
 

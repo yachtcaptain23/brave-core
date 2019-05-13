@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index 1ce14d0a3959011771795d4dbfffcef69c957d49..1cd09caf0db7c1bf940c63faa3ab95d91a744c8c 100644
+index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c99254060e0f 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-@@ -68,6 +68,13 @@
+@@ -71,6 +71,13 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/time.h"
  
@@ -16,7 +16,7 @@ index 1ce14d0a3959011771795d4dbfffcef69c957d49..1cd09caf0db7c1bf940c63faa3ab95d9
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -127,9 +134,33 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -130,9 +137,33 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
@@ -25,6 +25,7 @@ index 1ce14d0a3959011771795d4dbfffcef69c957d49..1cd09caf0db7c1bf940c63faa3ab95d9
 +      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
 +        ->GetPageGraph();
 +      if (page_graph != nullptr) {
++        LOG(INFO) << source.Source().ToString().Utf8().data();
 +        page_graph->RegisterScriptCompilation(
 +          source, script->GetUnboundScript()->GetId(),
 +          ::brave_page_graph::ScriptType::kScriptTypeUnknown);
@@ -36,7 +37,6 @@ index 1ce14d0a3959011771795d4dbfffcef69c957d49..1cd09caf0db7c1bf940c63faa3ab95d9
      v8::MaybeLocal<v8::Value> maybe_result;
      maybe_result = V8ScriptRunner::RunCompiledScript(GetIsolate(), script,
                                                       GetFrame()->GetDocument());
-+
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    {
 +      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
@@ -47,6 +47,6 @@ index 1ce14d0a3959011771795d4dbfffcef69c957d49..1cd09caf0db7c1bf940c63faa3ab95d9
 +    }
 +#endif
 +
-     probe::produceCompilationCache(frame_, source, script);
+     probe::ProduceCompilationCache(frame_, source, script);
      V8CodeCache::ProduceCache(GetIsolate(), script, source,
-                               produce_cache_options, compile_options);
+                               produce_cache_options);

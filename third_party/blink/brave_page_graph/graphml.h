@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPHML_H_
 
 #include <string>
+#include <vector>
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -26,8 +27,9 @@ class GraphMLAttr {
   GraphMLXML ToDefinition() const;
   GraphMLXML ToValue(const char* value) const;
   GraphMLXML ToValue(const std::string& value) const;
-  GraphMLXML ToValue(const uint64_t value) const;
+  GraphMLXML ToValue(const int value) const;
   GraphMLXML ToValue(const bool value) const;
+  GraphMLXML ToValue(const uint64_t value) const;
 
  protected:
   const uint64_t id_;
@@ -36,9 +38,9 @@ class GraphMLAttr {
   const GraphMLAttrType type_;
 };
 
-GraphMLAttr* graphml_attr_def_for_type(const GraphMLAttrDef type) noexcept;
+const GraphMLAttr* graphml_attr_def_for_type(const GraphMLAttrDef type) noexcept;
 GraphMLXML graphml_attr_def_to_string(const GraphMLAttr attr_def) noexcept;
-GraphMLXML graphml_for_page_graph(const PageGraph* const graph) noexcept;
+const std::vector<const GraphMLAttr* const>& get_graphml_attrs();
 
 }  // namespace brave_page_graph
 

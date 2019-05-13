@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index e5d02bd5288267372a37bb4924d144abcf9a312c..5b1b9bec8ad81c7cec9a8be6fd2acb33afbcc7b9 100644
+index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64b3becbe9 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -301,6 +301,11 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -305,6 +305,11 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
@@ -14,7 +14,7 @@ index e5d02bd5288267372a37bb4924d144abcf9a312c..5b1b9bec8ad81c7cec9a8be6fd2acb33
  namespace blink {
  
  using namespace html_names;
-@@ -730,7 +735,6 @@ Document::Document(const DocumentInit& initializer,
+@@ -734,7 +739,6 @@ Document::Document(const DocumentInit& initializer,
          &FetchContext::NullInstance(), GetTaskRunner(TaskType::kNetworking)));
    }
    DCHECK(fetcher_);
@@ -22,7 +22,7 @@ index e5d02bd5288267372a37bb4924d144abcf9a312c..5b1b9bec8ad81c7cec9a8be6fd2acb33
    root_scroller_controller_ = RootScrollerController::Create(*this);
  
    // We depend on the url getting immediately set in subframes, but we
-@@ -770,6 +774,10 @@ Document::Document(const DocumentInit& initializer,
+@@ -774,6 +778,10 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
@@ -33,7 +33,7 @@ index e5d02bd5288267372a37bb4924d144abcf9a312c..5b1b9bec8ad81c7cec9a8be6fd2acb33
  }
  
  Document::~Document() {
-@@ -780,8 +788,23 @@ Document::~Document() {
+@@ -784,8 +792,26 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -47,8 +47,11 @@ index e5d02bd5288267372a37bb4924d144abcf9a312c..5b1b9bec8ad81c7cec9a8be6fd2acb33
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
-+  if (page_graph_ == nullptr) {
++  if (page_graph_ == nullptr &&
++      IsHTMLDocument() &&
++      Url().ProtocolIsInHTTPFamily()) {
 +    page_graph_ = new brave_page_graph::PageGraph();
++    GetIsolate()->SetPageGraph(page_graph_);
 +  }
 +  return page_graph_;
 +}

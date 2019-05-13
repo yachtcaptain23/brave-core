@@ -28,8 +28,8 @@ friend class PageGraph;
   // This is just a more-semantically meaningful alias for which
   // node is the requestor and which is the resource, which will differ
   // depending on the request status (i.e. initiation, response or error).
-  virtual NodeResource* GetResourceNode() const;
-  virtual Node* GetRequestingNode() const;
+  virtual NodeResource* GetResourceNode() const = 0;
+  virtual Node* GetRequestingNode() const = 0;
 
  protected:
   EdgeRequest(PageGraph* const graph, Node* const out_node,

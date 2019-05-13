@@ -8,6 +8,7 @@
 #include "base/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extension.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -22,6 +23,10 @@ EdgeExecute::EdgeExecute(PageGraph* const graph,
       Edge(graph, out_node, in_node) {
   LOG_ASSERT(out_node->TagName() == "script");
 }
+
+EdgeExecute::EdgeExecute(PageGraph* const graph, NodeExtension* const out_node,
+    NodeScript* const in_node) :
+      Edge(graph, out_node, in_node) {}
 
 EdgeExecute::~EdgeExecute() {}
 

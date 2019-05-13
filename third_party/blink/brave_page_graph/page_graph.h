@@ -18,9 +18,11 @@ namespace brave_page_graph {
 
 class Edge;
 class EdgeRequestStart;
+class EdgeNodeInsert;
 class GraphItem;
 class Node;
 class NodeActor;
+class NodeExtension;
 class NodeHTML;
 class NodeHTMLElement;
 class NodeHTMLText;
@@ -33,14 +35,13 @@ class NodeStorageLocalStorage;
 class NodeWebAPI;
 
 class PageGraph {
+// Needed so that graph items can assign themself the next graph id.
 friend GraphItem;
+// Needed so that edges between HTML nodes can find their siblings and parents.
+friend EdgeNodeInsert;
  public:
   PageGraph();
   ~PageGraph();
-
-  NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
-  NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
-  NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
 
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& tag_name);
@@ -56,9 +57,9 @@ friend GraphItem;
   void RegisterHTMLTextNodeRemoved(const blink::DOMNodeId node_id);
 
   void RegisterInlineStyleSet(const blink::DOMNodeId node_id,
-    const std::string& attr_name, const std::string& attr_value);
+    const WTF::String& attr_name, const WTF::String& attr_value);
   void RegisterInlineStyleDelete(const blink::DOMNodeId node_id,
-    const std::string& attr_name);
+    const WTF::String& attr_name);
   void RegisterAttributeSet(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value);
   void RegisterAttributeDelete(const blink::DOMNodeId node_id,
@@ -67,8 +68,8 @@ friend GraphItem;
   void RegisterRequestStartFromElm(const blink::DOMNodeId node_id,
     const InspectorId request_id, const blink::KURL& url,
     const RequestType type);
-  void RegisterRequestStartFromCurrentScript(const blink::KURL& url,
-    const RequestType type);
+  void RegisterRequestStartFromCurrentScript(const InspectorId request_id,
+    const blink::KURL& url, const RequestType type);
 
   void RegisterRequestComplete(const InspectorId request_id,
     const blink::ResourceType type);
@@ -85,24 +86,20 @@ friend GraphItem;
     const blink::KURL& url);
   void RegisterUrlForScriptSource(const blink::KURL& url, 
     const blink::ScriptSourceCode& code);
+  void RegisterUrlForExtensionScriptSource(const blink::WebString& url,
+    const blink::WebString& code);
   void RegisterScriptCompilation(const blink::ScriptSourceCode& code,
     const ScriptId script_id, const ScriptType type);
+  void RegisterTopLevelScriptId(const ScriptId script_id);
+  void RegisterChildScriptIdForParentScriptId(const ScriptId child_script_id,
+    const ScriptId parent_script_id);
 
   void RegisterScriptExecStart(const ScriptId script_id);
   // The Script ID is only used here as a sanity check to make sure we're
   // correctly tracking script execution correctly.
   void RegisterScriptExecStop(const ScriptId script_id);
 
-  std::vector<blink::DOMNodeId> NodeIdsForScriptId(const ScriptId script_id) const;
-  std::vector<ScriptId> ScriptIdsForNodeId(const blink::DOMNodeId nodeId) const;
-
   GraphMLXML ToGraphML() const;
-  NodeActor* GetCurrentActingNode() const;
-
-  const std::vector<std::unique_ptr<Node> >& Nodes() const;
-  const std::vector<std::unique_ptr<const Edge> >& Edges() const;
-  const std::vector<const GraphItem*>& GraphItems() const;
-
   ChildFrameId GetNewChildFrameId();
 
   void PushActiveScript(const ScriptId script_id);
@@ -112,6 +109,19 @@ friend GraphItem;
  protected:
   void AddNode(Node* const node);
   void AddEdge(const Edge* const edge);
+
+  const std::vector<std::unique_ptr<Node> >& Nodes() const;
+  const std::vector<std::unique_ptr<const Edge> >& Edges() const;
+  const std::vector<const GraphItem*>& GraphItems() const;
+
+  NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
+  NodeExtension* GetExtensionNode();
+  NodeActor* GetCurrentActingNode() const;
+
+  std::vector<blink::DOMNodeId> NodeIdsForScriptId(const ScriptId script_id) const;
+  std::vector<ScriptId> ScriptIdsForNodeId(const blink::DOMNodeId nodeId) const;
 
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
@@ -132,6 +142,7 @@ friend GraphItem;
   NodeShields* const shields_node_;
   NodeStorageCookieJar* const cookie_jar_node_;
   NodeStorageLocalStorage* const local_storage_node_;
+  NodeExtension* extension_node_ = nullptr;
 
   // Non-owning reference to the HTML root of the document (i.e. <html>).
   NodeHTMLElement* html_root_node_;
@@ -148,6 +159,7 @@ friend GraphItem;
   // Index structure for looking up script nodes.
   // This map does not own the references.
   std::map<ScriptId, NodeScript* const> script_nodes_;
+  std::map<std::string, NodeScript* const> urls_for_extension_scripts_;
 
   // Request handling
   // ---

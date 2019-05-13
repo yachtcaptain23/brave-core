@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.h b/third_party/blink/renderer/core/frame/local_frame.h
-index 92ea3730539e5d6a4627cd55e305eaa36ed41d3d..eb843afdeb933be06503b40a3acd8b741e8518a8 100644
+index 8c8492e0c5382e7a1b7cd27f915e60c81120dd6a..693481c70333bdd07c8d0a3a8910aabec3259835 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.h
 +++ b/third_party/blink/renderer/core/frame/local_frame.h
-@@ -54,6 +54,11 @@
+@@ -55,6 +55,11 @@
  #include "third_party/blink/renderer/platform/scheduler/public/frame_scheduler.h"
  #include "third_party/blink/renderer/platform/supplementable.h"
  
@@ -14,9 +14,9 @@ index 92ea3730539e5d6a4627cd55e305eaa36ed41d3d..eb843afdeb933be06503b40a3acd8b74
  namespace base {
  class SingleThreadTaskRunner;
  }
-@@ -433,6 +438,14 @@ class CORE_EXPORT LocalFrame final : public Frame,
-   // To be called from OomInterventionImpl.
-   void ForciblyPurgeV8Memory();
+@@ -445,6 +450,14 @@ class CORE_EXPORT LocalFrame final : public Frame,
+   // navigations go through.
+   void MaybeLogAdClickNavigation();
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void SetPageGraphChildFrameId(const ::brave_page_graph::ChildFrameId child_frame_id);
@@ -29,10 +29,10 @@ index 92ea3730539e5d6a4627cd55e305eaa36ed41d3d..eb843afdeb933be06503b40a3acd8b74
   private:
    friend class FrameNavigationDisabler;
  
-@@ -563,6 +576,11 @@ class CORE_EXPORT LocalFrame final : public Frame,
-   const bool is_save_data_enabled_;
+@@ -579,6 +592,11 @@ class CORE_EXPORT LocalFrame final : public Frame,
  
-   std::unique_ptr<FrameOverlay> frame_color_overlay_;
+   mojom::FrameLifecycleState lifecycle_state_ =
+       mojom::FrameLifecycleState::kRunning;
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  ::brave_page_graph::ChildFrameId page_graph_child_frame_id_ = 0;

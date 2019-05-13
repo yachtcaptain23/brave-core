@@ -37,6 +37,12 @@
 
 namespace brave_page_graph {
 
+typedef enum {
+  kScriptTrackerScriptSourceUnknown = 0,
+  kScriptTrackerScriptSourceExtension,
+  kScriptTrackerScriptSourcePage,  
+} ScriptTrackerScriptSource;
+
 class ScriptTracker {
  public:
   ScriptTracker();
@@ -51,17 +57,28 @@ class ScriptTracker {
   // Method used for step 2 above.
   void AddCodeFetchedFromUrl(const blink::ScriptSourceCode& code,
     const blink::KURL& url);
+  void AddExtensionCodeFetchedFromUrl(const SourceCodeHash code_hash,
+    const UrlHash url_hash);
 
   // Method used for step 3 above.
   void SetScriptIdForCode(const ScriptId script_id,
     const blink::ScriptSourceCode& code);
+
+  ScriptTrackerScriptSource GetSourceOfScript(const ScriptId script_id) const;
 
   std::vector<blink::DOMNodeId> GetElmsForScriptId(
     const ScriptId script_id) const;
   std::vector<ScriptId> GetScriptIdsForElm(
     const blink::DOMNodeId node_id) const;
 
+  void AddTopLevelScriptId(const ScriptId script_id);
+  void AddChildScriptIdForParentScriptId(const ScriptId child_script_id,
+    const ScriptId parent_script_id);
+  ScriptId TopLevelScriptIdForScriptId(const ScriptId script_id) const;
+
  private:
+   ScriptId GetParentScriptIdForChildScriptId(const ScriptId script_id) const;
+
   // Data structures used for step 1 above (note that values are vectors
   // since the same script element can be made to multiple URLs and / or
   // change in-place code over time).  Similarly, there can be multiple
@@ -76,9 +93,20 @@ class ScriptTracker {
   std::map<UrlHash, SourceCodeHash> script_url_hash_to_source_hash_;
   std::map<SourceCodeHash, UrlHash> source_hash_to_script_url_hash_;
 
+  std::map<SourceCodeHash, UrlHash> extension_source_hash_to_script_url_hash_;
+  std::map<UrlHash, SourceCodeHash> extension_script_url_hash_to_source_hash_;
+
   //  Maps used for step 3.
   std::map<SourceCodeHash, ScriptId> source_hash_to_script_id_;
   std::map<ScriptId, SourceCodeHash> script_id_to_source_hash_;
+
+  std::map<SourceCodeHash, ScriptId> extension_source_hash_to_script_id_;
+  std::map<ScriptId, SourceCodeHash> script_id_to_extension_source_hash_;
+
+  // Maps used for associating child scripts with a parent script.
+  std::map<ScriptId, ScriptId> parent_script_ids_;
+  std::map<ScriptId, ScriptId> child_to_parent_script_;
+  ScriptId max_script_id_ = 0;
 };
 
 }  // namespace brave_page_graph

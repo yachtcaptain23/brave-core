@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
-index b6bdefc799a8e306483feac5da543a46f2f30340..61996dcb69ed8ced331ba1c7c384960c879b8c09 100644
+index 72affbe4e722bfec3112073cd79731d85a542a08..35606752867c0677d8b47bac7947277a7d32bccb 100644
 --- a/third_party/blink/renderer/core/loader/frame_loader.cc
 +++ b/third_party/blink/renderer/core/loader/frame_loader.cc
 @@ -112,6 +112,13 @@
@@ -16,8 +16,8 @@ index b6bdefc799a8e306483feac5da543a46f2f30340..61996dcb69ed8ced331ba1c7c384960c
  namespace blink {
  
  using namespace html_names;
-@@ -970,6 +977,23 @@ void FrameLoader::StartNavigation(const FrameLoadRequest& passed_request,
-     return;
+@@ -944,6 +951,23 @@ void FrameLoader::StartNavigation(const FrameLoadRequest& passed_request,
+     LocalFrame::ConsumeTransientUserActivation(frame_);
    }
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
@@ -40,7 +40,7 @@ index b6bdefc799a8e306483feac5da543a46f2f30340..61996dcb69ed8ced331ba1c7c384960c
    Client()->BeginNavigation(
        resource_request, origin_document, nullptr /* document_loader */,
        navigation_type, policy, has_transient_activation, frame_load_type,
-@@ -1118,6 +1142,21 @@ mojom::CommitResult FrameLoader::CommitSameDocumentNavigation(
+@@ -1075,6 +1099,21 @@ mojom::CommitResult FrameLoader::CommitSameDocumentNavigation(
        frame_load_type = WebFrameLoadType::kReplaceCurrentItem;
    }
  

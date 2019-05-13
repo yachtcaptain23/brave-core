@@ -45,9 +45,9 @@ friend class NodeHTML;
   void AddOutEdge(const EdgeAttributeDelete* const edge);
   
   using Node::AddOutEdge;
-  void AddOutEdge(const EdgeRequestComplete* const edge);
-  void AddOutEdge(const EdgeRequestError* const edge);
-  void AddOutEdge(const EdgeRequestStart* const edge);
+  // void AddOutEdge(const EdgeRequestComplete* const edge);
+  // void AddOutEdge(const EdgeRequestError* const edge);
+  // void AddOutEdge(const EdgeRequestStart* const edge);
 
   const HTMLNodeList& ChildNodes() const;
   GraphMLXML GetGraphMLTag() const override;
