@@ -2963,4 +2963,8 @@ RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
 }
 
+void RewardsServiceImpl::SetTestResponseCallback(GetTestResponseCallback callback) {
+  test_response_callback_ = callback;
+}
+
 }  // namespace brave_rewards

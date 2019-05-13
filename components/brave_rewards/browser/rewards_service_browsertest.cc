@@ -78,7 +78,9 @@ namespace brave_test_resp {
 }  // namespace brave_test_resp
 
 class BraveRewardsBrowserTest : public InProcessBrowserTest,
-                                public brave_rewards::RewardsServiceObserver {
+                                public brave_rewards::RewardsServiceObserver,
+                                public brave_rewards::RewardsNotificationServiceObserver,
+                                public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -90,9 +92,6 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(
             browser()->profile()));
-    rewards_service_->test_response_callback_ =
-        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
-                            base::Unretained(this));
     rewards_service_->SetLedgerEnvForTesting();
   }
 
@@ -887,6 +886,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
   bool contribution_made_ = false;
   bool tip_made = false;
+  bool last_publisher_added_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -1447,7 +1447,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
-
+  rewards_service_->SetTestResponseCallback(
+        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+                            base::Unretained(this)));
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
@@ -1472,7 +1474,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
-
+  rewards_service_->SetTestResponseCallback(
+        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+                            base::Unretained(this)));
   // Claim grant using panel
   const bool use_panel = true;
   ClaimGrant(use_panel);
@@ -1510,7 +1514,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->GetNotificationService()->AddObserver(this);
 
   EnableRewards();
-
+  rewards_service_->SetTestResponseCallback(
+        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+                            base::Unretained(this)));
   // Claim grant using panel
   const bool use_panel = true;
   ClaimGrant(use_panel);
@@ -1523,7 +1529,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     VisitPublisher("google.com", !verified, 2, true);
   }
 
-  rewards_service_->SetContributionAmountForTesting(50.0);
+  rewards_service_->SetContributionAmount(50.0);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -1548,7 +1554,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
-
+  rewards_service_->SetTestResponseCallback(
+        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+                            base::Unretained(this)));
   // Claim grant using panel
   const bool use_panel = true;
   ClaimGrant(use_panel);
@@ -1560,7 +1568,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     VisitPublisher("bumpsmack.com", verified, 1);
     VisitPublisher("google.com", !verified, 2, true);
   }
-  rewards_service_->SetContributionAmountForTesting(100.0);
+  rewards_service_->SetContributionAmount(100.0);
 
   rewards_service_->CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
