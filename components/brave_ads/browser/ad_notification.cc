@@ -2,13 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/version_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
-
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+#include "brave/browser/version_info.h"
 #include "base/strings/utf_string_conversions.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
+#include "chrome/browser/jni_headers/chrome/jni/BraveAds_jni.h"
 
 namespace brave_ads {
 
@@ -49,14 +51,26 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
       gfx::Image(),
       base::string16(),
       GURL("chrome://brave_ads/?" + *notification_id),
-      message_center::NotifierId(MESSAGE_NOTIFIER_TYPE,
-                                 kNotifierId),
+      message_center::NotifierId(
+          message_center::NotifierType::SYSTEM_COMPONENT,
+          kNotifierId),
       notification_data,
       nullptr);
 #if !defined(OS_MACOSX) || defined(OFFICIAL_BUILD)
   // set_never_timeout uses an XPC service which requires signing
   // so for now we don't set this for macos dev builds
   notification->set_never_timeout(true);
+#endif
+
+#if defined(OS_ANDROID)
+  JNIEnv* env = base::android::AttachCurrentThread();
+  base::android::ScopedJavaGlobalRef<jobject> java_obj_;
+  java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
+  base::android::ScopedJavaLocalRef<jstring> jadvertiser = base::android::ConvertUTF8ToJavaString(env, notification_info.advertiser.c_str());
+  base::android::ScopedJavaLocalRef<jstring> jtext = base::android::ConvertUTF8ToJavaString(env, notification_info.text.c_str());
+  base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, notification_info.url.c_str());
+  base::android::ScopedJavaLocalRef<jstring> juuid = base::android::ConvertUTF8ToJavaString(env, notification_info.uuid.c_str());
+  Java_BraveAds_showNotificationFromNative(env, java_obj_, jadvertiser);
 #endif
 
   return notification;

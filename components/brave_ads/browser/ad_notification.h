@@ -5,6 +5,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_NOTIFICATION_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_NOTIFICATION_
 
+#include "base/android/scoped_java_ref.h"
+#include "net/base/completion_once_callback.h"
+#include <jni.h>
 #include <memory>
 #include <string>
 
