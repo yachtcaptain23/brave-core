@@ -26,11 +26,10 @@ namespace brave_ads {
 std::unique_ptr<message_center::Notification> CreateAdNotification(
       const ads::NotificationInfo& notification_info,
       std::string* notification_id);
-
-static void JNI_BraveAds_OnShowHelper(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android,
-    jstring uuid);
+class BraveAds {
+  public:
+    static void OnShowHelper(JNIEnv* env, const base::android::JavaParamRef<jobject>& j_profile_android, jstring uuid);
+};
 
 
 }  // namespace brave_ads

@@ -12,6 +12,7 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
+#include "chrome/browser/profiles/profile.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -36,6 +37,7 @@ class AdsService : public KeyedService {
   virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void ClassifyPage(const std::string& url,
                             const std::string& page) = 0;
+  virtual void OnShow(Profile* profile, const std::string& notification_id) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
  private:

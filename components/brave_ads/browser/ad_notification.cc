@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
@@ -18,7 +20,6 @@
 #include "chrome/browser/profiles/profile_android.h"
 #include "base/android/jni_android.h"
 #include "net/android/network_library.h"
-#include "chrome/browser/jni_headers/chrome/jni/Profile_jni.h"
 #endif
 
 namespace brave_ads {
@@ -35,14 +36,14 @@ using base::android::ScopedJavaLocalRef;
 
 // static
 // (Albert Wang): Copied syntax from profile_android.cc
-void JNI_BraveAds_OnShowHelper(
+void BraveAds::OnShowHelper(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     jstring uuid) {
 
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  LOG(WARNING) << "albert OnShowHelper" << profile;
-//  OnShow(profile, uuid);
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  ads_service_->OnShow(profile, base::android::ConvertJavaStringToUTF8(env, uuid));
 }
 
 
