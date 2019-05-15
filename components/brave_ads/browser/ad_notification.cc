@@ -10,7 +10,16 @@
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
+#include "chrome/browser/profiles/profile.h"
+
+#if defined(OS_ANDROID)
 #include "chrome/browser/jni_headers/chrome/jni/BraveAds_jni.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "chrome/browser/profiles/profile_android.h"
+#include "base/android/jni_android.h"
+#include "net/android/network_library.h"
+#include "chrome/browser/jni_headers/chrome/jni/Profile_jni.h"
+#endif
 
 namespace brave_ads {
 
@@ -20,6 +29,23 @@ const char kNotifierIdPrefix[] = "service.ads_service.";
 const char kNotifierId[] = "service.ads_service";
 
 }  // namespace
+
+using base::android::JavaParamRef;
+using base::android::ScopedJavaLocalRef;
+
+// static
+// (Albert Wang): Copied syntax from profile_android.cc
+void JNI_BraveAds_OnShowHelper(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android,
+    jstring uuid) {
+
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  LOG(WARNING) << "albert OnShowHelper" << profile;
+//  OnShow(profile, uuid);
+}
+
+
 
 // static
 std::unique_ptr<message_center::Notification> CreateAdNotification(
@@ -70,7 +96,7 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
   base::android::ScopedJavaLocalRef<jstring> jtext = base::android::ConvertUTF8ToJavaString(env, notification_info.text.c_str());
   base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, notification_info.url.c_str());
   base::android::ScopedJavaLocalRef<jstring> juuid = base::android::ConvertUTF8ToJavaString(env, notification_info.uuid.c_str());
-  Java_BraveAds_showNotificationFromNative(env, java_obj_, jadvertiser);
+  Java_BraveAds_showNotificationFromNative(env, java_obj_, jadvertiser, jtext, jurl, juuid);
 #endif
 
   return notification;
