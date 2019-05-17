@@ -71,6 +71,14 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
   void OnShow(Profile* profile, const std::string& notification_id) override;
+  void OpenSettings(Profile* profile,
+                    const GURL& origin,
+                    bool should_close) override;
+  void OnClose(Profile* profile,
+                     const GURL& origin,
+                     const std::string& notification_id,
+                     bool by_user,
+                     base::OnceClosure completed_closure) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void Shutdown() override;
@@ -89,15 +97,6 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(ui::IdleState idle_state);
 #endif
   int GetIdleThreshold();
-  void OnClose(Profile* profile,
-               const GURL& origin,
-               const std::string& notification_id,
-               bool by_user,
-               base::OnceClosure completed_closure);
-  void OpenSettings(Profile* profile,
-                    const GURL& origin,
-                    bool should_close);
-
 
   // AdsClient implementation
   bool IsAdsEnabled() const override;

@@ -36,6 +36,7 @@ using base::android::ScopedJavaLocalRef;
 
 // static
 // (Albert Wang): Copied syntax from profile_android.cc
+// void BraveAds::OnShowHelper(
 void BraveAds::OnShowHelper(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
@@ -43,10 +44,37 @@ void BraveAds::OnShowHelper(
 
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
   auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  LOG(WARNING) << "albert got on show!";
   ads_service_->OnShow(profile, base::android::ConvertJavaStringToUTF8(env, uuid));
 }
 
+// static
+void BraveAds::OnClickHelper(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android,
+    jstring url,
+    bool should_close) {
 
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  LOG(WARNING) << "albert got on click!" << base::android::ConvertJavaStringToUTF8(env, url);
+  ads_service_->OpenSettings(profile, GURL(base::android::ConvertJavaStringToUTF8(env, url)), should_close);
+}
+
+// static
+void BraveAds::OnDismissHelper(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android,
+    jstring url,
+    jstring uuid,
+    bool dismissed_by_user) {
+
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  // (Albert Wang): What does OnceClosure() do??
+  LOG(WARNING) << "albert got on dismiss!";
+  ads_service_->OnClose(profile, GURL(base::android::ConvertJavaStringToUTF8(env, url)), base::android::ConvertJavaStringToUTF8(env, uuid), dismissed_by_user, base::OnceClosure());
+}
 
 // static
 std::unique_ptr<message_center::Notification> CreateAdNotification(

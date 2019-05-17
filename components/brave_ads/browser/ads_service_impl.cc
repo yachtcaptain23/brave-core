@@ -56,6 +56,7 @@
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+// #include "chrome/browser/profiles/profile_android.h"
 #include "net/android/network_library.h"
 #endif
 
@@ -287,6 +288,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
 
+  LOG(WARNING) << "albert constructor? adsserviceimpl";
   auto* display_service_impl =
       static_cast<NotificationDisplayServiceImpl*>(display_service_);
 
@@ -302,10 +304,19 @@ AdsServiceImpl::~AdsServiceImpl() {
 }
 
 void AdsServiceImpl::OnInitialize() {
+  auto info = std::make_unique<ads::NotificationInfo>();
+  LOG(WARNING) << "albert on init!";
+  info->advertiser = "Amazon";
+  info->uuid = "12345678";
+  info->text = "What a beautiful life.";
+  info->url = "https://mycrypto.com";
+  std::string notification_id = "88";
+  CreateAdNotification(*info, &notification_id);
   ResetTimer();
 }
 
 void AdsServiceImpl::OnCreate() {
+  LOG(WARNING) << "albert OnCreate";
   if (connected()) {
     bat_ads_->Initialize(
         base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
@@ -330,6 +341,7 @@ void AdsServiceImpl::MaybeStart(bool restart) {
 }
 
 void AdsServiceImpl::Start() {
+  LOG(WARNING) << "albert Start";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(is_enabled());
   DCHECK(!bat_ads_.is_bound());
@@ -462,11 +474,14 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::is_enabled() const {
+  /*
   bool ads_enabled = profile_->GetPrefs()->GetBoolean(
       prefs::kBraveAdsEnabled);
   bool rewards_enabled = profile_->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kBraveRewardsEnabled);
   return (ads_enabled && rewards_enabled);
+  */
+  return true;
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
@@ -528,11 +543,13 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 }
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+  LOG(WARNING) << "albert notifications are available";
   return true;
-#else
-  return false;
-#endif
+// #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+//  return true;
+// #else
+//   return false;
+// #endif
 }
 
 void AdsServiceImpl::LoadUserModelForLocale(
@@ -570,7 +587,8 @@ void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
+//  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
+  return 120;
 }
 
 uint64_t AdsServiceImpl::ads_per_hour() const {
@@ -578,12 +596,14 @@ uint64_t AdsServiceImpl::ads_per_hour() const {
 }
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
+//  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
+  return 2700;
 }
 
 void AdsServiceImpl::ShowNotification(
     std::unique_ptr<ads::NotificationInfo> info) {
   std::string notification_id;
+  LOG(WARNING) << "albert showNotification!";
   auto notification =
       CreateAdNotification(*info, &notification_id);
 
@@ -760,6 +780,7 @@ bool AdsServiceImpl::IsNetworkConnectionAvailable() {
 
 void AdsServiceImpl::OnShow(Profile* profile,
                             const std::string& notification_id) {
+  LOG(WARNING) << "albert OnShow!";
   if (!connected() ||
       notification_ids_.find(notification_id) == notification_ids_.end())
     return;
@@ -1030,7 +1051,8 @@ std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(
 }
 
 bool AdsServiceImpl::connected() {
-  return bat_ads_.is_bound();
+  return true;
+//  return bat_ads_.is_bound();
 }
 
 }  // namespace brave_ads
