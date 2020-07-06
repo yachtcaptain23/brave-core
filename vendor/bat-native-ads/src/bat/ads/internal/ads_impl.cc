@@ -1164,7 +1164,6 @@ void AdsImpl::StartDeliveringAdNotifications() {
   const base::Time now = base::Time::Now();
   const base::Time next_check_serve_ad_notification_date =
       client_->GetNextCheckServeAdNotificationDate();
-
   base::TimeDelta delay;
   if (now >= next_check_serve_ad_notification_date) {
     // Browser was launched after the next check to serve an ad

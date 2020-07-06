@@ -13,55 +13,52 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/path_service.h"
-#include "chrome/common/chrome_paths.h"
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
+#include "base/i18n/time_formatting.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/path_service.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "base/task/post_task.h"
 #include "base/time/time.h"
-#include "base/i18n/time_formatting.h"
 #include "bat/ads/ad_history.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/ads_history.h"
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_history.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/notifications/notification_platform_bridge_brave_custom_notification.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "brave/components/brave_ads/browser/notification_helper.h"
 #include "chrome/browser/browser_process.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#if !defined(OS_ANDROID)
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#endif
 #include "chrome/browser/ui/browser_navigator_params.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_service.h"
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -75,7 +72,6 @@
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
@@ -83,6 +79,12 @@
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/page_navigator.h"
+#endif
+
+#if !defined(OS_ANDROID)
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -214,6 +216,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
     bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
+
   DCHECK(!profile_->IsOffTheRecord());
 
   MigratePrefs();
@@ -2017,11 +2020,11 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
-  auto notification = CreateAdNotification(*info);
+  std::unique_ptr<brave_custom_notification::Notification> notification = CreateAdNotification(*info);
 
-  display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
-      *notification, /*metadata=*/nullptr);
-
+  // Call NotificationPlatformBridgeBraveCustomNotification
+  NotificationPlatformBridgeBraveCustomNotification* platform_bridge = new NotificationPlatformBridgeBraveCustomNotification(profile_);
+  platform_bridge->Display(profile_, *notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
 
