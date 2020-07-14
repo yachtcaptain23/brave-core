@@ -13,6 +13,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/common/pref_names.h"
+#include "brave/browser/ui/brave_browser_dialogs.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
@@ -186,7 +187,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       NewIncognitoWindow(brave::GetParentProfile(browser_->profile()));
       break;
     case IDC_SHOW_BRAVE_REWARDS:
-      brave::ShowBraveRewards(browser_);
+      // brave::ShowBraveRewards(browser_);
+            brave::ShowAdsNotification(browser_->profile());
       break;
     case IDC_SHOW_BRAVE_ADBLOCK:
       brave::ShowBraveAdblock(browser_);
