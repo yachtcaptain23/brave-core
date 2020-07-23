@@ -55,10 +55,10 @@ class CompactTitleBraveMessageView : public views::View {
   views::Label* message_ = nullptr;
 };
 
-class LargeImageView : public views::View {
+class BraveLargeImageView : public views::View {
  public:
-  LargeImageView();
-  ~LargeImageView() override;
+  BraveLargeImageView();
+  ~BraveLargeImageView() override;
 
   void SetImage(const gfx::ImageSkia& image);
 
@@ -70,41 +70,23 @@ class LargeImageView : public views::View {
 
   gfx::ImageSkia image_;
 
-  DISALLOW_COPY_AND_ASSIGN(LargeImageView);
-};
-
-class LargeVideoView : public views::View {
- public:
-  LargeVideoView();
-  ~LargeVideoView() override;
-
-  void SetVideo(const gfx::ImageSkia& video);
-
-  void OnPaint(gfx::Canvas* canvas) override;
-  const char* GetClassName() const override;
-
- private:
-  gfx::Size GetResizedImageSize();
-
-  gfx::ImageSkia image_;
-
-  DISALLOW_COPY_AND_ASSIGN(LargeVideoView);
+  DISALLOW_COPY_AND_ASSIGN(BraveLargeImageView);
 };
 
 // This class is needed in addition to LabelButton mainly becuase we want to set
 // visible_opacity of InkDropHighlight.
 // This button capitalizes the given label string.
-class NotificationButtonMD : public views::LabelButton {
+class BraveNotificationButtonMD : public views::LabelButton {
  public:
   // |is_inline_reply| is true when the notification action takes text as the
   // return value i.e. the notification action is inline reply.
   // The input field would be shown when the button is clicked.
   // |placeholder| is placeholder text shown on the input field. Only used when
   // |is_inline_reply| is true.
-  NotificationButtonMD(views::ButtonListener* listener,
+  BraveNotificationButtonMD(views::ButtonListener* listener,
                        const base::string16& label,
                        const base::Optional<base::string16>& placeholder);
-  ~NotificationButtonMD() override;
+  ~BraveNotificationButtonMD() override;
 
   void SetText(const base::string16& text) override;
   const char* GetClassName() const override;
@@ -124,22 +106,22 @@ class NotificationButtonMD : public views::LabelButton {
  private:
   base::Optional<base::string16> placeholder_;
 
-  DISALLOW_COPY_AND_ASSIGN(NotificationButtonMD);
+  DISALLOW_COPY_AND_ASSIGN(BraveNotificationButtonMD);
 };
 
-class NotificationInputDelegate {
+class BraveNotificationInputDelegate {
  public:
   virtual void OnNotificationInputSubmit(size_t index,
                                          const base::string16& text) = 0;
-  virtual ~NotificationInputDelegate() = default;
+  virtual ~BraveNotificationInputDelegate() = default;
 };
 
-class NotificationInputContainerMD : public views::InkDropHostView,
+class BraveNotificationInputContainerMD : public views::InkDropHostView,
                                      public views::ButtonListener,
                                      public views::TextfieldController {
  public:
-  NotificationInputContainerMD(NotificationInputDelegate* delegate);
-  ~NotificationInputContainerMD() override;
+  BraveNotificationInputContainerMD(BraveNotificationInputDelegate* delegate);
+  ~BraveNotificationInputContainerMD() override;
 
   void AnimateBackground(const ui::Event& event);
 
@@ -161,14 +143,14 @@ class NotificationInputContainerMD : public views::InkDropHostView,
   views::ImageButton* button() const { return button_; }
 
  private:
-  NotificationInputDelegate* const delegate_;
+  BraveNotificationInputDelegate* const delegate_;
 
   views::InkDropContainerView* const ink_drop_container_;
 
   views::Textfield* const textfield_;
   views::ImageButton* const button_;
 
-  DISALLOW_COPY_AND_ASSIGN(NotificationInputContainerMD);
+  DISALLOW_COPY_AND_ASSIGN(BraveNotificationInputContainerMD);
 };
 
 // View that displays all current types of notification (web, basic, image, and
@@ -178,7 +160,7 @@ class NotificationInputContainerMD : public views::InkDropHostView,
 class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
     : public BraveMessageView,
       public views::InkDropObserver,
-      public NotificationInputDelegate,
+      public BraveNotificationInputDelegate,
       public views::ButtonListener {
  public:
   explicit BraveNotificationViewMD(const Notification& notification);
@@ -207,7 +189,7 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   void UpdateWithNotification(const message_center::Notification& notification) override;
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
   void UpdateCornerRadius(int top_radius, int bottom_radius) override;
-  BraveNotificationControlButtonsView* GetControlButtonsView() const override;
+  NotificationControlButtonsView* GetControlButtonsView() const override;
   bool IsExpanded() const override;
   void SetExpanded(bool expanded) override;
   bool IsManuallyExpandedOrCollapsed() const override;
@@ -218,7 +200,7 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   void InkDropAnimationStarted() override;
   void InkDropRippleAnimationEnded(views::InkDropState ink_drop_state) override;
 
-  // Overridden from NotificationInputDelegate:
+  // Overridden from BraveNotificationInputDelegate:
   void OnNotificationInputSubmit(size_t index,
                                  const base::string16& text) override;
 
@@ -290,7 +272,7 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   views::InkDropContainerView* const ink_drop_container_;
 
   // View containing close and settings buttons
-  std::unique_ptr<BraveNotificationControlButtonsView> control_buttons_view_;
+  std::unique_ptr<NotificationControlButtonsView> control_buttons_view_;
 
   // Whether this notification is expanded or not.
   bool expanded_ = true;
@@ -324,12 +306,12 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   views::Label* status_view_ = nullptr;
   ProportionalImageView* icon_view_ = nullptr;
   views::View* image_container_view_ = nullptr;
-  std::vector<NotificationButtonMD*> action_buttons_;
+  std::vector<BraveNotificationButtonMD*> action_buttons_;
   std::vector<views::View*> item_views_;
   views::ProgressBar* progress_bar_view_ = nullptr;
   CompactTitleBraveMessageView* compact_title_message_view_ = nullptr;
   views::View* action_buttons_row_ = nullptr;
-  NotificationInputContainerMD* inline_reply_ = nullptr;
+  BraveNotificationInputContainerMD* inline_reply_ = nullptr;
 
   // Counter for view layouting, which is used during the CreateOrUpdate*
   // phases to keep track of the view ordering. See crbug.com/901045

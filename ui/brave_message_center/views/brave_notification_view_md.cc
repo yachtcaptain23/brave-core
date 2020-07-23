@@ -281,15 +281,15 @@ void CompactTitleBraveMessageView::set_message(const base::string16& message) {
   message_->SetText(message);
 }
 
-// LargeImageView //////////////////////////////////////////////////////////////
+// BraveLargeImageView //////////////////////////////////////////////////////////////
 
-LargeImageView::LargeImageView() {
+BraveLargeImageView::BraveLargeImageView() {
   SetBackground(views::CreateSolidBackground(kLargeImageBackgroundColor));
 }
 
-LargeImageView::~LargeImageView() = default;
+BraveLargeImageView::~BraveLargeImageView() = default;
 
-void LargeImageView::SetImage(const gfx::ImageSkia& image) {
+void BraveLargeImageView::SetImage(const gfx::ImageSkia& image) {
   // image_ = image;
   // gfx::Size preferred_size = GetResizedImageSize();
   // preferred_size.SetToMax(kLargeImageMinSize);
@@ -299,7 +299,7 @@ void LargeImageView::SetImage(const gfx::ImageSkia& image) {
   Layout();
 }
 
-void LargeImageView::OnPaint(gfx::Canvas* canvas) {
+void BraveLargeImageView::OnPaint(gfx::Canvas* canvas) {
   views::View::OnPaint(canvas);
   LOG(INFO) << "albert *** LIV::OnPaint";
 
@@ -321,15 +321,15 @@ void LargeImageView::OnPaint(gfx::Canvas* canvas) {
   // LOG(INFO) << "*** canvas width: " << std::to_string(message_view_->width()) << " height: " << std::to_string(message_view_->height());
 }
 
-const char* LargeImageView::GetClassName() const {
-  return "LargeImageView";
+const char* BraveLargeImageView::GetClassName() const {
+  return "BraveLargeImageView";
 }
 
 // Returns expected size of the image right after resizing.
 // The GetResizedImageSize().width() <= kLargeImageMaxSize.width() holds, but
 // GetResizedImageSize().height() may be larger than kLargeImageMaxSize.height()
 // In this case, the overflown part will be just cutted off from the view.
-gfx::Size LargeImageView::GetResizedImageSize() {
+gfx::Size BraveLargeImageView::GetResizedImageSize() {
   return kLargeImageMaxSize;
   gfx::Size original_size = image_.size();
   if (original_size.width() <= kLargeImageMaxSize.width())
@@ -343,9 +343,9 @@ gfx::Size LargeImageView::GetResizedImageSize() {
   return resized_size;
 }
 
-// NotificationButtonMD ////////////////////////////////////////////////////////
+// BraveNotificationButtonMD ////////////////////////////////////////////////////////
 
-NotificationButtonMD::NotificationButtonMD(
+BraveNotificationButtonMD::BraveNotificationButtonMD(
     views::ButtonListener* listener,
     const base::string16& label,
     const base::Optional<base::string16>& placeholder)
@@ -366,28 +366,28 @@ NotificationButtonMD::NotificationButtonMD(
   views::InstallRectHighlightPathGenerator(this);
 }
 
-NotificationButtonMD::~NotificationButtonMD() = default;
+BraveNotificationButtonMD::~BraveNotificationButtonMD() = default;
 
-void NotificationButtonMD::SetText(const base::string16& text) {
+void BraveNotificationButtonMD::SetText(const base::string16& text) {
   views::LabelButton::SetText(base::i18n::ToUpper(text));
 }
 
-const char* NotificationButtonMD::GetClassName() const {
-  return "NotificationButtonMD";
+const char* BraveNotificationButtonMD::GetClassName() const {
+  return "BraveNotificationButtonMD";
 }
 
 std::unique_ptr<views::InkDropHighlight>
-NotificationButtonMD::CreateInkDropHighlight() const {
+BraveNotificationButtonMD::CreateInkDropHighlight() const {
   std::unique_ptr<views::InkDropHighlight> highlight =
       views::LabelButton::CreateInkDropHighlight();
   highlight->set_visible_opacity(kActionButtonInkDropHighlightVisibleOpacity);
   return highlight;
 }
 
-// NotificationInputContainerMD ////////////////////////////////////////////////
+// BraveNotificationInputContainerMD ////////////////////////////////////////////////
 
-NotificationInputContainerMD::NotificationInputContainerMD(
-    NotificationInputDelegate* delegate)
+BraveNotificationInputContainerMD::BraveNotificationInputContainerMD(
+    BraveNotificationInputDelegate* delegate)
     : delegate_(delegate),
       ink_drop_container_(new views::InkDropContainerView()),
       textfield_(new views::Textfield()),
@@ -418,9 +418,9 @@ NotificationInputContainerMD::NotificationInputContainerMD(
   views::InstallRectHighlightPathGenerator(this);
 }
 
-NotificationInputContainerMD::~NotificationInputContainerMD() = default;
+BraveNotificationInputContainerMD::~BraveNotificationInputContainerMD() = default;
 
-void NotificationInputContainerMD::AnimateBackground(const ui::Event& event) {
+void BraveNotificationInputContainerMD::AnimateBackground(const ui::Event& event) {
   // Try to get a located event. This can be NULL if triggered via keyboard.
   const ui::LocatedEvent* located_event = ui::LocatedEvent::FromIfValid(&event);
   // Use default animation if location is out of bounds.
@@ -429,7 +429,7 @@ void NotificationInputContainerMD::AnimateBackground(const ui::Event& event) {
   AnimateInkDrop(views::InkDropState::ACTION_PENDING, located_event);
 }
 
-void NotificationInputContainerMD::AddLayerBeneathView(ui::Layer* layer) {
+void BraveNotificationInputContainerMD::AddLayerBeneathView(ui::Layer* layer) {
   // When a ink drop layer is added it is stacked between the textfield/button
   // and the parent (|this|). Since the ink drop is opaque, we have to paint the
   // textfield/button on their own layers in otherwise they remain painted on
@@ -441,24 +441,24 @@ void NotificationInputContainerMD::AddLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->AddLayerBeneathView(layer);
 }
 
-void NotificationInputContainerMD::RemoveLayerBeneathView(ui::Layer* layer) {
+void BraveNotificationInputContainerMD::RemoveLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->RemoveLayerBeneathView(layer);
   textfield_->DestroyLayer();
   button_->DestroyLayer();
 }
 
 std::unique_ptr<views::InkDropRipple>
-NotificationInputContainerMD::CreateInkDropRipple() const {
+BraveNotificationInputContainerMD::CreateInkDropRipple() const {
   return std::make_unique<views::FloodFillInkDropRipple>(
       size(), GetInkDropCenterBasedOnLastEvent(), GetInkDropBaseColor(),
       ink_drop_visible_opacity());
 }
 
-SkColor NotificationInputContainerMD::GetInkDropBaseColor() const {
+SkColor BraveNotificationInputContainerMD::GetInkDropBaseColor() const {
   return SK_ColorTRANSPARENT;
 }
 
-bool NotificationInputContainerMD::HandleKeyEvent(views::Textfield* sender,
+bool BraveNotificationInputContainerMD::HandleKeyEvent(views::Textfield* sender,
                                                   const ui::KeyEvent& event) {
   if (event.type() == ui::ET_KEY_PRESSED &&
       event.key_code() == ui::VKEY_RETURN) {
@@ -470,7 +470,7 @@ bool NotificationInputContainerMD::HandleKeyEvent(views::Textfield* sender,
   return event.type() == ui::ET_KEY_RELEASED;
 }
 
-void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
+void BraveNotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
   DCHECK_EQ(sender, textfield_);
   button_->SetImage(
       views::Button::STATE_NORMAL,
@@ -480,7 +480,7 @@ void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
                                 : SK_ColorWHITE));
 }
 
-void NotificationInputContainerMD::ButtonPressed(views::Button* sender,
+void BraveNotificationInputContainerMD::ButtonPressed(views::Button* sender,
                                                  const ui::Event& event) {
   if (sender == button_) {
     delegate_->OnNotificationInputSubmit(
@@ -584,7 +584,7 @@ void BraveNotificationViewMD::CreateOrUpdateViews(const message_center::Notifica
   CreateOrUpdateActionButtonViews(notification);
 }
 
-BraveNotificationViewMD::BraveNotificationViewMD(const message_center::Notification& notification)
+BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notification)
     : BraveMessageView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
    SetLayoutManager(std::make_unique<views::FillLayout>(
@@ -597,7 +597,7 @@ BraveNotificationViewMD::BraveNotificationViewMD(const message_center::Notificat
   AddChildView(ink_drop_container_);
 
   control_buttons_view_ =
-      std::make_unique<BraveNotificationControlButtonsView>(this);
+      std::make_unique<NotificationControlButtonsView>(this);
   control_buttons_view_->set_owned_by_client();
 
   // |header_row_| contains app_icon, app_name, control buttons, etc...
@@ -651,7 +651,7 @@ BraveNotificationViewMD::BraveNotificationViewMD(const message_center::Notificat
   actions_row_->AddChildView(action_buttons_row_);
 
   // |inline_reply_| is a container for an inline textfield.
-  inline_reply_ = new NotificationInputContainerMD(this);
+  inline_reply_ = new BraveNotificationInputContainerMD(this);
   inline_reply_->SetVisible(false);
   actions_row_->AddChildView(inline_reply_);
 
@@ -1190,7 +1190,7 @@ void BraveNotificationViewMD::CreateOrUpdateImageView(
 
     views::WebView* webview = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
     image_container_view_->AddChildView(webview);
-    // image_container_view_->AddChildView(new LargeImageView());
+    // image_container_view_->AddChildView(new BraveLargeImageView());
 
     // Insert the created image container just after the |content_row_|.
     // image_container_view_->SetSize(kLargeImageMaxSize);
@@ -1199,7 +1199,7 @@ void BraveNotificationViewMD::CreateOrUpdateImageView(
     AddChildViewAt(image_container_view_, GetIndexOf(content_row_) + 1);
   }
 
-  static_cast<LargeImageView*>(image_container_view_->children().front())
+  static_cast<BraveLargeImageView*>(image_container_view_->children().front())
       ->SetImage(notification.image().AsImageSkia());
   LOG(INFO) << "*** image_container_view width: " << std::to_string(image_container_view_->width()) << " height: " << std::to_string(image_container_view_->height());
 }
@@ -1231,7 +1231,7 @@ void BraveNotificationViewMD::CreateOrUpdateActionButtonViews(
   for (size_t i = 0; i < buttons.size(); ++i) {
     ButtonInfo button_info = buttons[i];
     if (new_buttons) {
-      NotificationButtonMD* button = new NotificationButtonMD(
+      BraveNotificationButtonMD* button = new BraveNotificationButtonMD(
           this, button_info.title, button_info.placeholder);
       action_buttons_.push_back(button);
       action_buttons_row_->AddChildView(button);
@@ -1317,7 +1317,7 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
   settings_row_->AddChildView(dont_block_button_);
   settings_row_->SetVisible(false);
 
-  settings_done_button_ = new NotificationButtonMD(
+  settings_done_button_ = new BraveNotificationButtonMD(
       this, l10n_util::GetStringUTF16(IDS_MESSAGE_CENTER_SETTINGS_DONE),
       base::nullopt);
   settings_done_button_->SetTextSubpixelRenderingEnabled(false);
@@ -1480,7 +1480,7 @@ void BraveNotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radi
   */
 }
 
-BraveNotificationControlButtonsView* BraveNotificationViewMD::GetControlButtonsView()
+NotificationControlButtonsView* BraveNotificationViewMD::GetControlButtonsView()
     const {
   return control_buttons_view_.get();
 }

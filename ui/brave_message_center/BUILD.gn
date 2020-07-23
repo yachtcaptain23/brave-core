@@ -24,7 +24,7 @@ aggregate_vector_icons("brave_message_center_vector_icons") {
 }
 
 # TODO(msw|mukai|dewittj): Move ash-specific files: crbug.com/585175
-jumbo_component("message_center") {
+jumbo_component("brave_message_center") {
   deps = [
     "//base",
     "//ui/base",
@@ -32,10 +32,9 @@ jumbo_component("message_center") {
     "//url",
   ]
 
-  public_deps = [ "//brave/ui/brave_message_center/public/cpp" ]
+#  public_deps = [ "//brave/ui/brave_message_center/public/cpp" ]
 
-  defines = [ "MESSAGE_CENTER_IMPLEMENTATION" ]
-
+  defines = [ "BRAVE_MESSAGE_CENTER_IMPLEMENTATION" ]
   if (enable_message_center) {
     deps += [
       ":brave_message_center_vector_icons",
@@ -55,7 +54,6 @@ jumbo_component("message_center") {
 
     configs += [ "//build/config:precompiled_headers" ]
 
-    sources += get_target_outputs(":brave_message_center_vector_icons")
 
     if (is_win) {
       deps += [
@@ -65,16 +63,17 @@ jumbo_component("message_center") {
     }
 
     if (toolkit_views) {
-      sources += [
-        "views/brave_message_view.cc",
+      sources = [
         "views/brave_message_view.h",
-        "views/brave_notification_control_buttons_view.cc",
-        "views/brave_notification_control_buttons_view.h",
-        "views/brave_notification_header_view.cc",
+        "views/brave_message_view.cc",
+#        "views/brave_notification_control_buttons_view.cc",
+#        "views/brave_notification_control_buttons_view.h",
         "views/brave_notification_header_view.h",
-        "views/brave_notification_view_md.cc",
+        "views/brave_notification_header_view.cc",
         "views/brave_notification_view_md.h",
+        "views/brave_notification_view_md.cc",
       ]
+      sources += get_target_outputs(":brave_message_center_vector_icons")
       deps += [
         "//ui/compositor",
         "//ui/events",

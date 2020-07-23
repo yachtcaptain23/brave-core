@@ -69,7 +69,7 @@ bool ShouldShowAeroShadowBorder() {
 }  // namespace
 
 // static
-const char BraveMessageView::kViewClassName[] = "BraveMessageView";
+const char kViewClassName[] = "BraveMessageView";
 
 class BraveMessageView::HighlightPathGenerator
     : public views::HighlightPathGenerator {
@@ -85,8 +85,8 @@ class BraveMessageView::HighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
-BraveMessageView::BraveMessageView(const Notification& notification)
-    : notification_id_(notification.id()), slide_out_controller_(this, this) {
+BraveMessageView::BraveMessageView(const Notification& notification) : MessageView(notification),
+  notification_id_(notification.id()), slide_out_controller_(this, this) {
   SetFocusBehavior(FocusBehavior::ALWAYS);
   // no idea wtf this is albert
   // focus_ring_ = views::FocusRing::Install(this);
@@ -119,10 +119,6 @@ BraveMessageView::BraveMessageView(const Notification& notification)
   }
 }
 
-BraveMessageView::~BraveMessageView() {
-  RemovedFromWidget();
-}
-
 void BraveMessageView::UpdateWithNotification(const Notification& notification) {
   pinned_ = notification.pinned();
   base::string16 new_accessible_name = CreateAccessibleName(notification);
@@ -131,19 +127,6 @@ void BraveMessageView::UpdateWithNotification(const Notification& notification) 
     NotifyAccessibilityEvent(ax::mojom::Event::kTextChanged, true);
   }
   slide_out_controller_.set_slide_mode(CalculateSlideMode());
-}
-
-void BraveMessageView::SetIsNested() {
-  DCHECK(!is_nested_) << "BraveMessageView::SetIsNested() is called twice wrongly.";
-
-  is_nested_ = true;
-  // Update enability since it might be changed by "is_nested" flag.
-  slide_out_controller_.set_slide_mode(CalculateSlideMode());
-  slide_out_controller_.set_update_opacity(false);
-
-  SetNestedBorderIfNecessary();
-  if (GetControlButtonsView())
-    GetControlButtonsView()->ShowCloseButton(GetMode() != Mode::PINNED);
 }
 
 void BraveMessageView::CloseSwipeControl() {
@@ -227,48 +210,6 @@ void BraveMessageView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   node_data->SetName(accessible_name_);
 }
 
-bool BraveMessageView::OnMousePressed(const ui::MouseEvent& event) {
-  return true;
-}
-
-bool BraveMessageView::OnMouseDragged(const ui::MouseEvent& event) {
-  return true;
-}
-
-void BraveMessageView::OnMouseReleased(const ui::MouseEvent& event) {
-  if (!event.IsOnlyLeftMouseButton())
-    return;
-
-  MessageCenter::Get()->ClickOnNotification(notification_id_);
-}
-
-bool BraveMessageView::OnKeyPressed(const ui::KeyEvent& event) {
-  if (event.flags() != ui::EF_NONE)
-    return false;
-
-  if (event.key_code() == ui::VKEY_RETURN) {
-    MessageCenter::Get()->ClickOnNotification(notification_id_);
-    return true;
-  } else if ((event.key_code() == ui::VKEY_DELETE ||
-              event.key_code() == ui::VKEY_BACK)) {
-    MessageCenter::Get()->RemoveNotification(notification_id_,
-                                             true /* by_user */);
-    return true;
-  }
-
-  return false;
-}
-
-bool BraveMessageView::OnKeyReleased(const ui::KeyEvent& event) {
-  // Space key handling is triggerred at key-release timing. See
-  // ui/views/controls/buttons/button.cc for why.
-  if (event.flags() != ui::EF_NONE || event.key_code() != ui::VKEY_SPACE)
-    return false;
-
-  MessageCenter::Get()->ClickOnNotification(notification_id_);
-  return true;
-}
-
 void BraveMessageView::OnPaint(gfx::Canvas* canvas) {
   if (ShouldShowAeroShadowBorder()) {
     // If the border is shadow, paint border first.
@@ -279,16 +220,6 @@ void BraveMessageView::OnPaint(gfx::Canvas* canvas) {
   } else {
     views::View::OnPaint(canvas);
   }
-}
-
-void BraveMessageView::OnBlur() {
-  views::View::OnBlur();
-  // We paint a focus indicator.
-  SchedulePaint();
-}
-
-const char* BraveMessageView::GetClassName() const {
-  return kViewClassName;
 }
 
 void BraveMessageView::OnGestureEvent(ui::GestureEvent* event) {
@@ -375,16 +306,6 @@ void BraveMessageView::OnSlideOut() {
     observer.OnSlideOut(notification_id_);
 }
 
-void BraveMessageView::OnWillChangeFocus(views::View* before, views::View* now) {}
-
-void BraveMessageView::OnDidChangeFocus(views::View* before, views::View* now) {
-  if (Contains(before) || Contains(now) ||
-      (GetControlButtonsView() && (GetControlButtonsView()->Contains(before) ||
-                                   GetControlButtonsView()->Contains(now)))) {
-    UpdateControlButtonsVisibility();
-  }
-}
-
 views::SlideOutController::SlideMode BraveMessageView::CalculateSlideMode() const {
   if (disable_slide_)
     return views::SlideOutController::SlideMode::kNone;
@@ -458,21 +379,6 @@ void BraveMessageView::OnSnoozeButtonPressed(const ui::Event& event) {
     observer.OnSnoozeButtonPressed(notification_id_);
 }
 
-bool BraveMessageView::ShouldShowControlButtons() const {
-#if defined(OS_CHROMEOS)
-  // Users on ChromeOS are used to the Settings and Close buttons not being
-  // visible at all times, but users on other platforms expect them to be
-  // visible.
-  auto* control_buttons_view = GetControlButtonsView();
-  return control_buttons_view &&
-         (control_buttons_view->IsAnyButtonFocused() ||
-          (GetMode() != Mode::SETTING && IsMouseHovered()) ||
-          MessageCenter::Get()->IsSpokenFeedbackEnabled());
-#else
-  return true;
-#endif
-}
-
 void BraveMessageView::SetNestedBorderIfNecessary() {
   if (is_nested_) {
     /*
@@ -483,18 +389,6 @@ void BraveMessageView::SetNestedBorderIfNecessary() {
     SetBorder(views::CreateRoundedRectBorder(
         kNotificationBorderThickness, kNotificationCornerRadius, border_color));
   }
-}
-
-void BraveMessageView::UpdateControlButtonsVisibility() {
-  auto* control_buttons_view = GetControlButtonsView();
-  if (control_buttons_view)
-    control_buttons_view->ShowButtons(ShouldShowControlButtons());
-}
-
-void BraveMessageView::SetDrawBackgroundAsActive(bool active) {
-  background()->SetNativeControlColor(active ? kHoveredButtonBackgroundColor
-                                             : kNotificationBackgroundColor);
-  SchedulePaint();
 }
 
 }  // namespace message_center
