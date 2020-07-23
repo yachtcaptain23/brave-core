@@ -3,6 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <stddef.h>
+#include <string>
+#include "base/strings/string_piece.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/strings/string16.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "brave/browser/ui/views/ads_notification_view.h"
 
 #include "chrome/browser/profiles/profile.h"
@@ -10,13 +17,22 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/views/controls/webview/web_contents_set_background_color.h"
 #include "ui/views/controls/webview/webview.h"
+#include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
+#include "ui/views/layout/flex_layout.h"
 #include "url/gurl.h"
 #include "ui/views/views_delegate.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/controls/label.h"
 
 namespace {
   AdsNotificationView* g_active_ads_window = nullptr;
   views::WebView* wv = nullptr;
+constexpr gfx::Size kContainerSize(328, 200);
+// constexpr gfx::Size kBigContainerSize(328, 500);
+constexpr gfx::Size kSmallContainerSize(328, 50);
+constexpr SkColor kBackground = SkColorSetRGB(0xf5, 0xf5, 0xf5);
+  // const base::StringPiece16 kGoogleLlc(STRING16_LITERAL("Google LLC"));
 }  // namespace
 
 // static
@@ -27,30 +43,73 @@ views::Widget* AdsNotificationView::Show(Profile* profile,
     g_active_ads_window->Close();
 
   views::Widget* window = new views::Widget;
-  views::Widget::InitParams params;
-  params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
+  views::Widget::InitParams window_params;
+  window_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
   // params.parent = BrowserView::GetBrowserViewForBrowser(browser)->GetWidget()->GetNativeView();
-  params.bounds = { 0, 0, 350, 600 };
+  window_params.bounds = { 0, 0, 1500, 1000 };
+
   // g_active_ads_window = new AdsNotificationView(profile);
-  
 
+  // create container
+  views::View* container = new views::View();
+   views::View* wv_container = new views::View();
+  /*
+  views::FlexLayout* flex_layout = new views::FlexLayout();
+  flex_layout->SetOrientation(views::LayoutOrientation::kVertical);
+  container->SetLayoutManager(flex_layout);
+  */
+//  views::FlexLayout* container_layout = container->SetLayoutManager(std::make_unique<views::FlexLayout>());
+//  container_layout->SetOrientation(views::LayoutOrientation::kVertical).SetIgnoreDefaultMainAxisMargins(true);
+  // container->SetLayoutManager(std::make_unique<views::FillLayout>());
+  container->SetLayoutManager(std::make_unique<views::BoxLayout>(views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
+  container->SetSize(kSmallContainerSize);
 
-  wv = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
   // AddChildView(wv);
+  // add header to container
+//  views::Textfield* tf = new views::Textfield();
 
+  views::Label* tv = new views::Label(base::ASCIIToUTF16("toplevel"));
+  tv->SetBackgroundColor(kBackground);
+  container->AddChildView(tv);
 
+   wv_container->SetLayoutManager(std::make_unique<views::FillLayout>());
+  wv = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
+  wv_container->SetSize(kContainerSize);
+  wv_container->SetPreferredSize(kContainerSize);
+  wv_container->SizeToPreferredSize();
+  wv_container->AddChildView(wv);
+  // container->AddChildView(wv_container);
+  // container->AddChildView(wv);
+ // views::TextField* tf2 = new views::TextField();
 
 
   // params.delegate = g_active_ads_window;
-  params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
-  params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
-  params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
 
-  window->Init(std::move(params));
+  views::Label* tv2 = new views::Label(base::ASCIIToUTF16("bottomlevel"));
+  tv2->SetBackgroundColor(kBackground);
+  window_params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
+  window_params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
+  window_params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
+  window->Init(std::move(window_params));
+  window->CenterWindow(window_params.bounds.size());
+  //window->ShowInactive();
+  window->Show();
+  window->SetContentsView(container);
 
-  window->CenterWindow(params.bounds.size());
-  window->ShowInactive();
-  window->SetContentsView(wv);
+//  std::unique_ptr<views::Widget> child(new views::Widget());
+  views::Widget* child = new views::Widget;
+  views::Widget::InitParams child_params(views::Widget::InitParams::TYPE_POPUP);
+  child_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
+  child_params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
+  // child_params.parent = window->GetNativeView();
+  child_params.bounds = { 1000, 500, 200, 200 };
+  child_params.parent = window->GetNativeWindow();
+  child->Init(std::move(child_params));
+  // child->SetBoundsConstrained(child_params.bounds);
+  // child->CenterWindow(child_params.bounds.size());
+  // child->SetBounds(gfx::Rect(0, 250, 200, 200));
+  child->Show();
+  child->SetContentsView(wv_container);
   return window;
 }
 
@@ -81,7 +140,13 @@ AdsNotificationView::AdsNotificationView(Profile* profile) {
       SK_ColorTRANSPARENT);
   // web_view->LoadInitialURL(GURL("http://techslides.com/demos/sample-videos/small.mp4"));
   web_view->LoadInitialURL(GURL("https://m.media-amazon.com/images/I/418oH6YjpFL.jpg"));
-  SetLayoutManager(std::make_unique<views::FillLayout>());
+  /*
+  if (web_view->EmbedsFullscreenWidget()) {
+    LOG(INFO) << "* WARNING * embeds fullscreen!";
+  } else {
+    LOG(INFO) << "* INFO * does not embed fullscreen!";
+  }
+  */
   AddChildView(web_view);
 }
 

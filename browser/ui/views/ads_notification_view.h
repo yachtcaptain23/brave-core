@@ -10,6 +10,11 @@
 #include "ui/views/widget/widget_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 
+#include <string>
+#include "base/strings/string16.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 class Browser;
 
 class AdsNotificationView : public views::WidgetDelegateView {
