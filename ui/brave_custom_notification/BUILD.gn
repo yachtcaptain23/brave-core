@@ -24,7 +24,7 @@ aggregate_vector_icons("brave_message_center_vector_icons") {
 }
 
 # TODO(msw|mukai|dewittj): Move ash-specific files: crbug.com/585175
-jumbo_component("brave_message_center") {
+jumbo_component("brave_custom_notification") {
   deps = [
     "//base",
     "//ui/base",
@@ -32,9 +32,7 @@ jumbo_component("brave_message_center") {
     "//url",
   ]
 
-#  public_deps = [ "//brave/ui/brave_message_center/public/cpp" ]
-
-  defines = [ "BRAVE_MESSAGE_CENTER_IMPLEMENTATION" ]
+  public_deps = [ "//brave/ui/brave_custom_notification/public/cpp" ]
   if (enable_message_center) {
     deps += [
       ":brave_message_center_vector_icons",
@@ -62,26 +60,26 @@ jumbo_component("brave_message_center") {
       ]
     }
 
-    if (toolkit_views) {
-      sources = [
-        "views/brave_message_view.h",
-        "views/brave_message_view.cc",
-#        "views/brave_notification_control_buttons_view.cc",
-#        "views/brave_notification_control_buttons_view.h",
-        "views/brave_notification_header_view.h",
-        "views/brave_notification_header_view.cc",
-        "views/brave_notification_view_md.h",
-        "views/brave_notification_view_md.cc",
-      ]
-      sources += get_target_outputs(":brave_message_center_vector_icons")
-      deps += [
-        "//ui/compositor",
-        "//ui/events",
-        "//ui/views",
-      ]
-      if (is_mac) {
-        libs = [ "Foundation.framework" ]
-      }
+    sources = [
+      # "views/brave_message_view.h",
+      # "views/brave_message_view.cc",
+      #"views/brave_notification_control_buttons_view.cc",
+      #"views/brave_notification_control_buttons_view.h",
+      #"views/brave_notification_header_view.h",
+      #"views/brave_notification_header_view.cc",
+      #"views/brave_notification_view_md.h",
+      #"views/brave_notification_view_md.cc",
+      "message_popup_view.h",
+      "message_popup_view.cc",
+    ]
+    sources += get_target_outputs(":brave_message_center_vector_icons")
+    deps += [
+      "//ui/compositor",
+      "//ui/events",
+      "//ui/views",
+    ]
+    if (is_mac) {
+      libs = [ "Foundation.framework" ]
     }
   }
 }

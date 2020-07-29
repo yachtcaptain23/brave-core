@@ -16,9 +16,9 @@
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/message_center/message_center_export.h"
-#include "ui/message_center/views/message_view.h"
-#include "ui/message_center/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification_delegate.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
 #include "ui/views/animation/ink_drop_host_view.h"
 #include "ui/views/animation/slide_out_controller.h"
 #include "ui/views/animation/slide_out_controller_delegate.h"
@@ -30,42 +30,62 @@ namespace views {
 class ScrollView;
 }  // namespace views
 
-namespace message_center {
-
-namespace test {
-class MessagePopupCollectionTest;
-}
+namespace brave_custom_notification {
 
 class Notification;
 class NotificationControlButtonsView;
-class MessageView;
 
-// An base class for a notification entry. Contains background and other
-// elements shared by derived notification views.
-class MESSAGE_CENTER_EXPORT BraveMessageView : public MessageView {
+class MessageView 
+    : public views::InkDropHostView,
+      public views::SlideOutControllerDelegate,
+      public views::FocusChangeListener {
  public:
-  BraveMessageView(const Notification& notification);
-  ~BraveMessageView() override;
-  void UpdateWithNotification(const Notification& notification) override;
-  void SetExpanded(bool expanded) override;
-  bool IsExpanded() const override;
-  bool IsAutoExpandingAllowed() const override;
-  bool IsManuallyExpandedOrCollapsed() const override;
-  void SetManuallyExpandedOrCollapsed(bool value) override;
-  void CloseSwipeControl() override;
-  void SlideOutAndClose(int direction) override;
+  explicit MessageView(const Notification& notification);
+  class Observer {
+   public:
+    virtual ~Observer() = default;
 
-  void UpdateCornerRadius(int top_radius, int bottom_radius) override;
+    virtual void OnSlideStarted(const std::string& notification_id) {}
+    virtual void OnSlideChanged(const std::string& notification_id) {}
+    virtual void OnPreSlideOut(const std::string& notification_id) {}
+    virtual void OnSlideOut(const std::string& notification_id) {}
+    virtual void OnCloseButtonPressed(const std::string& notification_id) {}
+    virtual void OnSettingsButtonPressed(const std::string& notification_id) {}
+    virtual void OnSnoozeButtonPressed(const std::string& notification_id) {}
+  };
+
+  enum class Mode {
+    // Normal mode.
+    NORMAL = 0,
+    // "Pinned" mode flag. This mode is for pinned notification.
+    // When this mode is enabled:
+    //  - Swipe: partially possible, but limited to the half position
+    //  - Close button: hidden
+    //  - Settings and snooze button: visible
+    PINNED = 1,
+    // "Setting" mode flag. This mode is for showing inline setting panel in
+    // the notification view.
+    // When this mode is enabled:
+    //  - Swipe: prohibited
+    //  - Close button: hidden
+    //  - Settings and snooze button: hidden
+    SETTING = 2,
+  };
+  ~MessageView() override;
+  virtual void UpdateWithNotification(const Notification& notification);
+  virtual void CloseSwipeControl();
+  virtual void SlideOutAndClose(int direction);
+
+  virtual void UpdateCornerRadius(int top_radius, int bottom_radius);
 
   // Invoked when the container view of MessageView (e.g. MessageCenterView in
   // ash) is starting the animation that possibly hides some part of
   // the MessageView.
   // During the animation, MessageView should comply with the Z order in views.
-  void OnContainerAnimationStarted() override;
-  void OnContainerAnimationEnded() override;
+  virtual void OnContainerAnimationStarted();
+  virtual void OnContainerAnimationEnded();
   void OnCloseButtonPressed();
-  void OnSettingsButtonPressed(const ui::Event& event) override;
-  void OnSnoozeButtonPressed(const ui::Event& event) override;
+  virtual void OnSettingsButtonPressed(const ui::Event& event);
 
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   void OnPaint(gfx::Canvas* canvas) override;
@@ -157,7 +177,7 @@ class MESSAGE_CENTER_EXPORT BraveMessageView : public MessageView {
   int top_radius_ = 0;
   int bottom_radius_ = 0;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveMessageView);
+  DISALLOW_COPY_AND_ASSIGN(MessageView);
 };
 
 }  // namespace message_center

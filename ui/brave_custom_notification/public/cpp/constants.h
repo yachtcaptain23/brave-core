@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_BRAVE_MESSAGE_CENTER_PUBLIC_CPP_MESSAGE_CENTER_CONSTANTS_H_
-#define UI_BRAVE_MESSAGE_CENTER_PUBLIC_CPP_MESSAGE_CENTER_CONSTANTS_H_
+#ifndef UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_CONSTANTS_H_
+#define UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_CONSTANTS_H_
 
 #include <stddef.h>
 
@@ -12,7 +12,7 @@
 #include "ui/gfx/color_palette.h"
 
 // TODO(estade): many of these constants could be internalized.
-namespace brave_message_center {
+namespace brave_custom_notification {
 
 // Exported values /////////////////////////////////////////////////////////////
 

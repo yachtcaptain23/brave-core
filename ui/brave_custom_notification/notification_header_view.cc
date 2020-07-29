@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/ui/brave_message_center/views/brave_notification_header_view.h"
+#include "brave/ui/brave_custom_notification/views/notification_header_view.h"
 
 #include <memory>
 
@@ -16,9 +16,8 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "brave/ui/brave_message_center/public/cpp/message_center_constants.h"
-#include "ui/message_center/vector_icons.h"
-#include "ui/message_center/views/relative_time_formatter.h"
+#include "brave/ui/brave_custom_notification/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/vector_icons.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
@@ -70,7 +69,7 @@ constexpr int kHeaderTextFontSize = 12;
 // Minimum spacing before the control buttons.
 constexpr int kControlButtonSpacing = 16;
 
-// ExpandButtton forwards all mouse and key events to BraveNotificationHeaderView,
+// ExpandButtton forwards all mouse and key events to NotificationHeaderView,
 // but takes tab focus for accessibility purpose.
 class ExpandButton : public views::ImageView {
  public:
@@ -149,7 +148,7 @@ gfx::Insets CalculateTopPadding(int font_list_height) {
 
 }  // namespace
 
-BraveNotificationHeaderView::BraveNotificationHeaderView(views::ButtonListener* listener)
+NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
     : views::Button(listener) {
   const views::FlexSpecification kAppNameFlex =
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
@@ -216,17 +215,6 @@ BraveNotificationHeaderView::BraveNotificationHeaderView(views::ButtonListener* 
   summary_text_view_->SetVisible(false);
   detail_views_->AddChildView(summary_text_view_);
 
-  // Timestamp divider
-  timestamp_divider_ = create_label();
-  timestamp_divider_->SetText(base::WideToUTF16(kNotificationHeaderDivider));
-  timestamp_divider_->SetVisible(false);
-  detail_views_->AddChildView(timestamp_divider_);
-
-  // Timestamp view
-  timestamp_view_ = create_label();
-  timestamp_view_->SetVisible(false);
-  detail_views_->AddChildView(timestamp_view_);
-
   // Expand button view
   expand_button_ = new ExpandButton();
   expand_button_->SetBorder(views::CreateEmptyBorder(kExpandIconViewPadding));
@@ -247,94 +235,70 @@ BraveNotificationHeaderView::BraveNotificationHeaderView(views::ButtonListener* 
   SetPreferredSize(gfx::Size(kNotificationWidth, kHeaderHeight));
 }
 
-BraveNotificationHeaderView::~BraveNotificationHeaderView() = default;
+NotificationHeaderView::~NotificationHeaderView() = default;
 
-void BraveNotificationHeaderView::SetAppIcon(const gfx::ImageSkia& img) {
+void NotificationHeaderView::SetAppIcon(const gfx::ImageSkia& img) {
   app_icon_view_->SetImage(img);
   using_default_app_icon_ = false;
 }
 
-void BraveNotificationHeaderView::ClearAppIcon() {
+void NotificationHeaderView::ClearAppIcon() {
   app_icon_view_->SetImage(
       gfx::CreateVectorIcon(kProductIcon, kSmallImageSizeMD, accent_color_));
   using_default_app_icon_ = true;
 }
 
-void BraveNotificationHeaderView::SetAppName(const base::string16& name) {
+void NotificationHeaderView::SetAppName(const base::string16& name) {
   app_name_view_->SetText(name);
 }
 
-void BraveNotificationHeaderView::SetAppNameElideBehavior(
+void NotificationHeaderView::SetAppNameElideBehavior(
     gfx::ElideBehavior elide_behavior) {
   app_name_view_->SetElideBehavior(elide_behavior);
 }
 
-void BraveNotificationHeaderView::SetProgress(int progress) {
+void NotificationHeaderView::SetProgress(int progress) {
   summary_text_view_->SetText(l10n_util::GetStringFUTF16Int(
       IDS_MESSAGE_CENTER_NOTIFICATION_PROGRESS_PERCENTAGE, progress));
   has_progress_ = true;
   UpdateSummaryTextVisibility();
 }
 
-void BraveNotificationHeaderView::SetSummaryText(const base::string16& text) {
+void NotificationHeaderView::SetSummaryText(const base::string16& text) {
   summary_text_view_->SetText(text);
   has_progress_ = false;
   UpdateSummaryTextVisibility();
 }
 
-void BraveNotificationHeaderView::SetOverflowIndicator(int count) {
+void NotificationHeaderView::SetOverflowIndicator(int count) {
   summary_text_view_->SetText(l10n_util::GetStringFUTF16Int(
       IDS_MESSAGE_CENTER_LIST_NOTIFICATION_HEADER_OVERFLOW_INDICATOR, count));
   has_progress_ = false;
   UpdateSummaryTextVisibility();
 }
 
-void BraveNotificationHeaderView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+void NotificationHeaderView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   Button::GetAccessibleNodeData(node_data);
 
   node_data->role = ax::mojom::Role::kGenericContainer;
   node_data->SetName(app_name_view_->GetText());
-  node_data->SetDescription(summary_text_view_->GetText() +
-                            base::ASCIIToUTF16(" ") +
-                            timestamp_view_->GetText());
+  node_data->SetDescription(summary_text_view_->GetText());
 
   if (is_expanded_)
     node_data->AddState(ax::mojom::State::kExpanded);
 }
 
-void BraveNotificationHeaderView::SetTimestamp(base::Time timestamp) {
-  base::string16 relative_time;
-  base::TimeDelta next_update;
-  GetRelativeTimeStringAndNextUpdateTime(timestamp - base::Time::Now(),
-                                         &relative_time, &next_update);
-
-  timestamp_view_->SetText(relative_time);
-  timestamp_ = timestamp;
-  UpdateSummaryTextVisibility();
-
-  // Unretained is safe as the timer cancels the task on destruction.
-  timestamp_update_timer_.Start(
-      FROM_HERE, next_update,
-      base::BindOnce(&BraveNotificationHeaderView::SetTimestamp,
-                     base::Unretained(this), timestamp));
-}
-
-void BraveNotificationHeaderView::SetDetailViewsVisible(bool visible) {
+void NotificationHeaderView::SetDetailViewsVisible(bool visible) {
   detail_views_->SetVisible(visible);
 
-  if (visible && timestamp_)
-    SetTimestamp(timestamp_.value());
-  else
-    timestamp_update_timer_.Stop();
-
   UpdateSummaryTextVisibility();
 }
 
-void BraveNotificationHeaderView::SetExpandButtonEnabled(bool enabled) {
+void NotificationHeaderView::SetExpandButtonEnabled(bool enabled) {
   expand_button_->SetVisible(enabled);
 }
 
-void BraveNotificationHeaderView::SetExpanded(bool expanded) {
+void NotificationHeaderView::SetExpanded(bool expanded) {
   is_expanded_ = expanded;
   expand_button_->SetImage(gfx::CreateVectorIcon(
       expanded ? kNotificationExpandLessIcon : kNotificationExpandMoreIcon,
@@ -345,13 +309,11 @@ void BraveNotificationHeaderView::SetExpanded(bool expanded) {
   NotifyAccessibilityEvent(ax::mojom::Event::kStateChanged, true);
 }
 
-void BraveNotificationHeaderView::SetAccentColor(SkColor color) {
+void NotificationHeaderView::SetAccentColor(SkColor color) {
   accent_color_ = color;
   app_name_view_->SetEnabledColor(accent_color_);
   summary_text_view_->SetEnabledColor(accent_color_);
   summary_text_divider_->SetEnabledColor(accent_color_);
-  timestamp_divider_->SetEnabledColor(kRegularTextColorMD);
-  timestamp_view_->SetEnabledColor(kRegularTextColorMD);
   SetExpanded(is_expanded_);
 
   // If we are using the default app icon we should clear it so we refresh it
@@ -360,42 +322,34 @@ void BraveNotificationHeaderView::SetAccentColor(SkColor color) {
     ClearAppIcon();
 }
 
-void BraveNotificationHeaderView::SetBackgroundColor(SkColor color) {
+void NotificationHeaderView::SetBackgroundColor(SkColor color) {
   app_name_view_->SetBackgroundColor(color);
   summary_text_divider_->SetBackgroundColor(color);
   summary_text_view_->SetBackgroundColor(color);
-  timestamp_divider_->SetBackgroundColor(color);
-  timestamp_view_->SetBackgroundColor(color);
 }
 
-void BraveNotificationHeaderView::SetSubpixelRenderingEnabled(bool enabled) {
+void NotificationHeaderView::SetSubpixelRenderingEnabled(bool enabled) {
   app_name_view_->SetSubpixelRenderingEnabled(enabled);
   summary_text_divider_->SetSubpixelRenderingEnabled(enabled);
   summary_text_view_->SetSubpixelRenderingEnabled(enabled);
-  timestamp_divider_->SetSubpixelRenderingEnabled(enabled);
-  timestamp_view_->SetSubpixelRenderingEnabled(enabled);
 }
 
-void BraveNotificationHeaderView::SetAppIconVisible(bool visible) {
+void NotificationHeaderView::SetAppIconVisible(bool visible) {
   app_icon_view_->SetVisible(visible);
 }
 
-const base::string16& BraveNotificationHeaderView::app_name_for_testing() const {
+const base::string16& NotificationHeaderView::app_name_for_testing() const {
   return app_name_view_->GetText();
 }
 
-const gfx::ImageSkia& BraveNotificationHeaderView::app_icon_for_testing() const {
+const gfx::ImageSkia& NotificationHeaderView::app_icon_for_testing() const {
   return app_icon_view_->GetImage();
 }
 
-void BraveNotificationHeaderView::UpdateSummaryTextVisibility() {
+void NotificationHeaderView::UpdateSummaryTextVisibility() {
   const bool summary_visible = !summary_text_view_->GetText().empty();
   summary_text_divider_->SetVisible(summary_visible);
   summary_text_view_->SetVisible(summary_visible);
-
-  const bool timestamp_visible = !has_progress_ && timestamp_;
-  timestamp_divider_->SetVisible(timestamp_visible);
-  timestamp_view_->SetVisible(timestamp_visible);
 
   // TODO(crbug.com/991492): this should not be necessary.
   detail_views_->InvalidateLayout();

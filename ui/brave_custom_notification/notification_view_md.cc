@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/ui/brave_message_center/views/brave_notification_view_md.h"
+#include "brave/ui/brave_custom_notification/views/notification_view_md.h"
 #include "base/logging.h"
 
 #include <stddef.h>
@@ -37,16 +37,16 @@
 #include "ui/gfx/text_constants.h"
 #include "ui/gfx/text_elider.h"
 #include "ui/views/views_delegate.h"
-#include "ui/message_center/message_center.h"
-#include "ui/message_center/public/cpp/message_center_constants.h"
-#include "ui/message_center/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification_types.h"
-#include "ui/message_center/vector_icons.h"
-#include "ui/message_center/views/notification_background_painter.h"
-#include "brave/ui/brave_message_center/views/brave_notification_control_buttons_view.h"
-#include "brave/ui/brave_message_center/views/brave_notification_header_view.h"
-#include "ui/message_center/views/padded_button.h"
-#include "ui/message_center/views/proportional_image_view.h"
+#include "brave/ui/brave_custom_notification/message_center.h"
+#include "brave/ui/brave_custom_notification/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
+#include "brave/ui/brave_custom_notification/vector_icons.h"
+#include "brave/ui/brave_custom_notification/views/notification_background_painter.h"
+#include "brave/ui/brave_custom_notification/views/notification_control_buttons_view.h"
+#include "brave/ui/brave_custom_notification/views/notification_header_view.h"
+#include "brave/ui/brave_custom_notification/views/padded_button.h"
+#include "brave/ui/brave_custom_notification/views/proportional_image_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/animation/flood_fill_ink_drop_ripple.h"
 #include "ui/views/animation/ink_drop_highlight.h"
@@ -121,19 +121,19 @@ constexpr int kInputReplyButtonSize = 20;
 // Max number of lines for title_view_.
 constexpr int kMaxLinesForTitleView = 1;
 // Max number of lines for message_view_.
-constexpr int kMaxLinesForBraveMessageView = 1;
-constexpr int kMaxLinesForExpandedBraveMessageView = 4;
+constexpr int kMaxLinesForMessageView = 1;
+constexpr int kMaxLinesForExpandedMessageView = 4;
 
-constexpr int kCompactTitleBraveMessageViewSpacing = 12;
+constexpr int kCompactTitleMessageViewSpacing = 12;
 
 constexpr int kProgressBarHeight = 4;
 
-constexpr int kBraveMessageViewWidthWithIcon =
+constexpr int kMessageViewWidthWithIcon =
     kNotificationWidth - kIconViewSize.width() -
     kLeftContentPaddingWithIcon.left() - kLeftContentPaddingWithIcon.right() -
     kContentRowPadding.left() - kContentRowPadding.right();
 
-constexpr int kBraveMessageViewWidth =
+constexpr int kMessageViewWidth =
     kNotificationWidth - kLeftContentPadding.left() -
     kLeftContentPadding.right() - kContentRowPadding.left() -
     kContentRowPadding.right();
@@ -218,15 +218,15 @@ std::unique_ptr<views::View> CreateItemView(const NotificationItem& item) {
 
 }  // anonymous namespace
 
-// CompactTitleBraveMessageView /////////////////////////////////////////////////////
+// CompactTitleMessageView /////////////////////////////////////////////////////
 
-CompactTitleBraveMessageView::~CompactTitleBraveMessageView() = default;
+CompactTitleMessageView::~CompactTitleMessageView() = default;
 
-const char* CompactTitleBraveMessageView::GetClassName() const {
-  return "CompactTitleBraveMessageView";
+const char* CompactTitleMessageView::GetClassName() const {
+  return "CompactTitleMessageView";
 }
 
-CompactTitleBraveMessageView::CompactTitleBraveMessageView() {
+CompactTitleMessageView::CompactTitleMessageView() {
   const gfx::FontList& font_list = GetTextFontList();
 
   title_ = new views::Label();
@@ -244,20 +244,20 @@ CompactTitleBraveMessageView::CompactTitleBraveMessageView() {
   AddChildView(message_);
 }
 
-gfx::Size CompactTitleBraveMessageView::CalculatePreferredSize() const {
+gfx::Size CompactTitleMessageView::CalculatePreferredSize() const {
   gfx::Size title_size = title_->GetPreferredSize();
   gfx::Size message_size = message_->GetPreferredSize();
   return gfx::Size(title_size.width() + message_size.width() +
-                       kCompactTitleBraveMessageViewSpacing,
+                       kCompactTitleMessageViewSpacing,
                    std::max(title_size.height(), message_size.height()));
 }
 
-void CompactTitleBraveMessageView::Layout() {
+void CompactTitleMessageView::Layout() {
   // Elides title and message.
   // * If the message is too long, the message occupies at most
   //   kProgressNotificationMessageRatio of the width.
   // * If the title is too long, the full content of the message is shown,
-  //   kCompactTitleBraveMessageViewSpacing is added between them, and the elided
+  //   kCompactTitleMessageViewSpacing is added between them, and the elided
   //   title is shown.
   // * If they are short enough, the title is left-aligned and the message is
   //   right-aligned.
@@ -267,17 +267,17 @@ void CompactTitleBraveMessageView::Layout() {
           ? static_cast<int>(kProgressNotificationMessageRatio * width())
           : width());
   const int title_width =
-      std::max(0, width() - message_width - kCompactTitleBraveMessageViewSpacing);
+      std::max(0, width() - message_width - kCompactTitleMessageViewSpacing);
 
   title_->SetBounds(0, 0, title_width, height());
   message_->SetBounds(width() - message_width, 0, message_width, height());
 }
 
-void CompactTitleBraveMessageView::set_title(const base::string16& title) {
+void CompactTitleMessageView::set_title(const base::string16& title) {
   title_->SetText(title);
 }
 
-void CompactTitleBraveMessageView::set_message(const base::string16& message) {
+void CompactTitleMessageView::set_message(const base::string16& message) {
   message_->SetText(message);
 }
 
@@ -474,7 +474,7 @@ void BraveNotificationInputContainerMD::OnAfterUserAction(views::Textfield* send
   DCHECK_EQ(sender, textfield_);
   button_->SetImage(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(message_center::kNotificationInlineReplyIcon, kInputReplyButtonSize,
+      gfx::CreateVectorIcon(kNotificationInlineReplyIcon, kInputReplyButtonSize,
                             textfield_->GetText().empty()
                                 ? kTextfieldPlaceholderIconColorMD
                                 : SK_ColorWHITE));
@@ -564,13 +564,13 @@ class BraveNotificationViewMD::BraveNotificationViewMDPathGenerator
   gfx::Size preferred_size_;
 };
 
-void BraveNotificationViewMD::CreateOrUpdateViews(const message_center::Notification& notification) {
+void BraveNotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
   left_content_count_ = 0;
 
   CreateOrUpdateContextTitleView(notification);
   CreateOrUpdateTitleView(notification);
-  CreateOrUpdateBraveMessageView(notification);
-  CreateOrUpdateCompactTitleBraveMessageView(notification);
+  CreateOrUpdateMessageView(notification);
+  CreateOrUpdateCompactTitleMessageView(notification);
   CreateOrUpdateProgressBarView(notification);
   CreateOrUpdateProgressStatusView(notification);
   CreateOrUpdateListItemViews(notification);
@@ -585,7 +585,7 @@ void BraveNotificationViewMD::CreateOrUpdateViews(const message_center::Notifica
 }
 
 BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notification)
-    : BraveMessageView(notification),
+    : MessageView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
    SetLayoutManager(std::make_unique<views::FillLayout>(
 //  SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -596,8 +596,7 @@ BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notificatio
 
   AddChildView(ink_drop_container_);
 
-  control_buttons_view_ =
-      std::make_unique<NotificationControlButtonsView>(this);
+  control_buttons_view_ = std::make_unique<NotificationControlButtonsView>(this);
   control_buttons_view_->set_owned_by_client();
 
   // |header_row_| contains app_icon, app_name, control buttons, etc...
@@ -666,13 +665,11 @@ BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notificatio
   //   textfield click in native notification.
   // - To make it look similar to ArcNotificationContentView::EventForwarder.
   AddPreTargetHandler(click_activator_.get());
-/*
   auto highlight_path_generator =
       std::make_unique<BraveNotificationViewMDPathGenerator>();
   highlight_path_generator_ = highlight_path_generator.get();
   views::HighlightPathGenerator::Install(this,
                                          std::move(highlight_path_generator));
-*/
   LOG(INFO) << "albert *** calling NVMD UpdateCornerRadius";
 //  UpdateCornerRadius(10, 10);
   UpdateCornerRadius(kNotificationCornerRadius, kNotificationCornerRadius);
@@ -700,7 +697,7 @@ void BraveNotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
 
 void BraveNotificationViewMD::Layout() {
   LOG(INFO) << "albert *** NVMD Layout";
-  BraveMessageView::Layout();
+  MessageView::Layout();
 
   // We need to call IsExpandable() at the end of Layout() call, since whether
   // we should show expand button or not depends on the current view layout.
@@ -708,7 +705,7 @@ void BraveNotificationViewMD::Layout() {
   header_row_->SetExpandButtonEnabled(IsExpandable());
   header_row_->Layout();
 
-  // The notification background is rounded in BraveMessageView::Layout(),
+  // The notification background is rounded in MessageView::Layout(),
   // but we also have to round the actions row background here.
   if (actions_row_->GetVisible()) {
     constexpr SkScalar kCornerRadius = SkIntToScalar(kNotificationCornerRadius);
@@ -731,7 +728,7 @@ void BraveNotificationViewMD::Layout() {
 }
 
 void BraveNotificationViewMD::OnFocus() {
-  BraveMessageView::OnFocus();
+  MessageView::OnFocus();
   ScrollRectToVisible(GetLocalBounds());
 }
 
@@ -771,7 +768,7 @@ void BraveNotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
   if (settings_row_ && settings_row_->GetVisible())
     return;
 
-  BraveMessageView::OnMouseReleased(event);
+  MessageView::OnMouseReleased(event);
 }
 
 void BraveNotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
@@ -793,17 +790,17 @@ void BraveNotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
     ToggleInlineSettings(*event);
     return;
   }
-  BraveMessageView::OnGestureEvent(event);
+  MessageView::OnGestureEvent(event);
 }
 
 void BraveNotificationViewMD::PreferredSizeChanged() {
   // highlight_path_generator_->set_preferred_size(GetPreferredSize());
-  BraveMessageView::PreferredSizeChanged();
+  MessageView::PreferredSizeChanged();
 }
 
 void BraveNotificationViewMD::UpdateWithNotification(
-    const message_center::Notification& notification) {
-  BraveMessageView::UpdateWithNotification(notification);
+    const Notification& notification) {
+  MessageView::UpdateWithNotification(notification);
   UpdateControlButtonsVisibilityWithNotification(notification);
 
   CreateOrUpdateViews(notification);
@@ -811,13 +808,9 @@ void BraveNotificationViewMD::UpdateWithNotification(
   SchedulePaint();
 }
 
-// TODO(yoshiki): Move this to the parent class (BraveMessageView).
+// TODO(yoshiki): Move this to the parent class (MessageView).
 void BraveNotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
-    const message_center::Notification& notification) {
-  control_buttons_view_->ShowSettingsButton(
-      notification.should_show_settings_button());
-  control_buttons_view_->ShowSnoozeButton(
-      notification.should_show_snooze_button());
+    const Notification& notification) {
   control_buttons_view_->ShowCloseButton(GetMode() != Mode::PINNED);
   UpdateControlButtonsVisibility();
 }
@@ -882,7 +875,7 @@ void BraveNotificationViewMD::OnNotificationInputSubmit(size_t index,
 }
 
 void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   /*
   header_row_->SetAccentColor(notification.accent_color() == SK_ColorTRANSPARENT
                                   ? kNotificationDefaultAccentColor
@@ -902,9 +895,7 @@ void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
         notification.origin_url(),
         url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS);
     header_row_->SetAppNameElideBehavior(gfx::ELIDE_HEAD);
-  } else if (notification.display_source().empty() &&
-             notification.notifier_id().type ==
-                 message_center::NotifierType::SYSTEM_COMPONENT) {
+  } else if (notification.display_source().empty()) {
     app_name = MessageCenter::Get()->GetSystemNotificationAppName();
   } else if (!notification.context_message().empty()) {
     app_name = notification.context_message();
@@ -915,7 +906,7 @@ void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateTitleView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   if (notification.title().empty() ||
       notification.type() == NOTIFICATION_TYPE_PROGRESS) {
     DCHECK(!title_view_ || left_content_->Contains(title_view_));
@@ -953,8 +944,8 @@ void BraveNotificationViewMD::CreateOrUpdateTitleView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateBraveMessageView(
-    const message_center::Notification& notification) {
+void BraveNotificationViewMD::CreateOrUpdateMessageView(
+    const Notification& notification) {
   if (notification.type() == NOTIFICATION_TYPE_PROGRESS ||
       notification.message().empty()) {
     // Deletion will also remove |message_view_| from its parent.
@@ -977,7 +968,7 @@ void BraveNotificationViewMD::CreateOrUpdateBraveMessageView(
     message_view_->SetBackgroundColor(kNotificationBackgroundColor);
     message_view_->SetLineHeight(kLineHeightMD);
     message_view_->SetMultiLine(true);
-    message_view_->SetMaxLines(kMaxLinesForBraveMessageView);
+    message_view_->SetMaxLines(kMaxLinesForMessageView);
     message_view_->SetAllowCharacterBreak(true);
     left_content_->AddChildViewAt(message_view_, left_content_count_);
   } else {
@@ -990,8 +981,8 @@ void BraveNotificationViewMD::CreateOrUpdateBraveMessageView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateCompactTitleBraveMessageView(
-    const message_center::Notification& notification) {
+void BraveNotificationViewMD::CreateOrUpdateCompactTitleMessageView(
+    const Notification& notification) {
   if (notification.type() != NOTIFICATION_TYPE_PROGRESS) {
     DCHECK(!compact_title_message_view_ ||
            left_content_->Contains(compact_title_message_view_));
@@ -1000,7 +991,7 @@ void BraveNotificationViewMD::CreateOrUpdateCompactTitleBraveMessageView(
     return;
   }
   if (!compact_title_message_view_) {
-    compact_title_message_view_ = new CompactTitleBraveMessageView();
+    compact_title_message_view_ = new CompactTitleMessageView();
     left_content_->AddChildViewAt(compact_title_message_view_,
                                   left_content_count_);
   }
@@ -1012,7 +1003,7 @@ void BraveNotificationViewMD::CreateOrUpdateCompactTitleBraveMessageView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateProgressBarView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   if (notification.type() != NOTIFICATION_TYPE_PROGRESS) {
     DCHECK(!progress_bar_view_ || left_content_->Contains(progress_bar_view_));
     delete progress_bar_view_;
@@ -1041,7 +1032,7 @@ void BraveNotificationViewMD::CreateOrUpdateProgressBarView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateProgressStatusView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   if (notification.type() != NOTIFICATION_TYPE_PROGRESS ||
       notification.progress_status().empty()) {
     if (!status_view_)
@@ -1068,14 +1059,14 @@ void BraveNotificationViewMD::CreateOrUpdateProgressStatusView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateListItemViews(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   for (auto* item_view : item_views_)
     delete item_view;
   item_views_.clear();
 
   const std::vector<NotificationItem>& items = notification.items();
 
-  for (size_t i = 0; i < items.size() && i < kMaxLinesForExpandedBraveMessageView;
+  for (size_t i = 0; i < items.size() && i < kMaxLinesForExpandedMessageView;
        ++i) {
     std::unique_ptr<views::View> item_view = CreateItemView(items[i]);
     item_views_.push_back(item_view.get());
@@ -1090,7 +1081,7 @@ void BraveNotificationViewMD::CreateOrUpdateListItemViews(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateIconView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   const bool use_image_for_icon = notification.icon().IsEmpty();
 
   gfx::ImageSkia icon = use_image_for_icon ? notification.image().AsImageSkia()
@@ -1116,13 +1107,13 @@ void BraveNotificationViewMD::CreateOrUpdateIconView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateSmallIconView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   // TODO(knollr): figure out if this has a performance impact and
   // cache images if so. (crbug.com/768748)
   /*
   gfx::Image masked_small_icon = notification.GenerateMaskedSmallIcon(
       kSmallImageSizeMD, notification.accent_color() == SK_ColorTRANSPARENT
-                             ? message_center::kNotificationDefaultAccentColor
+                             ? kNotificationDefaultAccentColor
                              : notification.accent_color());
                              */
   gfx::Image masked_small_icon =
@@ -1137,7 +1128,7 @@ void BraveNotificationViewMD::CreateOrUpdateSmallIconView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateImageView(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   if (notification.image().IsEmpty()) {
     if (image_container_view_) {
       DCHECK(Contains(image_container_view_));
@@ -1205,7 +1196,7 @@ void BraveNotificationViewMD::CreateOrUpdateImageView(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateActionButtonViews(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   const std::vector<ButtonInfo>& buttons = notification.buttons();
   bool new_buttons = action_buttons_.size() != buttons.size();
 
@@ -1264,7 +1255,7 @@ void BraveNotificationViewMD::CreateOrUpdateActionButtonViews(
 }
 
 void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
-    const message_center::Notification& notification) {
+    const Notification& notification) {
   if (settings_row_) {
     DCHECK_EQ(SettingsButtonHandler::INLINE,
               notification.rich_notification_data().settings_button_handler);
@@ -1275,8 +1266,6 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
       SettingsButtonHandler::INLINE) {
     return;
   }
-  // Hide settings
-  return;
 
   // |settings_row_| contains inline settings.
   settings_row_ = new views::View();
@@ -1284,6 +1273,7 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
       views::BoxLayout::Orientation::kVertical, kSettingsRowPadding, 0));
 
   int block_notifications_message_id = 0;
+  /*
   switch (notification.notifier_id().type) {
     case NotifierType::APPLICATION:
     case NotifierType::ARC_APPLICATION:
@@ -1302,6 +1292,9 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
       NOTREACHED();
       break;
   }
+  */
+  block_notifications_message_id =
+      IDS_MESSAGE_CENTER_BLOCK_ALL_NOTIFICATIONS_APP;
   DCHECK_NE(block_notifications_message_id, 0);
 
   block_all_button_ = new InlineSettingsRadioButton(
@@ -1370,8 +1363,8 @@ void BraveNotificationViewMD::ToggleExpanded() {
 void BraveNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   header_row_->SetExpanded(expanded);
   if (message_view_) {
-    message_view_->SetMaxLines(expanded ? kMaxLinesForExpandedBraveMessageView
-                                        : kMaxLinesForBraveMessageView);
+    message_view_->SetMaxLines(expanded ? kMaxLinesForExpandedMessageView
+                                        : kMaxLinesForMessageView);
   }
   if (image_container_view_) {
     LOG(INFO) << "*** image_container_view width: " << std::to_string(image_container_view_->width()) << " height: " << std::to_string(image_container_view_->height());
@@ -1387,13 +1380,13 @@ void BraveNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
     inline_reply_->SetVisible(false);
   }
 
-  for (size_t i = kMaxLinesForBraveMessageView; i < item_views_.size(); ++i) {
+  for (size_t i = kMaxLinesForMessageView; i < item_views_.size(); ++i) {
     item_views_[i]->SetVisible(expanded);
   }
   if (status_view_)
     status_view_->SetVisible(expanded);
 
-  int max_items = expanded ? item_views_.size() : kMaxLinesForBraveMessageView;
+  int max_items = expanded ? item_views_.size() : kMaxLinesForMessageView;
   if (list_items_count_ > max_items)
     header_row_->SetOverflowIndicator(list_items_count_ - max_items);
   else if (!item_views_.empty())
@@ -1410,7 +1403,7 @@ void BraveNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   // solution for the bug according to https://crbug.com/678337#c7, we should
   // ensure that the change won't break any of the users of BoxLayout class.
   const int message_view_width =
-      (has_icon ? kBraveMessageViewWidthWithIcon : kBraveMessageViewWidth) -
+      (has_icon ? kMessageViewWidthWithIcon : kMessageViewWidth) -
       GetInsets().width();
   if (title_view_)
     title_view_->SizeToFit(message_view_width);
@@ -1469,7 +1462,7 @@ void BraveNotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
 
 void BraveNotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
   LOG(INFO) << "albert *** in UpdateCornerRadius";
-  BraveMessageView::UpdateCornerRadius(top_radius, bottom_radius);
+  MessageView::UpdateCornerRadius(top_radius, bottom_radius);
   action_buttons_row_->SetBackground(views::CreateBackgroundFromPainter(
       std::make_unique<NotificationBackgroundPainter>(
 //          20, 20, kActionsRowBackgroundColor)));
@@ -1513,7 +1506,7 @@ void BraveNotificationViewMD::OnSettingsButtonPressed(const ui::Event& event) {
   if (settings_row_)
     ToggleInlineSettings(event);
   else
-    BraveMessageView::OnSettingsButtonPressed(event);
+    MessageView::OnSettingsButtonPressed(event);
 }
 
 void BraveNotificationViewMD::Activate() {

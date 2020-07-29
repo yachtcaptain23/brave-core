@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_MESSAGE_CENTER_VIEWS_BRAVE_NOTIFICATION_VIEW_MD_H_
-#define UI_MESSAGE_CENTER_VIEWS_BRAVE_NOTIFICATION_VIEW_MD_H_
+#ifndef UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_NOTIFICATION_VIEW_MD_H_
+#define UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_NOTIFICATION_VIEW_MD_H_
 
 #include <vector>
 
@@ -12,8 +12,7 @@
 #include "base/macros.h"
 #include "base/optional.h"
 #include "base/time/time.h"
-#include "ui/message_center/message_center_export.h"
-#include "brave/ui/brave_message_center/views/brave_message_view.h"
+#include "brave/ui/brave_custom_notification/views/message_view.h"
 #include "ui/views/animation/ink_drop_observer.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
@@ -28,17 +27,17 @@ class RadioButton;
 class Textfield;
 }
 
-namespace message_center {
+namespace brave_custom_notification {
 
-class BraveNotificationHeaderView;
+class NotificationHeaderView;
 class ProportionalImageView;
 
-// CompactTitleBraveMessageView shows notification title and message in a single
+// CompactTitleMessageView shows notification title and message in a single
 // line. This view is used for NOTIFICATION_TYPE_PROGRESS.
-class CompactTitleBraveMessageView : public views::View {
+class CompactTitleMessageView : public views::View {
  public:
-  explicit CompactTitleBraveMessageView();
-  ~CompactTitleBraveMessageView() override;
+  explicit CompactTitleMessageView();
+  ~CompactTitleMessageView() override;
 
   const char* GetClassName() const override;
 
@@ -49,16 +48,16 @@ class CompactTitleBraveMessageView : public views::View {
   void set_message(const base::string16& message);
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(CompactTitleBraveMessageView);
+  DISALLOW_COPY_AND_ASSIGN(CompactTitleMessageView);
 
   views::Label* title_ = nullptr;
   views::Label* message_ = nullptr;
 };
 
-class BraveLargeImageView : public views::View {
+class LargeImageView : public views::View {
  public:
-  BraveLargeImageView();
-  ~BraveLargeImageView() override;
+  LargeImageView();
+  ~LargeImageView() override;
 
   void SetImage(const gfx::ImageSkia& image);
 
@@ -70,23 +69,23 @@ class BraveLargeImageView : public views::View {
 
   gfx::ImageSkia image_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveLargeImageView);
+  DISALLOW_COPY_AND_ASSIGN(LargeImageView);
 };
 
 // This class is needed in addition to LabelButton mainly becuase we want to set
 // visible_opacity of InkDropHighlight.
 // This button capitalizes the given label string.
-class BraveNotificationButtonMD : public views::LabelButton {
+class NotificationButtonMD : public views::LabelButton {
  public:
   // |is_inline_reply| is true when the notification action takes text as the
   // return value i.e. the notification action is inline reply.
   // The input field would be shown when the button is clicked.
   // |placeholder| is placeholder text shown on the input field. Only used when
   // |is_inline_reply| is true.
-  BraveNotificationButtonMD(views::ButtonListener* listener,
+  NotificationButtonMD(views::ButtonListener* listener,
                        const base::string16& label,
                        const base::Optional<base::string16>& placeholder);
-  ~BraveNotificationButtonMD() override;
+  ~NotificationButtonMD() override;
 
   void SetText(const base::string16& text) override;
   const char* GetClassName() const override;
@@ -106,22 +105,22 @@ class BraveNotificationButtonMD : public views::LabelButton {
  private:
   base::Optional<base::string16> placeholder_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveNotificationButtonMD);
+  DISALLOW_COPY_AND_ASSIGN(NotificationButtonMD);
 };
 
-class BraveNotificationInputDelegate {
+class NotificationInputDelegate {
  public:
   virtual void OnNotificationInputSubmit(size_t index,
                                          const base::string16& text) = 0;
-  virtual ~BraveNotificationInputDelegate() = default;
+  virtual ~NotificationInputDelegate() = default;
 };
 
-class BraveNotificationInputContainerMD : public views::InkDropHostView,
+class NotificationInputContainerMD : public views::InkDropHostView,
                                      public views::ButtonListener,
                                      public views::TextfieldController {
  public:
-  BraveNotificationInputContainerMD(BraveNotificationInputDelegate* delegate);
-  ~BraveNotificationInputContainerMD() override;
+  NotificationInputContainerMD(NotificationInputDelegate* delegate);
+  ~NotificationInputContainerMD() override;
 
   void AnimateBackground(const ui::Event& event);
 
@@ -143,35 +142,35 @@ class BraveNotificationInputContainerMD : public views::InkDropHostView,
   views::ImageButton* button() const { return button_; }
 
  private:
-  BraveNotificationInputDelegate* const delegate_;
+  NotificationInputDelegate* const delegate_;
 
   views::InkDropContainerView* const ink_drop_container_;
 
   views::Textfield* const textfield_;
   views::ImageButton* const button_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveNotificationInputContainerMD);
+  DISALLOW_COPY_AND_ASSIGN(NotificationInputContainerMD);
 };
 
 // View that displays all current types of notification (web, basic, image, and
 // list) except the custom notification. Future notification types may be
 // handled by other classes, in which case instances of those classes would be
 // returned by the Create() factory method below.
-class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
-    : public BraveMessageView,
+class NotificationViewMD
+    : public MessageView,
       public views::InkDropObserver,
-      public BraveNotificationInputDelegate,
+      public NotificationInputDelegate,
       public views::ButtonListener {
  public:
-  explicit BraveNotificationViewMD(const Notification& notification);
-  ~BraveNotificationViewMD() override;
+  explicit NotificationViewMD(const Notification& notification);
+  ~NotificationViewMD() override;
 
   void Activate();
 
   void AddBackgroundAnimation(const ui::Event& event);
   void RemoveBackgroundAnimation();
 
-  // BraveMessageView:
+  // MessageView:
   void AddLayerBeneathView(ui::Layer* layer) override;
   void RemoveLayerBeneathView(ui::Layer* layer) override;
   void Layout() override;
@@ -186,7 +185,7 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   std::unique_ptr<views::InkDropRipple> CreateInkDropRipple() const override;
   std::unique_ptr<views::InkDropMask> CreateInkDropMask() const override;
   SkColor GetInkDropBaseColor() const override;
-  void UpdateWithNotification(const message_center::Notification& notification) override;
+  void UpdateWithNotification(const Notification& notification) override;
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
   void UpdateCornerRadius(int top_radius, int bottom_radius) override;
   NotificationControlButtonsView* GetControlButtonsView() const override;
@@ -200,65 +199,64 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   void InkDropAnimationStarted() override;
   void InkDropRippleAnimationEnded(views::InkDropState ink_drop_state) override;
 
-  // Overridden from BraveNotificationInputDelegate:
+  // Overridden from NotificationInputDelegate:
   void OnNotificationInputSubmit(size_t index,
                                  const base::string16& text) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, AppNameExtension);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, AppNameSystemNotification);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, AppNameWebNotification);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, CreateOrUpdateTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, ExpandLongMessage);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, InlineSettings);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest,
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameExtension);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameSystemNotification);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameWebNotification);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, CreateOrUpdateTest);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, ExpandLongMessage);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, InlineSettings);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
                            InlineSettingsInkDropAnimation);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, NotificationWithoutIcon);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, ShowProgress);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, ShowTimestamp);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestAccentColor);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestActionButtonClick);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestClick);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestClickExpanded);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest,
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, NotificationWithoutIcon);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, ShowProgress);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestAccentColor);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestActionButtonClick);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestClick);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestClickExpanded);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
                            TestDeleteOnDisableNotification);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestDeleteOnToggleExpanded);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestIconSizing);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestInlineReply);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest,
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestDeleteOnToggleExpanded);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestIconSizing);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestInlineReply);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
                            TestInlineReplyActivateWithKeyPress);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest,
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
                            TestInlineReplyRemovedByUpdate);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, TestLongTitleAndMessage);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UpdateAddingIcon);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UpdateButtonCountTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UpdateButtonsStateTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UpdateInSettings);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UpdateType);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UpdateViewsOrderingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveNotificationViewMDTest, UseImageAsIcon);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestLongTitleAndMessage);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateAddingIcon);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateButtonCountTest);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateButtonsStateTest);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateInSettings);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateType);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateViewsOrderingTest);
+  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UseImageAsIcon);
 
-  friend class BraveNotificationViewMDTest;
+  friend class NotificationViewMDTest;
 
-  class BraveNotificationViewMDPathGenerator;
+  class NotificationViewMDPathGenerator;
 
   void UpdateControlButtonsVisibilityWithNotification(
-      const message_center::Notification& notification);
+      const Notification& notification);
 
-  void CreateOrUpdateViews(const message_center::Notification& notification);
+  void CreateOrUpdateViews(const Notification& notification);
 
-  void CreateOrUpdateContextTitleView(const message_center::Notification& notification);
-  void CreateOrUpdateTitleView(const message_center::Notification& notification);
-  void CreateOrUpdateBraveMessageView(const message_center::Notification& notification);
-  void CreateOrUpdateCompactTitleBraveMessageView(const message_center::Notification& notification);
-  void CreateOrUpdateProgressBarView(const message_center::Notification& notification);
-  void CreateOrUpdateProgressStatusView(const message_center::Notification& notification);
-  void CreateOrUpdateListItemViews(const message_center::Notification& notification);
-  void CreateOrUpdateIconView(const message_center::Notification& notification);
-  void CreateOrUpdateSmallIconView(const message_center::Notification& notification);
-  void CreateOrUpdateImageView(const message_center::Notification& notification);
-  void CreateOrUpdateActionButtonViews(const message_center::Notification& notification);
-  void CreateOrUpdateInlineSettingsViews(const message_center::Notification& notification);
+  void CreateOrUpdateContextTitleView(const Notification& notification);
+  void CreateOrUpdateTitleView(const Notification& notification);
+  void CreateOrUpdateMessageView(const Notification& notification);
+  void CreateOrUpdateCompactTitleMessageView(const Notification& notification);
+  void CreateOrUpdateProgressBarView(const Notification& notification);
+  void CreateOrUpdateProgressStatusView(const Notification& notification);
+  void CreateOrUpdateListItemViews(const Notification& notification);
+  void CreateOrUpdateIconView(const Notification& notification);
+  void CreateOrUpdateSmallIconView(const Notification& notification);
+  void CreateOrUpdateImageView(const Notification& notification);
+  void CreateOrUpdateActionButtonViews(const Notification& notification);
+  void CreateOrUpdateInlineSettingsViews(const Notification& notification);
 
   bool IsExpandable();
   void ToggleExpanded();
@@ -291,7 +289,7 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   bool clickable_;
 
   // Container views directly attached to this view.
-  BraveNotificationHeaderView* header_row_ = nullptr;
+  NotificationHeaderView* header_row_ = nullptr;
   views::View* content_row_ = nullptr;
   views::View* actions_row_ = nullptr;
   views::View* settings_row_ = nullptr;
@@ -306,12 +304,12 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
   views::Label* status_view_ = nullptr;
   ProportionalImageView* icon_view_ = nullptr;
   views::View* image_container_view_ = nullptr;
-  std::vector<BraveNotificationButtonMD*> action_buttons_;
+  std::vector<NotificationButtonMD*> action_buttons_;
   std::vector<views::View*> item_views_;
   views::ProgressBar* progress_bar_view_ = nullptr;
-  CompactTitleBraveMessageView* compact_title_message_view_ = nullptr;
+  CompactTitleMessageView* compact_title_message_view_ = nullptr;
   views::View* action_buttons_row_ = nullptr;
-  BraveNotificationInputContainerMD* inline_reply_ = nullptr;
+  NotificationInputContainerMD* inline_reply_ = nullptr;
 
   // Counter for view layouting, which is used during the CreateOrUpdate*
   // phases to keep track of the view ordering. See crbug.com/901045
@@ -324,15 +322,15 @@ class MESSAGE_CENTER_EXPORT BraveNotificationViewMD
 
   // Owned by views properties. Guaranteed to be not null for the lifetime of
   // |this| because views properties are the last thing cleaned up.
-  BraveNotificationViewMDPathGenerator* highlight_path_generator_ = nullptr;
+  NotificationViewMDPathGenerator* highlight_path_generator_ = nullptr;
 
   std::unique_ptr<ui::EventHandler> click_activator_;
 
   base::TimeTicks last_mouse_pressed_timestamp_;
 
-  base::WeakPtrFactory<BraveNotificationViewMD> weak_ptr_factory_{this};
+  base::WeakPtrFactory<NotificationViewMD> weak_ptr_factory_{this};
 
-  DISALLOW_COPY_AND_ASSIGN(BraveNotificationViewMD);
+  DISALLOW_COPY_AND_ASSIGN(NotificationViewMD);
 };
 
 }  // namespace message_center

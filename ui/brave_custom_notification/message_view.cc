@@ -4,7 +4,7 @@
 
 #include "base/logging.h"
 #include <base/debug/stack_trace.h>
-#include "brave/ui/brave_message_center/views/brave_message_view.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
 
 #include "base/strings/utf_string_conversions.h"
 #include "build/build_config.h"
@@ -19,8 +19,9 @@
 #include "ui/gfx/shadow_value.h"
 #include "ui/message_center/message_center.h"
 #include "ui/message_center/public/cpp/message_center_constants.h"
+#include "ui/message_center/views/message_view.h"
 #include "ui/message_center/views/notification_background_painter.h"
-#include "brave/ui/brave_message_center/views/brave_notification_control_buttons_view.h"
+#include "ui/message_center/views/notification_control_buttons_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -36,7 +37,7 @@
 #include "ui/base/win/shell.h"
 #endif
 
-namespace message_center {
+namespace brave_custom_notification {
 
 namespace {
 
@@ -57,7 +58,6 @@ base::string16 CreateAccessibleName(const Notification& notification) {
   }
   return base::JoinString(accessible_lines, base::ASCIIToUTF16("\n"));
 }
-
 bool ShouldShowAeroShadowBorder() {
 #if defined(OS_WIN)
   return ui::win::IsAeroGlassEnabled();
@@ -69,24 +69,23 @@ bool ShouldShowAeroShadowBorder() {
 }  // namespace
 
 // static
-const char kViewClassName[] = "BraveMessageView";
+// const char kViewClassName[] = "MessageView";
 
-class BraveMessageView::HighlightPathGenerator
+class MessageView::HighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
   HighlightPathGenerator() = default;
 
   // views::HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
-    return static_cast<const BraveMessageView*>(view)->GetHighlightPath();
+    return static_cast<const MessageView*>(view)->GetHighlightPath();
   }
 
  private:
   DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
-BraveMessageView::BraveMessageView(const Notification& notification) : MessageView(notification),
-  notification_id_(notification.id()), slide_out_controller_(this, this) {
+MessageView::MessageView(const Notification& notification) : notification_id_(notification.id()), slide_out_controller_(this, this) {
   SetFocusBehavior(FocusBehavior::ALWAYS);
   // no idea wtf this is albert
   // focus_ring_ = views::FocusRing::Install(this);
@@ -119,7 +118,7 @@ BraveMessageView::BraveMessageView(const Notification& notification) : MessageVi
   }
 }
 
-void BraveMessageView::UpdateWithNotification(const Notification& notification) {
+void MessageView::UpdateWithNotification(const Notification& notification) {
   pinned_ = notification.pinned();
   base::string16 new_accessible_name = CreateAccessibleName(notification);
   if (new_accessible_name != accessible_name_) {
@@ -129,11 +128,11 @@ void BraveMessageView::UpdateWithNotification(const Notification& notification) 
   slide_out_controller_.set_slide_mode(CalculateSlideMode());
 }
 
-void BraveMessageView::CloseSwipeControl() {
+void MessageView::CloseSwipeControl() {
   slide_out_controller_.CloseSwipeControl();
 }
 
-void BraveMessageView::SlideOutAndClose(int direction) {
+void MessageView::SlideOutAndClose(int direction) {
   // Do not process events once the message view is animating out.
   // crbug.com/940719
   SetEnabled(false);
@@ -141,30 +140,7 @@ void BraveMessageView::SlideOutAndClose(int direction) {
   slide_out_controller_.SlideOutAndClose(direction);
 }
 
-void BraveMessageView::SetExpanded(bool expanded) {
-  // Not implemented by default.
-}
-
-bool BraveMessageView::IsExpanded() const {
-  // Not implemented by default.
-  return false;
-}
-
-bool BraveMessageView::IsAutoExpandingAllowed() const {
-  // Allowed by default.
-  return true;
-}
-
-bool BraveMessageView::IsManuallyExpandedOrCollapsed() const {
-  // Not implemented by default.
-  return false;
-}
-
-void BraveMessageView::SetManuallyExpandedOrCollapsed(bool value) {
-  // Not implemented by default.
-}
-
-void BraveMessageView::UpdateCornerRadius(int top_radius, int bottom_radius) {
+void MessageView::UpdateCornerRadius(int top_radius, int bottom_radius) {
   SetCornerRadius(top_radius, bottom_radius);
   SetBackground(views::CreateBackgroundFromPainter(
       std::make_unique<NotificationBackgroundPainter>(top_radius,
@@ -172,7 +148,7 @@ void BraveMessageView::UpdateCornerRadius(int top_radius, int bottom_radius) {
   SchedulePaint();
 }
 
-SkPath BraveMessageView::GetHighlightPath() const {
+SkPath MessageView::GetHighlightPath() const {
   gfx::Rect rect(GetBoundsInScreen().size());
   // Shrink focus ring size by -kFocusHaloInset on each side to draw
   // them on top of the notifications. We need to do this because TrayBubbleView
@@ -194,15 +170,15 @@ SkPath BraveMessageView::GetHighlightPath() const {
   return SkPath().addRoundRect(gfx::RectToSkRect(rect), radii);
 }
 
-void BraveMessageView::OnContainerAnimationStarted() {
+void MessageView::OnContainerAnimationStarted() {
   // Not implemented by default.
 }
 
-void BraveMessageView::OnContainerAnimationEnded() {
+void MessageView::OnContainerAnimationEnded() {
   // Not implemented by default.
 }
 
-void BraveMessageView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+void MessageView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   node_data->role = ax::mojom::Role::kGenericContainer;
   node_data->AddStringAttribute(
       ax::mojom::StringAttribute::kRoleDescription,
@@ -210,7 +186,7 @@ void BraveMessageView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   node_data->SetName(accessible_name_);
 }
 
-void BraveMessageView::OnPaint(gfx::Canvas* canvas) {
+void MessageView::OnPaint(gfx::Canvas* canvas) {
   if (ShouldShowAeroShadowBorder()) {
     // If the border is shadow, paint border first.
     OnPaintBorder(canvas);
@@ -222,7 +198,7 @@ void BraveMessageView::OnPaint(gfx::Canvas* canvas) {
   }
 }
 
-void BraveMessageView::OnGestureEvent(ui::GestureEvent* event) {
+void MessageView::OnGestureEvent(ui::GestureEvent* event) {
   switch (event->type()) {
     case ui::ET_GESTURE_TAP_DOWN: {
       SetDrawBackgroundAsActive(true);
@@ -252,49 +228,49 @@ void BraveMessageView::OnGestureEvent(ui::GestureEvent* event) {
   event->SetHandled();
 }
 
-void BraveMessageView::RemovedFromWidget() {
+void MessageView::RemovedFromWidget() {
   if (!focus_manager_)
     return;
   focus_manager_->RemoveFocusChangeListener(this);
   focus_manager_ = nullptr;
 }
 
-void BraveMessageView::AddedToWidget() {
+void MessageView::AddedToWidget() {
   focus_manager_ = GetFocusManager();
   if (focus_manager_)
     focus_manager_->AddFocusChangeListener(this);
 }
 
-void BraveMessageView::OnThemeChanged() {
+void MessageView::OnThemeChanged() {
   InkDropHostView::OnThemeChanged();
   SetNestedBorderIfNecessary();
 }
 
-ui::Layer* BraveMessageView::GetSlideOutLayer() {
+ui::Layer* MessageView::GetSlideOutLayer() {
   return is_nested_ ? layer() : GetWidget()->GetLayer();
 }
 
-void BraveMessageView::OnSlideStarted() {
+void MessageView::OnSlideStarted() {
   for (auto& observer : observers_) {
     observer.OnSlideStarted(notification_id_);
   }
 }
 
-void BraveMessageView::OnSlideChanged(bool in_progress) {
+void MessageView::OnSlideChanged(bool in_progress) {
   for (auto& observer : observers_) {
     observer.OnSlideChanged(notification_id_);
   }
 }
 
-void BraveMessageView::AddObserver(BraveMessageView::Observer* observer) {
+void MessageView::AddObserver(MessageView::Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void BraveMessageView::RemoveObserver(BraveMessageView::Observer* observer) {
+void MessageView::RemoveObserver(MessageView::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BraveMessageView::OnSlideOut() {
+void MessageView::OnSlideOut() {
   // The notification will be deleted after slide out, so give observers a
   // chance to handle the notification before fulling sliding out.
   for (auto& observer : observers_)
@@ -306,7 +282,7 @@ void BraveMessageView::OnSlideOut() {
     observer.OnSlideOut(notification_id_);
 }
 
-views::SlideOutController::SlideMode BraveMessageView::CalculateSlideMode() const {
+views::SlideOutController::SlideMode MessageView::CalculateSlideMode() const {
   if (disable_slide_)
     return views::SlideOutController::SlideMode::kNone;
 
@@ -323,7 +299,7 @@ views::SlideOutController::SlideMode BraveMessageView::CalculateSlideMode() cons
   return views::SlideOutController::SlideMode::kFull;
 }
 
-BraveMessageView::Mode BraveMessageView::GetMode() const {
+MessageView::Mode MessageView::GetMode() const {
   if (setting_mode_)
     return Mode::SETTING;
 
@@ -335,51 +311,46 @@ BraveMessageView::Mode BraveMessageView::GetMode() const {
   return Mode::NORMAL;
 }
 
-float BraveMessageView::GetSlideAmount() const {
+float MessageView::GetSlideAmount() const {
   return slide_out_controller_.gesture_amount();
 }
 
-void BraveMessageView::SetSettingMode(bool setting_mode) {
+void MessageView::SetSettingMode(bool setting_mode) {
   setting_mode_ = setting_mode;
   slide_out_controller_.set_slide_mode(CalculateSlideMode());
   UpdateControlButtonsVisibility();
 }
 
-void BraveMessageView::DisableSlideForcibly(bool disable) {
+void MessageView::DisableSlideForcibly(bool disable) {
   disable_slide_ = disable;
   slide_out_controller_.set_slide_mode(CalculateSlideMode());
 }
 
-void BraveMessageView::SetSlideButtonWidth(int control_button_width) {
+void MessageView::SetSlideButtonWidth(int control_button_width) {
   slide_out_controller_.SetSwipeControlWidth(control_button_width);
 }
 
-void BraveMessageView::SetCornerRadius(int top_radius, int bottom_radius) {
+void MessageView::SetCornerRadius(int top_radius, int bottom_radius) {
   LOG(INFO) << "albert *** UpdateCornerRadius" << top_radius << " " << bottom_radius;
   top_radius_ = top_radius;
   bottom_radius_ = bottom_radius;
 }
 
-void BraveMessageView::OnCloseButtonPressed() {
+void MessageView::OnCloseButtonPressed() {
   for (auto& observer : observers_)
     observer.OnCloseButtonPressed(notification_id_);
   MessageCenter::Get()->RemoveNotification(notification_id_,
                                            true /* by_user */);
 }
 
-void BraveMessageView::OnSettingsButtonPressed(const ui::Event& event) {
+void MessageView::OnSettingsButtonPressed(const ui::Event& event) {
   for (auto& observer : observers_)
     observer.OnSettingsButtonPressed(notification_id_);
 
   MessageCenter::Get()->ClickOnSettingsButton(notification_id_);
 }
 
-void BraveMessageView::OnSnoozeButtonPressed(const ui::Event& event) {
-  for (auto& observer : observers_)
-    observer.OnSnoozeButtonPressed(notification_id_);
-}
-
-void BraveMessageView::SetNestedBorderIfNecessary() {
+void MessageView::SetNestedBorderIfNecessary() {
   if (is_nested_) {
     /*
     SkColor border_color = GetNativeTheme()->GetSystemColor(

@@ -1,0 +1,207 @@
+// Copyright 2018 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
+
+#include "build/build_config.h"
+#include "ui/accessibility/ax_enums.mojom.h"
+#include "ui/accessibility/ax_node_data.h"
+#include "ui/display/display.h"
+#include "chrome/browser/profiles/profile.h"
+#include "ui/display/screen.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/message_view_factory.h"
+#include "ui/views/layout/fill_layout.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/layout/box_layout.h"
+#include "ui/views/views_delegate.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/controls/label.h"
+
+#if defined(OS_WIN)
+#include "ui/views/widget/desktop_aura/desktop_native_widget_aura.h"
+#endif
+
+#if defined(OS_CHROMEOS)
+#include "ui/aura/window.h"
+#include "ui/aura/window_targeter.h"
+#endif
+
+namespace brave_custom_notification {
+  constexpr gfx::Size kSmallContainerSize(328, 50);
+
+MessagePopupView::MessagePopupView() {
+}
+
+MessagePopupView::MessagePopupView(Profile* profile) {
+  views::Widget* window = new views::Widget();
+  views::Widget::InitParams window_params;
+  window_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
+  window_params.bounds = { 0, 0, 1500, 1000 };
+  views::View* container = new views::View();
+ // views::View* wv_container = new views::View();
+  container->SetLayoutManager(std::make_unique<views::BoxLayout>(views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
+  container->SetSize(kSmallContainerSize);
+  views::Label* tv = new views::Label(base::ASCIIToUTF16("toplevel"));
+  tv->SetBackgroundColor(SkColorSetRGB(0xf5, 0xf5, 0xf5));
+  container->AddChildView(tv);
+
+  /*
+   wv_container->SetLayoutManager(std::make_unique<views::FillLayout>());
+  wv = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
+  wv_container->SetSize(kContainerSize);
+  wv_container->SetPreferredSize(kContainerSize);
+  wv_container->SizeToPreferredSize();
+  wv_container->AddChildView(wv);
+  */
+  // views::Label* tv2 = new views::Label(base::ASCIIToUTF16("bottomlevel"));
+//  tv2->SetBackgroundColor(kBackground);
+  window_params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
+  window_params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
+  window_params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
+  window->Init(std::move(window_params));
+  window->CenterWindow(window_params.bounds.size());
+  window->Show();
+  window->SetContentsView(container);
+  views::Widget* child = new views::Widget;
+  views::Widget::InitParams child_params(views::Widget::InitParams::TYPE_POPUP);
+  child_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
+  child_params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
+  child_params.bounds = { 1000, 500, 200, 200 };
+  child_params.parent = window->GetNativeWindow();
+  child->Init(std::move(child_params));
+  child->Show();
+  // child->SetContentsView(wv_container);
+}
+
+// Worries about bounds. 
+/*
+MessagePopupView::MessagePopupView(const Notification& notification)
+    : message_view_(MessageViewFactory::Create(notification)) {
+  SetLayoutManager(std::make_unique<views::FillLayout>());
+  views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
+  params.z_order = ui::ZOrderLevel::kFloatingWindow;
+#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
+  // Make the widget explicitly activatable as TYPE_POPUP is not activatable by
+  // default but we need focus for the inline reply textarea.
+  params.activatable = views::Widget::InitParams::ACTIVATABLE_YES;
+  params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
+#else
+  params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
+#endif
+  params.delegate = this;
+  views::Widget* widget = new views::Widget();
+  LOG(INFO) << "albert *** creating new widget";
+  widget->set_focus_on_creation(false);
+  observer_.Add(widget);
+
+#if defined(OS_WIN)
+  // We want to ensure that this toast always goes to the native desktop,
+  // not the Ash desktop (since there is already another toast contents view
+  // there.
+  if (!params.parent)
+    params.native_widget = new views::DesktopNativeWidgetAura(widget);
+#endif
+
+  widget->Init(std::move(params));
+
+#if defined(OS_CHROMEOS)
+  // On Chrome OS, this widget is shown in the shelf container. It means this
+  // widget would inherit the parent's window targeter (ShelfWindowTarget) by
+  // default. But it is not good for popup. So we override it with the normal
+  // WindowTargeter.
+  gfx::NativeWindow native_window = widget->GetNativeWindow();
+  native_window->SetEventTargeter(std::make_unique<aura::WindowTargeter>());
+#endif
+
+  widget->SetOpacity(0.0);
+  widget->ShowInactive();
+
+  AddChildView(message_view_);
+  set_notify_enter_exit_on_child(true);
+}
+*/
+
+MessagePopupView::~MessagePopupView() {
+}
+
+void MessagePopupView::UpdateContents(const Notification& notification) {
+  if (!IsWidgetValid())
+    return;
+  ui::AXNodeData old_data;
+  message_view_->GetAccessibleNodeData(&old_data);
+  message_view_->UpdateWithNotification(notification);
+  if (notification.rich_notification_data()
+          .should_make_spoken_feedback_for_popup_updates) {
+    ui::AXNodeData new_data;
+    message_view_->GetAccessibleNodeData(&new_data);
+    if (old_data.GetStringAttribute(ax::mojom::StringAttribute::kName) !=
+        new_data.GetStringAttribute(ax::mojom::StringAttribute::kName))
+      NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
+  }
+}
+
+#if !defined(OS_MACOSX)
+float MessagePopupView::GetOpacity() const {
+  if (!IsWidgetValid())
+    return 0.f;
+  return GetWidget()->GetLayer()->opacity();
+}
+#endif
+
+void MessagePopupView::SetPopupBounds(const gfx::Rect& bounds) {
+  if (!IsWidgetValid())
+    return;
+  GetWidget()->SetBounds(bounds);
+}
+
+void MessagePopupView::SetOpacity(float opacity) {
+  if (!IsWidgetValid())
+    return;
+  GetWidget()->SetOpacity(opacity);
+}
+
+void MessagePopupView::Show() {
+}
+
+void MessagePopupView::Close() {
+  if (!GetWidget()) {
+    DeleteDelegate();
+    return;
+  }
+
+  if (!GetWidget()->IsClosed())
+    GetWidget()->CloseNow();
+}
+
+void MessagePopupView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+  message_view_->GetAccessibleNodeData(node_data);
+  node_data->role = ax::mojom::Role::kAlertDialog;
+}
+
+const char* MessagePopupView::GetClassName() const {
+  return "MessagePopupView";
+}
+
+void MessagePopupView::OnFocus() {
+  // This view is just a container, so advance focus to the underlying
+  // MessageView.
+  GetFocusManager()->SetFocusedView(message_view_);
+}
+
+void MessagePopupView::OnWidgetActivationChanged(views::Widget* widget,
+                                                 bool active) {
+  is_active_ = active;
+}
+
+void MessagePopupView::OnWidgetDestroyed(views::Widget* widget) {
+  observer_.Remove(widget);
+}
+
+bool MessagePopupView::IsWidgetValid() const {
+  return GetWidget() && !GetWidget()->IsClosed();
+}
+
+}  // namespace message_center
