@@ -12,7 +12,7 @@ namespace brave {
 
 void ShowAdsNotification(Profile* profile) {
 //  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(profile);
-  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(profile);
+  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView();
   mpv->Show();
   LOG(ERROR) << __FUNCTION__;
   static int show_count = 0;

@@ -8,7 +8,7 @@
 #include "base/scoped_observer.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
-#include "chrome/browser/profiles/profile.h"
+// #include "chrome/browser/profiles/profile.h"
 #include "ui/views/widget/widget_observer.h"
 
 namespace brave_custom_notification {
@@ -21,7 +21,7 @@ class MessagePopupView : public views::WidgetDelegateView,
                          public views::WidgetObserver {
  public:
   MessagePopupView();
-  MessagePopupView(Profile* profile);
+  // MessagePopupView(Profile* profile);
  // MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
 

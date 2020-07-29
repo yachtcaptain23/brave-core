@@ -8,7 +8,7 @@
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/display/display.h"
-#include "chrome/browser/profiles/profile.h"
+// #include "chrome/browser/profiles/profile.h"
 #include "ui/display/screen.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/message_view.h"
@@ -32,10 +32,16 @@
 namespace brave_custom_notification {
   constexpr gfx::Size kSmallContainerSize(328, 50);
 
-MessagePopupView::MessagePopupView() {
-}
 
-MessagePopupView::MessagePopupView(Profile* profile) {
+// Todo: Albert need to fix this error before we can compile
+//
+//In file included from ../../brave/ui/brave_custom_notification/message_popup_view.cc:5:
+// In file included from ../../brave/ui/brave_custom_notification/message_popup_view.h:11:
+// In file included from ../../chrome/browser/profiles/profile.h:19:
+// ../../content/public/browser/browser_context.h:29:10: fatal error: 'third_party/blink/public/mojom/push_messaging/push_messaging_status.mojom-forward.h' file not found
+//
+// MessagePopupView::MessagePopupView(Profile* profile) {
+MessagePopupView::MessagePopupView() {
   views::Widget* window = new views::Widget();
   views::Widget::InitParams window_params;
   window_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;

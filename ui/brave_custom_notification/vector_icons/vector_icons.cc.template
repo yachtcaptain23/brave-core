@@ -5,7 +5,7 @@
 // vector_icons.cc.template is used to generate vector_icons.cc. Edit the former
 // rather than the latter.
 
-#include "ui/message_center/vector_icons.h"
+#include "brave/ui/brave_custom_notifications/vector_icons.h"
 
 #include "base/logging.h"
 #include "components/vector_icons/cc_macros.h"
@@ -14,7 +14,7 @@
 #define DECLARE_VECTOR_COMMAND(x) using gfx::x;
 DECLARE_VECTOR_COMMANDS
 
-namespace message_center {
+namespace brave_custom_notification {
 
 TEMPLATE_PLACEHOLDER
 

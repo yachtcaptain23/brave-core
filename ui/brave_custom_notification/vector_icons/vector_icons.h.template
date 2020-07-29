@@ -5,24 +5,22 @@
 // vector_icons.h.template is used to generate vector_icons.h. Edit the former
 // rather than the latter.
 
-#ifndef UI_BRAVE_MESSAGE_CENTER_VECTOR_ICONS_H_
-#define UI_BRAVE_MESSAGE_CENTER_VECTOR_ICONS_H_
-
-#include "ui/message_center/message_center_export.h"
+#ifndef UI_BRAVE_CUSTOM_NOTIFICATION_VECTOR_ICONS_H_
+#define UI_BRAVE_CUSTOM_NOTIFICATION_VECTOR_ICONS_H_
 
 namespace gfx {
 struct VectorIcon;
 }
 
 #define VECTOR_ICON_TEMPLATE_H(icon_name) \
-MESSAGE_CENTER_EXPORT extern const gfx::VectorIcon icon_name;
+CUSTOM_NOTIFICATION_EXPORT extern const gfx::VectorIcon icon_name;
 
-namespace brave_message_center {
+namespace brave_custom_notification {
 
 TEMPLATE_PLACEHOLDER
 
-}  // namespace brave_message_center
+}
 
 #undef VECTOR_ICON_TEMPLATE_H
 
-#endif  // UI_MESSAGE_CENTER_VECTOR_ICONS_H_
+#endif
