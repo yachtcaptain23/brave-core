@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
-
 #include <vector>
 
 #include "brave/app/brave_command_ids.h"
@@ -189,6 +188,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_REWARDS:
       // brave::ShowBraveRewards(browser_);
             brave::ShowAdsNotification(browser_->profile());
+      // brave_custom_notification::MessagePopupView::MessagePopupView(browser_->profile());
       break;
     case IDC_SHOW_BRAVE_ADBLOCK:
       brave::ShowBraveAdblock(browser_);

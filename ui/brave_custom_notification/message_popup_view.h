@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_MESSAGE_POPUP_VIEW_H_
-#define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_MESSAGE_POPUP_VIEW_H_
+#ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_MESSAGE_POPUP_VIEW_H_
+#define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_MESSAGE_POPUP_VIEW_H_
 
 #include "base/scoped_observer.h"
 #include "ui/views/widget/widget.h"
