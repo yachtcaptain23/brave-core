@@ -22,7 +22,7 @@ class MessagePopupView : public views::WidgetDelegateView,
  public:
   MessagePopupView();
   // MessagePopupView(Profile* profile);
- // MessagePopupView(const Notification& notification);
+  MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
 
   // Update notification contents to |notification|. Virtual for unit testing.

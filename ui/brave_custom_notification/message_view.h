@@ -73,6 +73,7 @@ class MessageView
   };
   ~MessageView() override;
   virtual void UpdateWithNotification(const Notification& notification);
+  virtual NotificationControlButtonsView* GetControlButtonsView() const = 0;
   virtual void CloseSwipeControl();
   virtual void SlideOutAndClose(int direction);
 
@@ -101,6 +102,8 @@ class MessageView
   void OnSlideOut() override;
 
   // views::FocusChangeListener:
+  void OnWillChangeFocus(views::View* before, views::View* now) override;
+  void OnDidChangeFocus(views::View* before, views::View* now) override;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

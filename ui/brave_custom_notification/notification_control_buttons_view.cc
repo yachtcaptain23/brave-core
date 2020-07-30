@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/ui/brave_custom_notification/views/notification_control_buttons_view.h"
+#include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
 
 #include <memory>
 
@@ -11,7 +11,7 @@
 #include "ui/events/event.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "brave/ui/brave_custom_notification/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/vector_icons.h"
 #include "brave/ui/brave_custom_notification/views/message_view.h"
 #include "brave/ui/brave_custom_notification/views/padded_button.h"

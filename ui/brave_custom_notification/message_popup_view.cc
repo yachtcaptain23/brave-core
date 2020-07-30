@@ -83,7 +83,6 @@ MessagePopupView::MessagePopupView() {
 }
 
 // Worries about bounds. 
-/*
 MessagePopupView::MessagePopupView(const Notification& notification)
     : message_view_(MessageViewFactory::Create(notification)) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
@@ -128,7 +127,6 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   AddChildView(message_view_);
   set_notify_enter_exit_on_child(true);
 }
-*/
 
 MessagePopupView::~MessagePopupView() {
 }

@@ -9,11 +9,11 @@
 
 namespace brave_custom_notification {
 
-namespace {
-
 // static
 MessageView* MessageViewFactory::Create(const Notification& notification) {
-  MessageView* notification_view = new NotificationViewMD(notification);
+  MessageView* notification_view = nullptr;
+  if (!notification_view)
+    notification_view = new NotificationViewMD(notification);
   return notification_view;
 }
 

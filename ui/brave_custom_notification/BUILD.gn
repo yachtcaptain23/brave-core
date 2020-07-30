@@ -61,15 +61,17 @@ source_set("brave_custom_notification") {
   sources = [
     "message_popup_view.h",
     "message_popup_view.cc",
+    "message_view_factory.h",
+    "message_view_factory.cc",
+    "notification_control_buttons_view.h",
+    "notification_control_buttons_view.cc",
+    "notification_view_md.h",
+    "notification_view_md.cc",
   ]
     # "views/brave_message_view.h",
     # "views/brave_message_view.cc",
-    #"views/brave_notification_control_buttons_view.cc",
-    #"views/brave_notification_control_buttons_view.h",
     #"views/brave_notification_header_view.h",
     #"views/brave_notification_header_view.cc",
-    #"views/brave_notification_view_md.h",
-    #"views/brave_notification_view_md.cc",
 #  sources += get_target_outputs(":brave_custom_notification_vector_icons")
   deps += [
     "//ui/compositor",

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/ui/brave_custom_notification/views/notification_view_md.h"
+#include "brave/ui/brave_custom_notification/notification_view_md.h"
 #include "base/logging.h"
 
 #include <stddef.h>
@@ -37,8 +37,7 @@
 #include "ui/gfx/text_constants.h"
 #include "ui/gfx/text_elider.h"
 #include "ui/views/views_delegate.h"
-#include "brave/ui/brave_custom_notification/message_center.h"
-#include "brave/ui/brave_custom_notification/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "brave/ui/brave_custom_notification/vector_icons.h"
@@ -70,7 +69,7 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
-namespace message_center {
+namespace brave_custom_notification {
 
 namespace {
 
@@ -574,7 +573,6 @@ void BraveNotificationViewMD::CreateOrUpdateViews(const Notification& notificati
   CreateOrUpdateProgressBarView(notification);
   CreateOrUpdateProgressStatusView(notification);
   CreateOrUpdateListItemViews(notification);
-  CreateOrUpdateIconView(notification);
   CreateOrUpdateSmallIconView(notification);
   CreateOrUpdateImageView(notification);
   CreateOrUpdateInlineSettingsViews(notification);
@@ -1080,32 +1078,6 @@ void BraveNotificationViewMD::CreateOrUpdateListItemViews(
     left_content_->InvalidateLayout();
 }
 
-void BraveNotificationViewMD::CreateOrUpdateIconView(
-    const Notification& notification) {
-  const bool use_image_for_icon = notification.icon().IsEmpty();
-
-  gfx::ImageSkia icon = use_image_for_icon ? notification.image().AsImageSkia()
-                                           : notification.icon().AsImageSkia();
-
-  if (notification.type() == NOTIFICATION_TYPE_PROGRESS ||
-      notification.type() == NOTIFICATION_TYPE_MULTIPLE || icon.isNull()) {
-    DCHECK(!icon_view_ || right_content_->Contains(icon_view_));
-    delete icon_view_;
-    icon_view_ = nullptr;
-    return;
-  }
-
-  if (!icon_view_) {
-    icon_view_ = new ProportionalImageView(kIconViewSize);
-    right_content_->AddChildView(icon_view_);
-  }
-
-  icon_view_->SetImage(icon, icon.size());
-
-  // Hide the icon on the right side when the notification is expanded.
-  hide_icon_on_expanded_ = use_image_for_icon;
-}
-
 void BraveNotificationViewMD::CreateOrUpdateSmallIconView(
     const Notification& notification) {
   // TODO(knollr): figure out if this has a performance impact and
@@ -1392,18 +1364,15 @@ void BraveNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   else if (!item_views_.empty())
     header_row_->SetSummaryText(base::string16());
 
-  bool has_icon = icon_view_ && (!hide_icon_on_expanded_ || !expanded);
-  right_content_->SetVisible(has_icon);
-  left_content_->SetBorder(views::CreateEmptyBorder(
-      has_icon ? kLeftContentPaddingWithIcon : kLeftContentPadding));
+  right_content_->SetVisible(true);
+  left_content_->SetBorder(views::CreateEmptyBorder(kLeftContentPadding));
 
   // TODO(tetsui): Workaround https://crbug.com/682266 by explicitly setting
   // the width.
   // Ideally, we should fix the original bug, but it seems there's no obvious
   // solution for the bug according to https://crbug.com/678337#c7, we should
   // ensure that the change won't break any of the users of BoxLayout class.
-  const int message_view_width =
-      (has_icon ? kMessageViewWidthWithIcon : kMessageViewWidth) -
+  const int message_view_width = kMessageViewWidthWithIcon -
       GetInsets().width();
   if (title_view_)
     title_view_->SizeToFit(message_view_width);

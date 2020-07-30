@@ -64,10 +64,6 @@ class MESSAGE_CENTER_EXPORT NotificationHeaderView : public views::Button {
     return summary_text_view_;
   }
 
-  const views::ImageView* app_icon_view_for_testing() const {
-    return app_icon_view_;
-  }
-
   const base::string16& app_name_for_testing() const;
 
   const gfx::ImageSkia& app_icon_for_testing() const;

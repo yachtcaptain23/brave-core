@@ -12,7 +12,7 @@
 #include "base/macros.h"
 #include "base/optional.h"
 #include "base/time/time.h"
-#include "brave/ui/brave_custom_notification/views/message_view.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
 #include "ui/views/animation/ink_drop_observer.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
@@ -189,10 +189,6 @@ class NotificationViewMD
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
   void UpdateCornerRadius(int top_radius, int bottom_radius) override;
   NotificationControlButtonsView* GetControlButtonsView() const override;
-  bool IsExpanded() const override;
-  void SetExpanded(bool expanded) override;
-  bool IsManuallyExpandedOrCollapsed() const override;
-  void SetManuallyExpandedOrCollapsed(bool value) override;
   void OnSettingsButtonPressed(const ui::Event& event) override;
 
   // views::InkDropObserver:
@@ -302,7 +298,6 @@ class NotificationViewMD
   views::Label* title_view_ = nullptr;
   views::Label* message_view_ = nullptr;
   views::Label* status_view_ = nullptr;
-  ProportionalImageView* icon_view_ = nullptr;
   views::View* image_container_view_ = nullptr;
   std::vector<NotificationButtonMD*> action_buttons_;
   std::vector<views::View*> item_views_;

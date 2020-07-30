@@ -5,14 +5,28 @@
 
 #include "brave/browser/ui/brave_browser_dialogs.h"
 
+#include "ui/gfx/image/image_skia_operations.h"
 #include "brave/browser/ui/views/ads_notification_view.h"
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/grit/brave_theme_resources.h"
+#include "brave/grit/brave_unscaled_resources.h"
 
 namespace brave {
 
 void ShowAdsNotification(Profile* profile) {
 //  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(profile);
-  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView();
+  brave_custom_notification::Notification* notification = new brave_custom_notification::Notification(
+    brave_custom_notification::NOTIFICATION_TYPE_SIMPLE,
+     "id1",
+     base::UTF8ToUTF16("title"),
+     base::UTF8ToUTF16("message"),
+     base::string16() /* display_source */,
+     GURL(), // origin url
+     brave_custom_notification::RichNotificationData(), // option fields
+     nullptr); // delegate
+  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(*notification);
+  // brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView();
   mpv->Show();
   LOG(ERROR) << __FUNCTION__;
   static int show_count = 0;

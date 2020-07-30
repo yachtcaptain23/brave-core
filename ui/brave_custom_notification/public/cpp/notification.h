@@ -190,7 +190,6 @@ class Notification {
   // |title|: Title of the notification.
   // |message|: Body text of the notification. May not be used for certain
   //            values of |type|, for example list-style notifications.
-  // |icon|: Icon to show alongside of the notification.
   // |display_source|: Textual representation of who's shown the notification.
   // |origin_url|: URL of the website responsible for showing the notification.
   // |optional_fields|: Rich data that can be used to assign more elaborate
@@ -201,7 +200,6 @@ class Notification {
                const std::string& id,
                const base::string16& title,
                const base::string16& message,
-               const gfx::Image& icon,
                const base::string16& display_source,
                const GURL& origin_url,
                const RichNotificationData& optional_fields,
