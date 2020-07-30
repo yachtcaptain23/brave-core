@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_HEADER_VIEW_H_
-#define UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_HEADER_VIEW_H_
+#ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_HEADER_VIEW_H_
+#define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_HEADER_VIEW_H_
 
 #include "base/macros.h"
 #include "base/optional.h"
 #include "base/timer/timer.h"
 #include "ui/gfx/text_constants.h"
-#include "brave/ui/brave_custom_notification/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "ui/views/controls/button/button.h"
 
 namespace views {
@@ -19,7 +19,7 @@ class Label;
 
 namespace brave_custom_notification {
 
-class MESSAGE_CENTER_EXPORT NotificationHeaderView : public views::Button {
+class NotificationHeaderView : public views::Button {
  public:
   explicit NotificationHeaderView(views::ButtonListener* listener);
   ~NotificationHeaderView() override;
@@ -28,7 +28,7 @@ class MESSAGE_CENTER_EXPORT NotificationHeaderView : public views::Button {
   void SetAppNameElideBehavior(gfx::ElideBehavior elide_behavior);
 
   // Only show AppIcon and AppName in settings mode.
-  void SetDetailViewsVisible(bool visible);
+  // void SetDetailViewsVisible(bool visible);
 
   // Progress, summary and overflow indicator are all the same UI element so are
   // mutually exclusive.
@@ -36,8 +36,8 @@ class MESSAGE_CENTER_EXPORT NotificationHeaderView : public views::Button {
   void SetSummaryText(const base::string16& text);
   void SetOverflowIndicator(int count);
 
-  void SetExpandButtonEnabled(bool enabled);
-  void SetExpanded(bool expanded);
+  // void SetExpandButtonEnabled(bool enabled);
+  // void SetExpanded(bool expanded);
 
   // Set the unified theme color used among the app icon, app name, and expand
   // button.
@@ -84,12 +84,12 @@ class MESSAGE_CENTER_EXPORT NotificationHeaderView : public views::Button {
   views::ImageView* expand_button_ = nullptr;
 
   bool has_progress_ = false;
-  bool is_expanded_ = false;
+  // bool is_expanded_ = false;
   bool using_default_app_icon_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(NotificationHeaderView);
 };
 
-}  // namespace message_center
+}
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_HEADER_VIEW_H_
+#endif

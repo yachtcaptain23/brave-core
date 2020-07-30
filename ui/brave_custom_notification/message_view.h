@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_MESSAGE_CENTER_VIEWS_BRAVE_MESSAGE_VIEW_H_
-#define UI_MESSAGE_CENTER_VIEWS_BRAVE_MESSAGE_VIEW_H_
+#ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_MESSAGE_VIEW_H_
+#define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_MESSAGE_VIEW_H_
 
 #include <memory>
 
@@ -15,7 +15,6 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
-#include "ui/message_center/message_center_export.h"
 #include "brave/ui/brave_custom_notification/message_view.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
@@ -50,8 +49,8 @@ class MessageView
     virtual void OnPreSlideOut(const std::string& notification_id) {}
     virtual void OnSlideOut(const std::string& notification_id) {}
     virtual void OnCloseButtonPressed(const std::string& notification_id) {}
-    virtual void OnSettingsButtonPressed(const std::string& notification_id) {}
-    virtual void OnSnoozeButtonPressed(const std::string& notification_id) {}
+//    virtual void OnSettingsButtonPressed(const std::string& notification_id) {}
+//    virtual void OnSnoozeButtonPressed(const std::string& notification_id) {}
   };
 
   enum class Mode {
@@ -86,7 +85,7 @@ class MessageView
   virtual void OnContainerAnimationStarted();
   virtual void OnContainerAnimationEnded();
   void OnCloseButtonPressed();
-  virtual void OnSettingsButtonPressed(const ui::Event& event);
+  // virtual void OnSettingsButtonPressed(const ui::Event& event);
 
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   void OnPaint(gfx::Canvas* canvas) override;
@@ -115,7 +114,7 @@ class MessageView
 
   // Set "setting" mode. This overrides "pinned" mode. See the comment of
   // MessageView::Mode enum for detail.
-  void SetSettingMode(bool setting_mode);
+  // void SetSettingMode(bool setting_mode);
 
   // Disables slide by vertical swipe regardless of the current notification
   // mode.
@@ -128,7 +127,11 @@ class MessageView
   std::string notification_id() const { return notification_id_; }
 
  protected:
+  virtual void UpdateControlButtonsVisibility();
+
   // Changes the background color and schedules a paint.
+  virtual void SetDrawBackgroundAsActive(bool active);
+
   void SetCornerRadius(int top_radius, int bottom_radius);
 
   views::ScrollView* scroller() { return scroller_; }
@@ -183,6 +186,6 @@ class MessageView
   DISALLOW_COPY_AND_ASSIGN(MessageView);
 };
 
-}  // namespace message_center
+}
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_MESSAGE_VIEW_H_
+#endif

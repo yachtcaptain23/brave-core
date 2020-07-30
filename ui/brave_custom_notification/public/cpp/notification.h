@@ -37,12 +37,14 @@ struct NotificationItem {
   base::string16 message;
 };
 
+/*
 enum class SettingsButtonHandler {
   NONE = 0,      // No button. This is the default. Does not affect native
                  // settings button (like on Android).
   INLINE = 1,    // Button shown, settings inline.
   DELEGATE = 2,  // Button shown, notification's delegate handles action.
 };
+*/
 
 enum class SystemNotificationWarningLevel { NORMAL, WARNING, CRITICAL_WARNING };
 
@@ -171,7 +173,7 @@ class RichNotificationData {
   // Controls whether a settings button should appear on the notification. See
   // enum definition. TODO(estade): turn this into a boolean. See
   // crbug.com/780342
-  SettingsButtonHandler settings_button_handler = SettingsButtonHandler::NONE;
+  // SettingsButtonHandler settings_button_handler = SettingsButtonHandler::NONE;
 
   // Controls whether a snooze button should appear on the notification.
   bool should_show_snooze_button = false;
@@ -388,6 +390,7 @@ class Notification {
     optional_fields_.accent_color = accent_color;
   }
 
+  /*
   bool should_show_settings_button() const {
     return optional_fields_.settings_button_handler !=
            SettingsButtonHandler::NONE;
@@ -396,6 +399,7 @@ class Notification {
   void set_settings_button_handler(SettingsButtonHandler handler) {
     optional_fields_.settings_button_handler = handler;
   }
+  */
 
   bool should_show_snooze_button() const {
     return optional_fields_.should_show_snooze_button;

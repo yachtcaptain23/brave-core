@@ -17,11 +17,11 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
-#include "ui/message_center/message_center.h"
-#include "ui/message_center/public/cpp/message_center_constants.h"
-#include "ui/message_center/views/message_view.h"
-#include "ui/message_center/views/notification_background_painter.h"
-#include "ui/message_center/views/notification_control_buttons_view.h"
+// #include "ui/message_center/message_center.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/notification_background_painter.h"
+#include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -52,7 +52,7 @@ base::string16 CreateAccessibleName(const Notification& notification) {
       notification.title(), notification.message(),
       notification.context_message()};
   std::vector<NotificationItem> items = notification.items();
-  for (size_t i = 0; i < items.size() && i < kNotificationMaximumItems; ++i) {
+  for (size_t i = 0; i < items.size() && i < 20; ++i) {
     accessible_lines.push_back(items[i].title + base::ASCIIToUTF16(" ") +
                                items[i].message);
   }
@@ -116,6 +116,10 @@ MessageView::MessageView(const Notification& notification) : notification_id_(no
                                            ninebox_insets),
         -gfx::ShadowValue::GetMargin(shadow.values)));
   }
+}
+
+MessageView::~MessageView() {
+  RemovedFromWidget();
 }
 
 void MessageView::UpdateWithNotification(const Notification& notification) {
@@ -211,7 +215,8 @@ void MessageView::OnGestureEvent(ui::GestureEvent* event) {
     }
     case ui::ET_GESTURE_TAP: {
       SetDrawBackgroundAsActive(false);
-      MessageCenter::Get()->ClickOnNotification(notification_id_);
+      // TODO: Handle clicks
+      // MessageCenter::Get()->ClickOnNotification(notification_id_);
       event->SetHandled();
       return;
     }
@@ -276,10 +281,20 @@ void MessageView::OnSlideOut() {
   for (auto& observer : observers_)
     observer.OnPreSlideOut(notification_id_);
 
-  MessageCenter::Get()->RemoveNotification(notification_id_,
-                                           true /* by_user */);
+  // TODO: Handle remove
+  // MessageCenter::Get()->RemoveNotification(notification_id_, true /* by_user */);
   for (auto& observer : observers_)
     observer.OnSlideOut(notification_id_);
+}
+
+void MessageView::OnWillChangeFocus(views::View* before, views::View* now) {}
+
+void MessageView::OnDidChangeFocus(views::View* before, views::View* now) {
+  if (Contains(before) || Contains(now) ||
+      (GetControlButtonsView() && (GetControlButtonsView()->Contains(before) ||
+                                   GetControlButtonsView()->Contains(now)))) {
+    UpdateControlButtonsVisibility();
+  }
 }
 
 views::SlideOutController::SlideMode MessageView::CalculateSlideMode() const {
@@ -315,11 +330,13 @@ float MessageView::GetSlideAmount() const {
   return slide_out_controller_.gesture_amount();
 }
 
+/*
 void MessageView::SetSettingMode(bool setting_mode) {
   setting_mode_ = setting_mode;
   slide_out_controller_.set_slide_mode(CalculateSlideMode());
   UpdateControlButtonsVisibility();
 }
+*/
 
 void MessageView::DisableSlideForcibly(bool disable) {
   disable_slide_ = disable;
@@ -339,16 +356,17 @@ void MessageView::SetCornerRadius(int top_radius, int bottom_radius) {
 void MessageView::OnCloseButtonPressed() {
   for (auto& observer : observers_)
     observer.OnCloseButtonPressed(notification_id_);
-  MessageCenter::Get()->RemoveNotification(notification_id_,
-                                           true /* by_user */);
+// TODO
+//  MessageCenter::Get()->RemoveNotification(notification_id_, true /* by_user */);
 }
 
+/*
 void MessageView::OnSettingsButtonPressed(const ui::Event& event) {
   for (auto& observer : observers_)
     observer.OnSettingsButtonPressed(notification_id_);
-
-  MessageCenter::Get()->ClickOnSettingsButton(notification_id_);
+//  MessageCenter::Get()->ClickOnSettingsButton(notification_id_);
 }
+*/
 
 void MessageView::SetNestedBorderIfNecessary() {
   if (is_nested_) {
@@ -362,4 +380,16 @@ void MessageView::SetNestedBorderIfNecessary() {
   }
 }
 
-}  // namespace message_center
+void MessageView::UpdateControlButtonsVisibility() {
+  auto* control_buttons_view = GetControlButtonsView();
+  if (control_buttons_view)
+    control_buttons_view->ShowButtons(true);
+}
+
+void MessageView::SetDrawBackgroundAsActive(bool active) {
+  background()->SetNativeControlColor(active ? kHoveredButtonBackgroundColor
+                                             : kNotificationBackgroundColor);
+  SchedulePaint();
+}
+
+}

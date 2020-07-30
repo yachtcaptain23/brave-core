@@ -2,19 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_BACKGROUND_PAINTER_H_
-#define UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_BACKGROUND_PAINTER_H_
+#ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_BACKGROUND_PAINTER_H_
+#define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_BACKGROUND_PAINTER_H_
 
-#include "ui/message_center/message_center_export.h"
-#include "ui/message_center/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "ui/views/painter.h"
 
-namespace message_center {
+namespace brave_custom_notification {
 
 // Background Painter for notification. This is for notifications with rounded
 // corners inside the unified message center. This draws the rectangle with
 // rounded corners.
-class MESSAGE_CENTER_EXPORT NotificationBackgroundPainter
+class NotificationBackgroundPainter
     : public views::Painter {
  public:
   NotificationBackgroundPainter(int top_radius,
@@ -38,6 +37,6 @@ class MESSAGE_CENTER_EXPORT NotificationBackgroundPainter
   DISALLOW_COPY_AND_ASSIGN(NotificationBackgroundPainter);
 };
 
-}  // namespace message_center
+}
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_BACKGROUND_PAINTER_H_
+#endif

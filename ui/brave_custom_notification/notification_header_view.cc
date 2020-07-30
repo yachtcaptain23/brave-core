@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/ui/brave_custom_notification/views/notification_header_view.h"
+#include "brave/ui/brave_custom_notification/notification_header_view.h"
 
 #include <memory>
 
@@ -16,8 +16,8 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "brave/ui/brave_custom_notification/public/cpp/message_center_constants.h"
-#include "brave/ui/brave_custom_notification/vector_icons.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
@@ -28,7 +28,7 @@
 #include "ui/views/painter.h"
 #include "ui/views/view_class_properties.h"
 
-namespace message_center {
+namespace brave_custom_notification {
 
 namespace {
 
@@ -244,7 +244,9 @@ void NotificationHeaderView::SetAppIcon(const gfx::ImageSkia& img) {
 
 void NotificationHeaderView::ClearAppIcon() {
   app_icon_view_->SetImage(
-      gfx::CreateVectorIcon(kProductIcon, kSmallImageSizeMD, accent_color_));
+      // TODO
+      // gfx::CreateVectorIcon(kProductIcon, kSmallImageSizeMD, accent_color_));
+      gfx::CreateVectorIcon(kTorProfileIcon, kSmallImageSizeMD, accent_color_));
   using_default_app_icon_ = true;
 }
 
@@ -284,10 +286,13 @@ void NotificationHeaderView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   node_data->SetName(app_name_view_->GetText());
   node_data->SetDescription(summary_text_view_->GetText());
 
+  /*
   if (is_expanded_)
     node_data->AddState(ax::mojom::State::kExpanded);
+    */
 }
 
+/*
 void NotificationHeaderView::SetDetailViewsVisible(bool visible) {
   detail_views_->SetVisible(visible);
 
@@ -308,13 +313,14 @@ void NotificationHeaderView::SetExpanded(bool expanded) {
                : IDS_MESSAGE_CENTER_EXPAND_NOTIFICATION));
   NotifyAccessibilityEvent(ax::mojom::Event::kStateChanged, true);
 }
+*/
 
 void NotificationHeaderView::SetAccentColor(SkColor color) {
   accent_color_ = color;
   app_name_view_->SetEnabledColor(accent_color_);
   summary_text_view_->SetEnabledColor(accent_color_);
   summary_text_divider_->SetEnabledColor(accent_color_);
-  SetExpanded(is_expanded_);
+  // SetExpanded(is_expanded_);
 
   // If we are using the default app icon we should clear it so we refresh it
   // with the new accent color.

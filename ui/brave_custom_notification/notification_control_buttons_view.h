@@ -3,8 +3,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_NOTIFICATION_CONTROL_BUTTONS_VIEW_H_
-#define UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_NOTIFICATION_CONTROL_BUTTONS_VIEW_H_
+#ifndef UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_CONTROL_BUTTONS_VIEW_H_
+#define UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_CONTROL_BUTTONS_VIEW_H_
 
 #include "base/macros.h"
 #include "third_party/skia/include/core/SkColor.h"

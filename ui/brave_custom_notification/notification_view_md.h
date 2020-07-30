@@ -189,7 +189,7 @@ class NotificationViewMD
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
   void UpdateCornerRadius(int top_radius, int bottom_radius) override;
   NotificationControlButtonsView* GetControlButtonsView() const override;
-  void OnSettingsButtonPressed(const ui::Event& event) override;
+  // void OnSettingsButtonPressed(const ui::Event& event) override;
 
   // views::InkDropObserver:
   void InkDropAnimationStarted() override;
@@ -252,7 +252,7 @@ class NotificationViewMD
   void CreateOrUpdateSmallIconView(const Notification& notification);
   void CreateOrUpdateImageView(const Notification& notification);
   void CreateOrUpdateActionButtonViews(const Notification& notification);
-  void CreateOrUpdateInlineSettingsViews(const Notification& notification);
+  // void CreateOrUpdateInlineSettingsViews(const Notification& notification);
 
   bool IsExpandable();
   void ToggleExpanded();
@@ -328,6 +328,6 @@ class NotificationViewMD
   DISALLOW_COPY_AND_ASSIGN(NotificationViewMD);
 };
 
-}  // namespace message_center
+}
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_VIEW_MD_H_
+#endif

@@ -17,10 +17,12 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
+/*
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/test/test_browser_context.h"
+*/
 #include "components/url_formatter/elide_url.h"
 #include "ui/base/class_property.h"
 #include "ui/base/cursor/cursor.h"
@@ -36,16 +38,16 @@
 #include "ui/gfx/skia_util.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/gfx/text_elider.h"
-#include "ui/views/views_delegate.h"
+// #include "ui/views/views_delegate.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
-#include "brave/ui/brave_custom_notification/vector_icons.h"
-#include "brave/ui/brave_custom_notification/views/notification_background_painter.h"
-#include "brave/ui/brave_custom_notification/views/notification_control_buttons_view.h"
-#include "brave/ui/brave_custom_notification/views/notification_header_view.h"
-#include "brave/ui/brave_custom_notification/views/padded_button.h"
-#include "brave/ui/brave_custom_notification/views/proportional_image_view.h"
+#include "brave/app/vector_icons/vector_icons.h"
+#include "brave/ui/brave_custom_notification/notification_background_painter.h"
+#include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
+#include "brave/ui/brave_custom_notification/notification_header_view.h"
+#include "brave/ui/brave_custom_notification/padded_button.h"
+#include "brave/ui/brave_custom_notification/proportional_image_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/animation/flood_fill_ink_drop_ripple.h"
 #include "ui/views/animation/ink_drop_highlight.h"
@@ -53,7 +55,7 @@
 #include "ui/views/animation/ink_drop_mask.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
-#include "ui/views/controls/webview/webview.h"
+// #include "ui/views/controls/webview/webview.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/button/radio_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -90,9 +92,9 @@ constexpr gfx::Insets kLeftContentPadding(2, 4, 0, 4);
 constexpr gfx::Insets kLeftContentPaddingWithIcon(2, 4, 0, 12);
 constexpr gfx::Insets kInputTextfieldPadding(16, 16, 16, 0);
 constexpr gfx::Insets kInputReplyButtonPadding(0, 14, 0, 14);
-constexpr gfx::Insets kSettingsRowPadding(8, 0, 0, 0);
-constexpr gfx::Insets kSettingsRadioButtonPadding(14, 18, 14, 18);
-constexpr gfx::Insets kSettingsButtonRowPadding(8);
+// constexpr gfx::Insets kSettingsRowPadding(8, 0, 0, 0);
+// constexpr gfx::Insets kSettingsRadioButtonPadding(14, 18, 14, 18);
+// constexpr gfx::Insets kSettingsButtonRowPadding(8);
 
 // Background of inline actions area.
 constexpr SkColor kActionsRowBackgroundColor = SkColorSetRGB(0x00, 0x00, 0x00);
@@ -132,10 +134,12 @@ constexpr int kMessageViewWidthWithIcon =
     kLeftContentPaddingWithIcon.left() - kLeftContentPaddingWithIcon.right() -
     kContentRowPadding.left() - kContentRowPadding.right();
 
+/* TODO: This should be kept, right?
 constexpr int kMessageViewWidth =
     kNotificationWidth - kLeftContentPadding.left() -
     kLeftContentPadding.right() - kContentRowPadding.left() -
     kContentRowPadding.right();
+    */
 
 const int kMinPixelsPerTitleCharacterMD = 4;
 
@@ -168,7 +172,7 @@ gfx::FontList GetTextFontList() {
 
 class ClickActivator : public ui::EventHandler {
  public:
-  explicit ClickActivator(BraveNotificationViewMD* owner) : owner_(owner) {}
+  explicit ClickActivator(NotificationViewMD* owner) : owner_(owner) {}
   ~ClickActivator() override = default;
 
  private:
@@ -180,7 +184,7 @@ class ClickActivator : public ui::EventHandler {
     }
   }
 
-  BraveNotificationViewMD* const owner_;
+  NotificationViewMD* const owner_;
 
   DISALLOW_COPY_AND_ASSIGN(ClickActivator);
 };
@@ -280,15 +284,15 @@ void CompactTitleMessageView::set_message(const base::string16& message) {
   message_->SetText(message);
 }
 
-// BraveLargeImageView //////////////////////////////////////////////////////////////
+// LargeImageView //////////////////////////////////////////////////////////////
 
-BraveLargeImageView::BraveLargeImageView() {
+LargeImageView::LargeImageView() {
   SetBackground(views::CreateSolidBackground(kLargeImageBackgroundColor));
 }
 
-BraveLargeImageView::~BraveLargeImageView() = default;
+LargeImageView::~LargeImageView() = default;
 
-void BraveLargeImageView::SetImage(const gfx::ImageSkia& image) {
+void LargeImageView::SetImage(const gfx::ImageSkia& image) {
   // image_ = image;
   // gfx::Size preferred_size = GetResizedImageSize();
   // preferred_size.SetToMax(kLargeImageMinSize);
@@ -298,7 +302,7 @@ void BraveLargeImageView::SetImage(const gfx::ImageSkia& image) {
   Layout();
 }
 
-void BraveLargeImageView::OnPaint(gfx::Canvas* canvas) {
+void LargeImageView::OnPaint(gfx::Canvas* canvas) {
   views::View::OnPaint(canvas);
   LOG(INFO) << "albert *** LIV::OnPaint";
 
@@ -320,15 +324,15 @@ void BraveLargeImageView::OnPaint(gfx::Canvas* canvas) {
   // LOG(INFO) << "*** canvas width: " << std::to_string(message_view_->width()) << " height: " << std::to_string(message_view_->height());
 }
 
-const char* BraveLargeImageView::GetClassName() const {
-  return "BraveLargeImageView";
+const char* LargeImageView::GetClassName() const {
+  return "LargeImageView";
 }
 
 // Returns expected size of the image right after resizing.
 // The GetResizedImageSize().width() <= kLargeImageMaxSize.width() holds, but
 // GetResizedImageSize().height() may be larger than kLargeImageMaxSize.height()
 // In this case, the overflown part will be just cutted off from the view.
-gfx::Size BraveLargeImageView::GetResizedImageSize() {
+gfx::Size LargeImageView::GetResizedImageSize() {
   return kLargeImageMaxSize;
   gfx::Size original_size = image_.size();
   if (original_size.width() <= kLargeImageMaxSize.width())
@@ -342,9 +346,9 @@ gfx::Size BraveLargeImageView::GetResizedImageSize() {
   return resized_size;
 }
 
-// BraveNotificationButtonMD ////////////////////////////////////////////////////////
+// NotificationButtonMD ////////////////////////////////////////////////////////
 
-BraveNotificationButtonMD::BraveNotificationButtonMD(
+NotificationButtonMD::NotificationButtonMD(
     views::ButtonListener* listener,
     const base::string16& label,
     const base::Optional<base::string16>& placeholder)
@@ -365,28 +369,28 @@ BraveNotificationButtonMD::BraveNotificationButtonMD(
   views::InstallRectHighlightPathGenerator(this);
 }
 
-BraveNotificationButtonMD::~BraveNotificationButtonMD() = default;
+NotificationButtonMD::~NotificationButtonMD() = default;
 
-void BraveNotificationButtonMD::SetText(const base::string16& text) {
+void NotificationButtonMD::SetText(const base::string16& text) {
   views::LabelButton::SetText(base::i18n::ToUpper(text));
 }
 
-const char* BraveNotificationButtonMD::GetClassName() const {
-  return "BraveNotificationButtonMD";
+const char* NotificationButtonMD::GetClassName() const {
+  return "NotificationButtonMD";
 }
 
 std::unique_ptr<views::InkDropHighlight>
-BraveNotificationButtonMD::CreateInkDropHighlight() const {
+NotificationButtonMD::CreateInkDropHighlight() const {
   std::unique_ptr<views::InkDropHighlight> highlight =
       views::LabelButton::CreateInkDropHighlight();
   highlight->set_visible_opacity(kActionButtonInkDropHighlightVisibleOpacity);
   return highlight;
 }
 
-// BraveNotificationInputContainerMD ////////////////////////////////////////////////
+// NotificationInputContainerMD ////////////////////////////////////////////////
 
-BraveNotificationInputContainerMD::BraveNotificationInputContainerMD(
-    BraveNotificationInputDelegate* delegate)
+NotificationInputContainerMD::NotificationInputContainerMD(
+    NotificationInputDelegate* delegate)
     : delegate_(delegate),
       ink_drop_container_(new views::InkDropContainerView()),
       textfield_(new views::Textfield()),
@@ -417,9 +421,9 @@ BraveNotificationInputContainerMD::BraveNotificationInputContainerMD(
   views::InstallRectHighlightPathGenerator(this);
 }
 
-BraveNotificationInputContainerMD::~BraveNotificationInputContainerMD() = default;
+NotificationInputContainerMD::~NotificationInputContainerMD() = default;
 
-void BraveNotificationInputContainerMD::AnimateBackground(const ui::Event& event) {
+void NotificationInputContainerMD::AnimateBackground(const ui::Event& event) {
   // Try to get a located event. This can be NULL if triggered via keyboard.
   const ui::LocatedEvent* located_event = ui::LocatedEvent::FromIfValid(&event);
   // Use default animation if location is out of bounds.
@@ -428,7 +432,7 @@ void BraveNotificationInputContainerMD::AnimateBackground(const ui::Event& event
   AnimateInkDrop(views::InkDropState::ACTION_PENDING, located_event);
 }
 
-void BraveNotificationInputContainerMD::AddLayerBeneathView(ui::Layer* layer) {
+void NotificationInputContainerMD::AddLayerBeneathView(ui::Layer* layer) {
   // When a ink drop layer is added it is stacked between the textfield/button
   // and the parent (|this|). Since the ink drop is opaque, we have to paint the
   // textfield/button on their own layers in otherwise they remain painted on
@@ -440,24 +444,24 @@ void BraveNotificationInputContainerMD::AddLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->AddLayerBeneathView(layer);
 }
 
-void BraveNotificationInputContainerMD::RemoveLayerBeneathView(ui::Layer* layer) {
+void NotificationInputContainerMD::RemoveLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->RemoveLayerBeneathView(layer);
   textfield_->DestroyLayer();
   button_->DestroyLayer();
 }
 
 std::unique_ptr<views::InkDropRipple>
-BraveNotificationInputContainerMD::CreateInkDropRipple() const {
+NotificationInputContainerMD::CreateInkDropRipple() const {
   return std::make_unique<views::FloodFillInkDropRipple>(
       size(), GetInkDropCenterBasedOnLastEvent(), GetInkDropBaseColor(),
       ink_drop_visible_opacity());
 }
 
-SkColor BraveNotificationInputContainerMD::GetInkDropBaseColor() const {
+SkColor NotificationInputContainerMD::GetInkDropBaseColor() const {
   return SK_ColorTRANSPARENT;
 }
 
-bool BraveNotificationInputContainerMD::HandleKeyEvent(views::Textfield* sender,
+bool NotificationInputContainerMD::HandleKeyEvent(views::Textfield* sender,
                                                   const ui::KeyEvent& event) {
   if (event.type() == ui::ET_KEY_PRESSED &&
       event.key_code() == ui::VKEY_RETURN) {
@@ -469,17 +473,18 @@ bool BraveNotificationInputContainerMD::HandleKeyEvent(views::Textfield* sender,
   return event.type() == ui::ET_KEY_RELEASED;
 }
 
-void BraveNotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
+void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
   DCHECK_EQ(sender, textfield_);
   button_->SetImage(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(kNotificationInlineReplyIcon, kInputReplyButtonSize,
+      // gfx::CreateVectorIcon(kNotificationInlineReplyIcon, kInputReplyButtonSize,
+      gfx::CreateVectorIcon(kSadFolderIcon, kInputReplyButtonSize,
                             textfield_->GetText().empty()
                                 ? kTextfieldPlaceholderIconColorMD
                                 : SK_ColorWHITE));
 }
 
-void BraveNotificationInputContainerMD::ButtonPressed(views::Button* sender,
+void NotificationInputContainerMD::ButtonPressed(views::Button* sender,
                                                  const ui::Event& event) {
   if (sender == button_) {
     delegate_->OnNotificationInputSubmit(
@@ -524,17 +529,17 @@ class NotificationInkDropImpl : public views::InkDropImpl {
 };
 
 // ////////////////////////////////////////////////////////////
-// BraveNotificationViewMD
+// NotificationViewMD
 // ////////////////////////////////////////////////////////////
 
-class BraveNotificationViewMD::BraveNotificationViewMDPathGenerator
+class NotificationViewMD::NotificationViewMDPathGenerator
     : public views::HighlightPathGenerator {
  public:
-  BraveNotificationViewMDPathGenerator() = default;
-  BraveNotificationViewMDPathGenerator(const BraveNotificationViewMDPathGenerator&) =
+  NotificationViewMDPathGenerator() = default;
+  NotificationViewMDPathGenerator(const NotificationViewMDPathGenerator&) =
       delete;
-  BraveNotificationViewMDPathGenerator& operator=(
-      const BraveNotificationViewMDPathGenerator&) = delete;
+  NotificationViewMDPathGenerator& operator=(
+      const NotificationViewMDPathGenerator&) = delete;
 
   // views::HighlightPathGenerator:
   base::Optional<RoundRect> GetRoundRect(const gfx::RectF& rect) override {
@@ -563,7 +568,7 @@ class BraveNotificationViewMD::BraveNotificationViewMDPathGenerator
   gfx::Size preferred_size_;
 };
 
-void BraveNotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
+void NotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
   left_content_count_ = 0;
 
   CreateOrUpdateContextTitleView(notification);
@@ -575,14 +580,14 @@ void BraveNotificationViewMD::CreateOrUpdateViews(const Notification& notificati
   CreateOrUpdateListItemViews(notification);
   CreateOrUpdateSmallIconView(notification);
   CreateOrUpdateImageView(notification);
-  CreateOrUpdateInlineSettingsViews(notification);
+//  CreateOrUpdateInlineSettingsViews(notification);
   UpdateViewForExpandedState(expanded_);
   // Should be called at the last because SynthesizeMouseMoveEvent() requires
   // everything is in the right location when called.
   CreateOrUpdateActionButtonViews(notification);
 }
 
-BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notification)
+NotificationViewMD::NotificationViewMD(const Notification& notification)
     : MessageView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
    SetLayoutManager(std::make_unique<views::FillLayout>(
@@ -598,7 +603,7 @@ BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notificatio
   control_buttons_view_->set_owned_by_client();
 
   // |header_row_| contains app_icon, app_name, control buttons, etc...
-  header_row_ = new BraveNotificationHeaderView(this);
+  header_row_ = new NotificationHeaderView(this);
   header_row_->AddChildView(control_buttons_view_.get());
   AddChildView(header_row_);
 
@@ -648,7 +653,7 @@ BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notificatio
   actions_row_->AddChildView(action_buttons_row_);
 
   // |inline_reply_| is a container for an inline textfield.
-  inline_reply_ = new BraveNotificationInputContainerMD(this);
+  inline_reply_ = new NotificationInputContainerMD(this);
   inline_reply_->SetVisible(false);
   actions_row_->AddChildView(inline_reply_);
 
@@ -659,12 +664,12 @@ BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notificatio
 
   click_activator_ = std::make_unique<ClickActivator>(this);
   // Reasons to use pretarget handler instead of OnMousePressed:
-  // - BraveNotificationViewMD::OnMousePresssed would not fire on the inline reply
+  // - NotificationViewMD::OnMousePresssed would not fire on the inline reply
   //   textfield click in native notification.
   // - To make it look similar to ArcNotificationContentView::EventForwarder.
   AddPreTargetHandler(click_activator_.get());
   auto highlight_path_generator =
-      std::make_unique<BraveNotificationViewMDPathGenerator>();
+      std::make_unique<NotificationViewMDPathGenerator>();
   highlight_path_generator_ = highlight_path_generator.get();
   views::HighlightPathGenerator::Install(this,
                                          std::move(highlight_path_generator));
@@ -673,11 +678,11 @@ BraveNotificationViewMD::BraveNotificationViewMD(const Notification& notificatio
   UpdateCornerRadius(kNotificationCornerRadius, kNotificationCornerRadius);
 }
 
-BraveNotificationViewMD::~BraveNotificationViewMD() {
+NotificationViewMD::~NotificationViewMD() {
   RemovePreTargetHandler(click_activator_.get());
 }
 
-void BraveNotificationViewMD::AddLayerBeneathView(ui::Layer* layer) {
+void NotificationViewMD::AddLayerBeneathView(ui::Layer* layer) {
   GetInkDrop()->AddObserver(this);
   for (auto* child : GetChildrenForLayerAdjustment()) {
     child->SetPaintToLayer();
@@ -686,21 +691,21 @@ void BraveNotificationViewMD::AddLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->AddLayerBeneathView(layer);
 }
 
-void BraveNotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
+void NotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->RemoveLayerBeneathView(layer);
   for (auto* child : GetChildrenForLayerAdjustment())
     child->DestroyLayer();
   GetInkDrop()->RemoveObserver(this);
 }
 
-void BraveNotificationViewMD::Layout() {
+void NotificationViewMD::Layout() {
   LOG(INFO) << "albert *** NVMD Layout";
   MessageView::Layout();
 
   // We need to call IsExpandable() at the end of Layout() call, since whether
   // we should show expand button or not depends on the current view layout.
   // (e.g. Show expand button when |message_view_| exceeds one line.)
-  header_row_->SetExpandButtonEnabled(IsExpandable());
+  // header_row_->SetExpandButtonEnabled(IsExpandable());
   header_row_->Layout();
 
   // The notification background is rounded in MessageView::Layout(),
@@ -725,21 +730,21 @@ void BraveNotificationViewMD::Layout() {
   ink_drop_container_->SetBoundsRect(GetLocalBounds());
 }
 
-void BraveNotificationViewMD::OnFocus() {
+void NotificationViewMD::OnFocus() {
   MessageView::OnFocus();
   ScrollRectToVisible(GetLocalBounds());
 }
 
-bool BraveNotificationViewMD::OnMousePressed(const ui::MouseEvent& event) {
+bool NotificationViewMD::OnMousePressed(const ui::MouseEvent& event) {
   last_mouse_pressed_timestamp_ = base::TimeTicks(event.time_stamp());
   return true;
 }
 
-bool BraveNotificationViewMD::OnMouseDragged(const ui::MouseEvent& event) {
+bool NotificationViewMD::OnMouseDragged(const ui::MouseEvent& event) {
   return true;
 }
 
-void BraveNotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
+void NotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
   if (!event.IsOnlyLeftMouseButton())
     return;
 
@@ -769,7 +774,7 @@ void BraveNotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
   MessageView::OnMouseReleased(event);
 }
 
-void BraveNotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
+void NotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
   switch (event->type()) {
     case ui::ET_MOUSE_ENTERED:
       UpdateControlButtonsVisibility();
@@ -783,7 +788,7 @@ void BraveNotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
   View::OnMouseEvent(event);
 }
 
-void BraveNotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
+void NotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
   if (event->type() == ui::ET_GESTURE_LONG_TAP) {
     ToggleInlineSettings(*event);
     return;
@@ -791,12 +796,12 @@ void BraveNotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
   MessageView::OnGestureEvent(event);
 }
 
-void BraveNotificationViewMD::PreferredSizeChanged() {
+void NotificationViewMD::PreferredSizeChanged() {
   // highlight_path_generator_->set_preferred_size(GetPreferredSize());
   MessageView::PreferredSizeChanged();
 }
 
-void BraveNotificationViewMD::UpdateWithNotification(
+void NotificationViewMD::UpdateWithNotification(
     const Notification& notification) {
   MessageView::UpdateWithNotification(notification);
   UpdateControlButtonsVisibilityWithNotification(notification);
@@ -807,21 +812,21 @@ void BraveNotificationViewMD::UpdateWithNotification(
 }
 
 // TODO(yoshiki): Move this to the parent class (MessageView).
-void BraveNotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
+void NotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
     const Notification& notification) {
   control_buttons_view_->ShowCloseButton(GetMode() != Mode::PINNED);
   UpdateControlButtonsVisibility();
 }
 
-void BraveNotificationViewMD::ButtonPressed(views::Button* sender,
+void NotificationViewMD::ButtonPressed(views::Button* sender,
                                        const ui::Event& event) {
   // Tapping anywhere on |header_row_| can expand the notification, though only
   // |expand_button| can be focused by TAB.
   if (sender == header_row_) {
     if (IsExpandable() && content_row_->GetVisible()) {
-      SetManuallyExpandedOrCollapsed(true);
+//      SetManuallyExpandedOrCollapsed(true);
       auto weak_ptr = weak_ptr_factory_.GetWeakPtr();
-      ToggleExpanded();
+//      ToggleExpanded();
       // Check |this| is valid before continuing, because ToggleExpanded() might
       // cause |this| to be deleted.
       if (!weak_ptr)
@@ -855,7 +860,8 @@ void BraveNotificationViewMD::ButtonPressed(views::Button* sender,
       Layout();
       SchedulePaint();
     } else {
-      MessageCenter::Get()->ClickOnNotificationButton(notification_id(), i);
+      // TODO
+      // MessageCenter::Get()->ClickOnNotificationButton(notification_id(), i);
     }
     return;
   }
@@ -866,13 +872,15 @@ void BraveNotificationViewMD::ButtonPressed(views::Button* sender,
   }
 }
 
-void BraveNotificationViewMD::OnNotificationInputSubmit(size_t index,
+void NotificationViewMD::OnNotificationInputSubmit(size_t index,
                                                    const base::string16& text) {
+  /* TODO
   MessageCenter::Get()->ClickOnNotificationButtonWithReply(notification_id(),
                                                            index, text);
+                                                           */
 }
 
-void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
+void NotificationViewMD::CreateOrUpdateContextTitleView(
     const Notification& notification) {
   /*
   header_row_->SetAccentColor(notification.accent_color() == SK_ColorTRANSPARENT
@@ -881,7 +889,7 @@ void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
                                   */
   header_row_->SetAccentColor(SK_ColorTRANSPARENT);
   header_row_->SetBackgroundColor(kNotificationBackgroundColor);
-  header_row_->SetTimestamp(notification.timestamp());
+  // header_row_->SetTimestamp(notification.timestamp());
   header_row_->SetAppNameElideBehavior(gfx::ELIDE_TAIL);
   // const std::string s = std::string("albert summary text");
   // header_row_->SetSummaryText(s::string16());
@@ -893,8 +901,10 @@ void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
         notification.origin_url(),
         url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS);
     header_row_->SetAppNameElideBehavior(gfx::ELIDE_HEAD);
+    /* TODO: Remove???
   } else if (notification.display_source().empty()) {
     app_name = MessageCenter::Get()->GetSystemNotificationAppName();
+    */
   } else if (!notification.context_message().empty()) {
     app_name = notification.context_message();
   } else {
@@ -903,7 +913,7 @@ void BraveNotificationViewMD::CreateOrUpdateContextTitleView(
   header_row_->SetAppName(app_name);
 }
 
-void BraveNotificationViewMD::CreateOrUpdateTitleView(
+void NotificationViewMD::CreateOrUpdateTitleView(
     const Notification& notification) {
   if (notification.title().empty() ||
       notification.type() == NOTIFICATION_TYPE_PROGRESS) {
@@ -942,7 +952,7 @@ void BraveNotificationViewMD::CreateOrUpdateTitleView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateMessageView(
+void NotificationViewMD::CreateOrUpdateMessageView(
     const Notification& notification) {
   if (notification.type() == NOTIFICATION_TYPE_PROGRESS ||
       notification.message().empty()) {
@@ -979,7 +989,7 @@ void BraveNotificationViewMD::CreateOrUpdateMessageView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateCompactTitleMessageView(
+void NotificationViewMD::CreateOrUpdateCompactTitleMessageView(
     const Notification& notification) {
   if (notification.type() != NOTIFICATION_TYPE_PROGRESS) {
     DCHECK(!compact_title_message_view_ ||
@@ -1000,7 +1010,7 @@ void BraveNotificationViewMD::CreateOrUpdateCompactTitleMessageView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateProgressBarView(
+void NotificationViewMD::CreateOrUpdateProgressBarView(
     const Notification& notification) {
   if (notification.type() != NOTIFICATION_TYPE_PROGRESS) {
     DCHECK(!progress_bar_view_ || left_content_->Contains(progress_bar_view_));
@@ -1029,7 +1039,7 @@ void BraveNotificationViewMD::CreateOrUpdateProgressBarView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateProgressStatusView(
+void NotificationViewMD::CreateOrUpdateProgressStatusView(
     const Notification& notification) {
   if (notification.type() != NOTIFICATION_TYPE_PROGRESS ||
       notification.progress_status().empty()) {
@@ -1056,7 +1066,7 @@ void BraveNotificationViewMD::CreateOrUpdateProgressStatusView(
   left_content_count_++;
 }
 
-void BraveNotificationViewMD::CreateOrUpdateListItemViews(
+void NotificationViewMD::CreateOrUpdateListItemViews(
     const Notification& notification) {
   for (auto* item_view : item_views_)
     delete item_view;
@@ -1078,7 +1088,7 @@ void BraveNotificationViewMD::CreateOrUpdateListItemViews(
     left_content_->InvalidateLayout();
 }
 
-void BraveNotificationViewMD::CreateOrUpdateSmallIconView(
+void NotificationViewMD::CreateOrUpdateSmallIconView(
     const Notification& notification) {
   // TODO(knollr): figure out if this has a performance impact and
   // cache images if so. (crbug.com/768748)
@@ -1099,7 +1109,7 @@ void BraveNotificationViewMD::CreateOrUpdateSmallIconView(
   }
 }
 
-void BraveNotificationViewMD::CreateOrUpdateImageView(
+void NotificationViewMD::CreateOrUpdateImageView(
     const Notification& notification) {
   if (notification.image().IsEmpty()) {
     if (image_container_view_) {
@@ -1151,23 +1161,23 @@ void BraveNotificationViewMD::CreateOrUpdateImageView(
     image_container_view_->SetBackground(
         views::CreateSolidBackground(kImageBackgroundColor));
 
-    views::WebView* webview = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
-    image_container_view_->AddChildView(webview);
-    // image_container_view_->AddChildView(new BraveLargeImageView());
+    // views::WebView* webview = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
+//    image_container_view_->AddChildView(webview);
+    image_container_view_->AddChildView(new LargeImageView());
 
     // Insert the created image container just after the |content_row_|.
-    // image_container_view_->SetSize(kLargeImageMaxSize);
+    image_container_view_->SetSize(kLargeImageMaxSize);
     // webview->SetSize(kLargeImageMaxSize);
     // message_view_->SetSize(kLargeMVMaxSize);
     AddChildViewAt(image_container_view_, GetIndexOf(content_row_) + 1);
   }
 
-  static_cast<BraveLargeImageView*>(image_container_view_->children().front())
+  static_cast<LargeImageView*>(image_container_view_->children().front())
       ->SetImage(notification.image().AsImageSkia());
   LOG(INFO) << "*** image_container_view width: " << std::to_string(image_container_view_->width()) << " height: " << std::to_string(image_container_view_->height());
 }
 
-void BraveNotificationViewMD::CreateOrUpdateActionButtonViews(
+void NotificationViewMD::CreateOrUpdateActionButtonViews(
     const Notification& notification) {
   const std::vector<ButtonInfo>& buttons = notification.buttons();
   bool new_buttons = action_buttons_.size() != buttons.size();
@@ -1194,7 +1204,7 @@ void BraveNotificationViewMD::CreateOrUpdateActionButtonViews(
   for (size_t i = 0; i < buttons.size(); ++i) {
     ButtonInfo button_info = buttons[i];
     if (new_buttons) {
-      BraveNotificationButtonMD* button = new BraveNotificationButtonMD(
+      NotificationButtonMD* button = new NotificationButtonMD(
           this, button_info.title, button_info.placeholder);
       action_buttons_.push_back(button);
       action_buttons_row_->AddChildView(button);
@@ -1226,7 +1236,8 @@ void BraveNotificationViewMD::CreateOrUpdateActionButtonViews(
   }
 }
 
-void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
+/*
+void NotificationViewMD::CreateOrUpdateInlineSettingsViews(
     const Notification& notification) {
   if (settings_row_) {
     DCHECK_EQ(SettingsButtonHandler::INLINE,
@@ -1245,7 +1256,6 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
       views::BoxLayout::Orientation::kVertical, kSettingsRowPadding, 0));
 
   int block_notifications_message_id = 0;
-  /*
   switch (notification.notifier_id().type) {
     case NotifierType::APPLICATION:
     case NotifierType::ARC_APPLICATION:
@@ -1264,7 +1274,6 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
       NOTREACHED();
       break;
   }
-  */
   block_notifications_message_id =
       IDS_MESSAGE_CENTER_BLOCK_ALL_NOTIFICATIONS_APP;
   DCHECK_NE(block_notifications_message_id, 0);
@@ -1282,7 +1291,7 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
   settings_row_->AddChildView(dont_block_button_);
   settings_row_->SetVisible(false);
 
-  settings_done_button_ = new BraveNotificationButtonMD(
+  settings_done_button_ = new NotificationButtonMD(
       this, l10n_util::GetStringUTF16(IDS_MESSAGE_CENTER_SETTINGS_DONE),
       base::nullopt);
   settings_done_button_->SetTextSubpixelRenderingEnabled(false);
@@ -1298,8 +1307,9 @@ void BraveNotificationViewMD::CreateOrUpdateInlineSettingsViews(
 
   AddChildViewAt(settings_row_, GetIndexOf(actions_row_));
 }
+  */
 
-bool BraveNotificationViewMD::IsExpandable() {
+bool NotificationViewMD::IsExpandable() {
   // Inline settings can not be expanded.
   if (GetMode() == Mode::SETTING)
     return false;
@@ -1328,12 +1338,14 @@ bool BraveNotificationViewMD::IsExpandable() {
   return false;
 }
 
-void BraveNotificationViewMD::ToggleExpanded() {
+/*
+void NotificationViewMD::ToggleExpanded() {
   SetExpanded(!expanded_);
 }
+*/
 
-void BraveNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
-  header_row_->SetExpanded(expanded);
+void NotificationViewMD::UpdateViewForExpandedState(bool expanded) {
+ // header_row_->SetExpanded(expanded);
   if (message_view_) {
     message_view_->SetMaxLines(expanded ? kMaxLinesForExpandedMessageView
                                         : kMaxLinesForMessageView);
@@ -1382,17 +1394,19 @@ void BraveNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   content_row_->InvalidateLayout();
 }
 
-void BraveNotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
+void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
   if (!settings_row_)
     return;
 
   bool inline_settings_visible = !settings_row_->GetVisible();
+  /*
   bool disable_notification =
       settings_row_->GetVisible() && block_all_button_->GetChecked();
+      */
 
   settings_row_->SetVisible(inline_settings_visible);
   content_row_->SetVisible(!inline_settings_visible);
-  header_row_->SetDetailViewsVisible(!inline_settings_visible);
+  // header_row_->SetDetailViewsVisible(!inline_settings_visible);
   header_row_->SetBackgroundColor(inline_settings_visible
                                       ? kInlineSettingsBackgroundColor
                                       : kNotificationBackgroundColor);
@@ -1402,13 +1416,13 @@ void BraveNotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
   // Toggling should reset the state.
   dont_block_button_->SetChecked(true);
 
-  SetSettingMode(inline_settings_visible);
+  // SetSettingMode(inline_settings_visible);
 
   // Grab a weak pointer before calling SetExpanded() as it might cause |this|
   // to be deleted.
   {
     auto weak_ptr = weak_ptr_factory_.GetWeakPtr();
-    SetExpanded(!inline_settings_visible);
+//    SetExpanded(!inline_settings_visible);
     if (!weak_ptr)
       return;
   }
@@ -1425,11 +1439,13 @@ void BraveNotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
 
   // Call DisableNotification() at the end, because |this| can be deleted at any
   // point after it's called.
+  /* TODO
   if (disable_notification)
     MessageCenter::Get()->DisableNotification(notification_id());
+    */
 }
 
-void BraveNotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
+void NotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
   LOG(INFO) << "albert *** in UpdateCornerRadius";
   MessageView::UpdateCornerRadius(top_radius, bottom_radius);
   action_buttons_row_->SetBackground(views::CreateBackgroundFromPainter(
@@ -1442,16 +1458,19 @@ void BraveNotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radi
   */
 }
 
-NotificationControlButtonsView* BraveNotificationViewMD::GetControlButtonsView()
+NotificationControlButtonsView* NotificationViewMD::GetControlButtonsView()
     const {
   return control_buttons_view_.get();
 }
 
-bool BraveNotificationViewMD::IsExpanded() const {
+/*
+bool NotificationViewMD::IsExpanded() const {
   return expanded_;
 }
+*/
 
-void BraveNotificationViewMD::SetExpanded(bool expanded) {
+/*
+void NotificationViewMD::SetExpanded(bool expanded) {
   if (expanded_ == expanded)
     return;
   expanded_ = expanded;
@@ -1459,16 +1478,20 @@ void BraveNotificationViewMD::SetExpanded(bool expanded) {
   UpdateViewForExpandedState(expanded_);
   PreferredSizeChanged();
 }
+*/
 
-bool BraveNotificationViewMD::IsManuallyExpandedOrCollapsed() const {
+/*
+bool NotificationViewMD::IsManuallyExpandedOrCollapsed() const {
   return manually_expanded_or_collapsed_;
 }
 
-void BraveNotificationViewMD::SetManuallyExpandedOrCollapsed(bool value) {
+void NotificationViewMD::SetManuallyExpandedOrCollapsed(bool value) {
   manually_expanded_or_collapsed_ = value;
 }
+*/
 
-void BraveNotificationViewMD::OnSettingsButtonPressed(const ui::Event& event) {
+/*
+void NotificationViewMD::OnSettingsButtonPressed(const ui::Event& event) {
   for (auto& observer : *observers())
     observer.OnSettingsButtonPressed(notification_id());
 
@@ -1477,13 +1500,14 @@ void BraveNotificationViewMD::OnSettingsButtonPressed(const ui::Event& event) {
   else
     MessageView::OnSettingsButtonPressed(event);
 }
+*/
 
-void BraveNotificationViewMD::Activate() {
+void NotificationViewMD::Activate() {
   GetWidget()->widget_delegate()->SetCanActivate(true);
   GetWidget()->Activate();
 }
 
-void BraveNotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
+void NotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
   SetInkDropMode(InkDropMode::ON_NO_GESTURE_HANDLER);
   // In case the animation is triggered from keyboard operation.
   if (!event.IsLocatedEvent()) {
@@ -1492,7 +1516,7 @@ void BraveNotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
   }
 
   // Convert the point of |event| from the coordinate system of
-  // |control_buttons_view_| to that of BraveNotificationViewMD, create a new
+  // |control_buttons_view_| to that of NotificationViewMD, create a new
   // LocatedEvent which has the new point.
   views::View* target = static_cast<views::View*>(event.target());
   const gfx::Point& location = event.AsLocatedEvent()->location();
@@ -1511,42 +1535,42 @@ void BraveNotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
   AnimateInkDrop(views::InkDropState::ACTION_PENDING, cloned_located_event);
 }
 
-void BraveNotificationViewMD::RemoveBackgroundAnimation() {
+void NotificationViewMD::RemoveBackgroundAnimation() {
   SetInkDropMode(InkDropMode::OFF);
   AnimateInkDrop(views::InkDropState::HIDDEN, nullptr);
 }
 
-std::unique_ptr<views::InkDrop> BraveNotificationViewMD::CreateInkDrop() {
+std::unique_ptr<views::InkDrop> NotificationViewMD::CreateInkDrop() {
   return std::make_unique<NotificationInkDropImpl>(this, size());
 }
 
-std::unique_ptr<views::InkDropRipple> BraveNotificationViewMD::CreateInkDropRipple()
+std::unique_ptr<views::InkDropRipple> NotificationViewMD::CreateInkDropRipple()
     const {
   return std::make_unique<views::FloodFillInkDropRipple>(
       GetPreferredSize(), GetInkDropCenterBasedOnLastEvent(),
       GetInkDropBaseColor(), ink_drop_visible_opacity());
 }
 
-std::vector<views::View*> BraveNotificationViewMD::GetChildrenForLayerAdjustment()
+std::vector<views::View*> NotificationViewMD::GetChildrenForLayerAdjustment()
     const {
   return {header_row_, block_all_button_, dont_block_button_,
           settings_done_button_};
 }
 
-std::unique_ptr<views::InkDropMask> BraveNotificationViewMD::CreateInkDropMask()
+std::unique_ptr<views::InkDropMask> NotificationViewMD::CreateInkDropMask()
     const {
   return nullptr;
 }
 
-SkColor BraveNotificationViewMD::GetInkDropBaseColor() const {
+SkColor NotificationViewMD::GetInkDropBaseColor() const {
   return kInlineSettingsBackgroundColor;
 }
 
-void BraveNotificationViewMD::InkDropAnimationStarted() {
+void NotificationViewMD::InkDropAnimationStarted() {
   header_row_->SetSubpixelRenderingEnabled(false);
 }
 
-void BraveNotificationViewMD::InkDropRippleAnimationEnded(
+void NotificationViewMD::InkDropRippleAnimationEnded(
     views::InkDropState ink_drop_state) {
   if (ink_drop_state == views::InkDropState::HIDDEN)
     header_row_->SetSubpixelRenderingEnabled(true);

@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "ui/message_center/views/padded_button.h"
+#include "brave/ui/brave_custom_notification/padded_button.h"
 
 #include <memory>
 
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
-#include "ui/message_center/public/cpp/message_center_constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "ui/views/animation/flood_fill_ink_drop_ripple.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/background.h"
@@ -16,7 +16,7 @@
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/painter.h"
 
-namespace message_center {
+namespace brave_custom_notification {
 
 PaddedButton::PaddedButton(views::ButtonListener* listener)
     : views::ImageButton(listener) {

@@ -12,19 +12,19 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
-#include "brave/ui/brave_custom_notification/vector_icons.h"
-#include "brave/ui/brave_custom_notification/views/message_view.h"
-#include "brave/ui/brave_custom_notification/views/padded_button.h"
+#include "brave/app/vector_icons/vector_icons.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/padded_button.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
 #include "ui/views/layout/box_layout.h"
 
 namespace brave_custom_notification {
 
-const char BraveNotificationControlButtonsView::kViewClassName[] =
-    "BraveNotificationControlButtonsView";
+const char NotificationControlButtonsView::kViewClassName[] =
+    "NotificationControlButtonsView";
 
-BraveBraveNotificationControlButtonsView::BraveBraveNotificationControlButtonsView(
+NotificationControlButtonsView::NotificationControlButtonsView(
     MessageView* message_view)
     : message_view_(message_view), icon_color_(gfx::kChromeIconGrey) {
   DCHECK(message_view);
@@ -38,15 +38,16 @@ BraveBraveNotificationControlButtonsView::BraveBraveNotificationControlButtonsVi
   SetBackground(views::CreateSolidBackground(kControlButtonBackgroundColor));
 }
 
-BraveNotificationControlButtonsView::~BraveNotificationControlButtonsView() = default;
+NotificationControlButtonsView::~NotificationControlButtonsView() = default;
 
-void BraveNotificationControlButtonsView::ShowCloseButton(bool show) {
+void NotificationControlButtonsView::ShowCloseButton(bool show) {
   if (show && !close_button_) {
     close_button_ = std::make_unique<PaddedButton>(this);
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
+       //TODO gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
+        gfx::CreateVectorIcon(kSadFolderIcon, icon_color_));
     close_button_->SetAccessibleName(l10n_util::GetStringUTF16(
         IDS_MESSAGE_CENTER_CLOSE_NOTIFICATION_BUTTON_ACCESSIBLE_NAME));
     close_button_->SetTooltipText(l10n_util::GetStringUTF16(
@@ -63,7 +64,7 @@ void BraveNotificationControlButtonsView::ShowCloseButton(bool show) {
   }
 }
 
-void BraveNotificationControlButtonsView::ShowButtons(bool show) {
+void NotificationControlButtonsView::ShowButtons(bool show) {
   DCHECK(layer());
   // Manipulate the opacity instead of changing the visibility to keep the tab
   // order even when the view is invisible.
@@ -71,11 +72,11 @@ void BraveNotificationControlButtonsView::ShowButtons(bool show) {
   set_can_process_events_within_subtree(show);
 }
 
-bool BraveNotificationControlButtonsView::IsAnyButtonFocused() const {
-  return (close_button_ && close_button_->HasFocus())
+bool NotificationControlButtonsView::IsAnyButtonFocused() const {
+  return (close_button_ && close_button_->HasFocus());
 }
 
-void BraveNotificationControlButtonsView::SetButtonIconColors(SkColor color) {
+void NotificationControlButtonsView::SetButtonIconColors(SkColor color) {
   if (color == icon_color_)
     return;
   icon_color_ = color;
@@ -83,19 +84,20 @@ void BraveNotificationControlButtonsView::SetButtonIconColors(SkColor color) {
   if (close_button_) {
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
+        //TODO gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
+        gfx::CreateVectorIcon(kSadFolderIcon, icon_color_));
   }
 }
 
-views::Button* BraveNotificationControlButtonsView::close_button() const {
+views::Button* NotificationControlButtonsView::close_button() const {
   return close_button_.get();
 }
 
-const char* BraveNotificationControlButtonsView::GetClassName() const {
+const char* NotificationControlButtonsView::GetClassName() const {
   return kViewClassName;
 }
 
-void BraveNotificationControlButtonsView::ButtonPressed(views::Button* sender,
+void NotificationControlButtonsView::ButtonPressed(views::Button* sender,
                                                    const ui::Event& event) {
   if (close_button_ && sender == close_button_.get()) {
     message_view_->OnCloseButtonPressed();

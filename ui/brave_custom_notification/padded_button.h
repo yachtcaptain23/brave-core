@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_PADDED_BUTTON_H_
-#define UI_BRAVE_CUSTOM_NOTIFICATION_PADDED_BUTTON_H_
+#ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PADDED_BUTTON_H_
+#define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PADDED_BUTTON_H_
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -20,7 +20,7 @@ namespace brave_custom_notification {
 // corresponding resource images with alpha padding. In the future, this class
 // will also allow for buttons whose touch areas extend beyond their clickable
 // area (<http://crbug.com/168856>).
-class MESSAGE_CENTER_EXPORT PaddedButton : public views::ImageButton {
+class PaddedButton : public views::ImageButton {
  public:
   PaddedButton(views::ButtonListener* listener);
   ~PaddedButton() override = default;

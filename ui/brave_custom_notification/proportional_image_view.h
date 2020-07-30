@@ -33,9 +33,9 @@ class ProportionalImageView : public views::View {
   const char* GetClassName() const override;
 
  private:
-  gfx::Size GetImageDrawingSize();
   gfx::Size GetImageSizeForContainerSize(const gfx::Size& container_size,
                                        const gfx::Size& image_size);
+  gfx::Size GetImageDrawingSize();
 
   gfx::ImageSkia image_;
   gfx::Size max_image_size_;
@@ -43,6 +43,6 @@ class ProportionalImageView : public views::View {
   DISALLOW_COPY_AND_ASSIGN(ProportionalImageView);
 };
 
-}  // namespace message_center
+}
 
-#endif // UI_MESSAGE_CENTER_VIEWS_PROPORTIONAL_IMAGE_VIEW_H_
+#endif

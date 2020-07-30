@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/ui/brave_custom_notification/views/proportional_image_view.h"
+#include "brave/ui/brave_custom_notification/proportional_image_view.h"
 
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image_skia_operations.h"
@@ -46,15 +46,6 @@ const char* ProportionalImageView::GetClassName() const {
   return kViewClassName;
 }
 
-gfx::Size ProportionalImageView::GetImageDrawingSize() {
-  if (!GetVisible())
-    return gfx::Size();
-
-  gfx::Size max_size = max_image_size_;
-  max_size.SetToMin(GetContentsBounds().size());
-  return GetImageSizeForContainerSize(max_size, image_.size());
-}
-
 gfx::Size GetImageSizeForContainerSize(const gfx::Size& container_size,
                                        const gfx::Size& image_size) {
   if (container_size.IsEmpty() || image_size.IsEmpty())
@@ -74,6 +65,15 @@ gfx::Size GetImageSizeForContainerSize(const gfx::Size& container_size,
   }
 
   return scaled_size;
+}
+
+gfx::Size ProportionalImageView::GetImageDrawingSize() {
+  if (!GetVisible())
+    return gfx::Size();
+
+  gfx::Size max_size = max_image_size_;
+  max_size.SetToMin(GetContentsBounds().size());
+  return GetImageSizeForContainerSize(max_size, image_.size());
 }
 
 }  // namespace brave_custom_notification

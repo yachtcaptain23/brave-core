@@ -14,11 +14,11 @@ import("//ui/base/ui_features.gni")
 #
 #  icons = [
 #    "b_notification_close_button.icon",
-#    "b_notification_expand_less.icon",
-#    "b_notification_expand_more.icon",
-#    "b_notification_inline_reply.icon",
-#    "b_notification_settings_button.icon",
-#    "b_notification_snooze_button.icon",
+##    "b_notification_expand_less.icon",
+##    "b_notification_expand_more.icon",
+##    "b_notification_inline_reply.icon",
+##    "b_notification_settings_button.icon",
+##   "b_notification_snooze_button.icon",
 #    "b_product.icon",
 #  ]
 #}
@@ -31,9 +31,12 @@ source_set("brave_custom_notification") {
     "//url",
   ]
 
-  public_deps = [ "//brave/ui/brave_custom_notification/public/cpp" ]
+  # public_deps = [ "//brave/ui/brave_custom_notification/public/cpp" ]
   deps += [
-#    ":brave_custom_notification_vector_icons",
+#    ":brave_vector_icons",
+    # ":message_center_vector_icons",
+     "//brave/ui/brave_custom_notification/public/cpp" ,
+    "//brave/app/vector_icons",
     "//base:i18n",
     "//base/third_party/dynamic_annotations",
     "//components/url_formatter",
@@ -59,14 +62,24 @@ source_set("brave_custom_notification") {
   }
 
   sources = [
-    "message_popup_view.h",
     "message_popup_view.cc",
-    "message_view_factory.h",
+    "message_popup_view.h",
+    "message_view.cc",
+    "message_view.h",
     "message_view_factory.cc",
-    "notification_control_buttons_view.h",
+    "message_view_factory.h",
+    "notification_background_painter.cc",
+    "notification_background_painter.h",
     "notification_control_buttons_view.cc",
-    "notification_view_md.h",
+    "notification_control_buttons_view.h",
+    "notification_header_view.cc",
+    "notification_header_view.h",
     "notification_view_md.cc",
+    "notification_view_md.h",
+    "padded_button.cc",
+    "padded_button.h",
+    "proportional_image_view.cc",
+    "proportional_image_view.h",
   ]
     # "views/brave_message_view.h",
     # "views/brave_message_view.cc",
