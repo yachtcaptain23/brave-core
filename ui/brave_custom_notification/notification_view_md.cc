@@ -590,10 +590,9 @@ void NotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
 NotificationViewMD::NotificationViewMD(const Notification& notification)
     : MessageView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
-   SetLayoutManager(std::make_unique<views::FillLayout>(
-//  SetLayoutManager(std::make_unique<views::BoxLayout>(
-//        views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
-  ));
+//   SetLayoutManager(std::make_unique<views::FillLayout>(
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
 
   set_ink_drop_visible_opacity(1);
 
@@ -605,6 +604,7 @@ NotificationViewMD::NotificationViewMD(const Notification& notification)
   // |header_row_| contains app_icon, app_name, control buttons, etc...
   header_row_ = new NotificationHeaderView(this);
   header_row_->AddChildView(control_buttons_view_.get());
+  header_row_->SetBounds(0, 0, 200, 20);
   AddChildView(header_row_);
 
   // albert attempt
@@ -699,8 +699,7 @@ void NotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
 }
 
 void NotificationViewMD::Layout() {
-  LOG(INFO) << "albert *** NVMD Layout";
-  MessageView::Layout();
+    MessageView::Layout();
 
   // We need to call IsExpandable() at the end of Layout() call, since whether
   // we should show expand button or not depends on the current view layout.
@@ -910,7 +909,7 @@ void NotificationViewMD::CreateOrUpdateContextTitleView(
   } else {
     app_name = notification.display_source();
   }
-  header_row_->SetAppName(app_name);
+  header_row_->SetAppName(base::UTF8ToUTF16("Brave Ad"));
 }
 
 void NotificationViewMD::CreateOrUpdateTitleView(

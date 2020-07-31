@@ -22,7 +22,7 @@ void ShowAdsNotification(Profile* profile) {
      base::UTF8ToUTF16("title"),
      base::UTF8ToUTF16("message"),
      base::string16() /* display_source */,
-     GURL(), // origin url
+     GURL("Brave Ad"), // origin url
      brave_custom_notification::RichNotificationData(), // option fields
      nullptr); // delegate
   brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(*notification);
