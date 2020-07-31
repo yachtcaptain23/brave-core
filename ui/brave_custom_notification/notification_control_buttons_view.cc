@@ -85,7 +85,7 @@ void NotificationControlButtonsView::SetButtonIconColors(SkColor color) {
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
         //TODO gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
-        gfx::CreateVectorIcon(kSadFolderIcon, icon_color_));
+        gfx::CreateVectorIcon(kCloseIcon, icon_color_));
   }
 }
 
@@ -100,6 +100,7 @@ const char* NotificationControlButtonsView::GetClassName() const {
 void NotificationControlButtonsView::ButtonPressed(views::Button* sender,
                                                    const ui::Event& event) {
   if (close_button_ && sender == close_button_.get()) {
+    LOG(INFO) << "albert *** BR:NCBV:ButtonPressed";
     message_view_->OnCloseButtonPressed();
   }
 }
