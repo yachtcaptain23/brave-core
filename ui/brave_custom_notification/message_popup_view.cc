@@ -88,6 +88,7 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   SetLayoutManager(std::make_unique<views::FillLayout>());
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
+  params.bounds = { 30, 30, 400, 200 };
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
   // Make the widget explicitly activatable as TYPE_POPUP is not activatable by
   // default but we need focus for the inline reply textarea.
@@ -99,7 +100,7 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   params.delegate = this;
   views::Widget* widget = new views::Widget();
   LOG(INFO) << "albert *** creating new widget";
-  widget->set_focus_on_creation(false);
+  widget->set_focus_on_creation(true);
   observer_.Add(widget);
 
 #if defined(OS_WIN)
@@ -121,7 +122,6 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   native_window->SetEventTargeter(std::make_unique<aura::WindowTargeter>());
 #endif
 
-  widget->SetOpacity(0.0);
   widget->ShowInactive();
 
   AddChildView(message_view_);

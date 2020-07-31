@@ -144,7 +144,7 @@ constexpr int kMarginBetweenPopups = 10;
 
 // Radius of the rounded corners of a notification.
 // The corners are only rounded in Chrome OS.
-constexpr int kNotificationCornerRadius = 100;
+constexpr int kNotificationCornerRadius = 10;
 
 }  // namespace brave_message_center
 

@@ -105,7 +105,7 @@ MessageView::MessageView(const Notification& notification) : notification_id_(no
   // albert: this might be interesting
   // base::debug::StackTrace st;
   // st.Print();
-  UpdateCornerRadius(100, 100);
+  UpdateCornerRadius(10, 10);
 
   // If Aero is enabled, set shadow border.
   if (ShouldShowAeroShadowBorder()) {
