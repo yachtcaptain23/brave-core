@@ -21,6 +21,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/gfx/vector_icon_types.h"
+#include "brave/ui/brave_custom_notification/public/cpp/brave_custom_notification_public_export.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "url/gurl.h"
@@ -32,7 +33,7 @@ struct VectorIcon;
 namespace brave_custom_notification {
 
 // Represents an individual item in NOTIFICATION_TYPE_MULTIPLE notifications.
-struct NotificationItem {
+struct BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT NotificationItem {
   base::string16 title;
   base::string16 message;
 };
@@ -49,7 +50,7 @@ enum class SettingsButtonHandler {
 enum class SystemNotificationWarningLevel { NORMAL, WARNING, CRITICAL_WARNING };
 
 // Represents a button to be shown as part of a notification.
-struct ButtonInfo {
+struct BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT ButtonInfo {
   explicit ButtonInfo(const base::string16& title);
   ButtonInfo(const ButtonInfo& other);
   ButtonInfo();
@@ -78,7 +79,7 @@ enum class FullscreenVisibility {
 };
 
 // Represents rich features available for notifications.
-class RichNotificationData {
+class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT RichNotificationData {
  public:
   RichNotificationData();
   RichNotificationData(const RichNotificationData& other);
@@ -181,7 +182,7 @@ class RichNotificationData {
   FullscreenVisibility fullscreen_visibility = FullscreenVisibility::NONE;
 };
 
-class Notification {
+class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
  public:
   // Creates a new notification.
   //

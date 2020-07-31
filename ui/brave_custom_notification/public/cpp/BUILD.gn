@@ -9,6 +9,7 @@ jumbo_component("cpp") {
   output_name = "brave_ui_brave_custom_notification_cpp"
 
   sources = [
+    "brave_custom_notification_public_export.h",
     "constants.h",
      "notification.cc",
      "notification.h",

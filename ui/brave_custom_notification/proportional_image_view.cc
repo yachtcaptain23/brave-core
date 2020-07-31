@@ -46,7 +46,7 @@ const char* ProportionalImageView::GetClassName() const {
   return kViewClassName;
 }
 
-gfx::Size GetImageSizeForContainerSize(const gfx::Size& container_size,
+gfx::Size ProportionalImageView::GetImageSizeForContainerSize(const gfx::Size& container_size,
                                        const gfx::Size& image_size) {
   if (container_size.IsEmpty() || image_size.IsEmpty())
     return gfx::Size();

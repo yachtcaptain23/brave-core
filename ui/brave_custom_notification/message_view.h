@@ -15,7 +15,6 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
 #include "ui/views/animation/ink_drop_host_view.h"

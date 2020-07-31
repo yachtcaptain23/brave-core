@@ -31,13 +31,15 @@ void ShowAdsNotification(Profile* profile) {
   LOG(ERROR) << __FUNCTION__;
   static int show_count = 0;
   show_count++;
+  /*
   AdsNotificationView::Show(
       profile,
+    GURL("https://m.media-amazon.com/images/I/418oH6YjpFL.jpg"));
+    */
       /*
       show_count % 2 == 0 ? GURL("https://simonhong.github.io/")
                           : GURL("brave://rewards/"));
                           */
-    GURL("https://m.media-amazon.com/images/I/418oH6YjpFL.jpg"));
 }
 
 }

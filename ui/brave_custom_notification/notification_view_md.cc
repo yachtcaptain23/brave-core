@@ -1202,7 +1202,7 @@ void NotificationViewMD::CreateOrUpdateActionButtonViews(
   }
 
   for (size_t i = 0; i < buttons.size(); ++i) {
-    ButtonInfo button_info = buttons[i];
+    brave_custom_notification::ButtonInfo button_info = buttons[i];
     if (new_buttons) {
       NotificationButtonMD* button = new NotificationButtonMD(
           this, button_info.title, button_info.placeholder);
