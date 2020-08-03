@@ -156,6 +156,8 @@ class MessageView
   views::ScrollView* scroller_ = nullptr;
 
   base::string16 accessible_name_;
+// TODO: Figure out a way to pass along the PopupView as the widget container
+//  MessagePopupView message_popup_view_;
 
   // Flag if the notification is set to pinned or not. See the comment in
   // MessageView::Mode for detail.

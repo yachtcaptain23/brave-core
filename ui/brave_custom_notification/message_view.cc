@@ -22,6 +22,7 @@
 #include "brave/ui/brave_custom_notification/message_view.h"
 #include "brave/ui/brave_custom_notification/notification_background_painter.h"
 #include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -165,7 +166,6 @@ SkPath MessageView::GetHighlightPath() const {
   //int top_radius = 0;
   int bottom_radius = std::max(0, bottom_radius_ - inset);
   // int bottom_radius = 60;
-  LOG(INFO) << "albert *** calling GetHighlightPath()" << top_radius << " " << bottom_radius;
   SkScalar radii[8] = {top_radius,    top_radius,      // top-left
                        top_radius,    top_radius,      // top-right
                        bottom_radius, bottom_radius,   // bottom-right
@@ -268,6 +268,7 @@ void MessageView::OnSlideChanged(bool in_progress) {
 }
 
 void MessageView::AddObserver(MessageView::Observer* observer) {
+  LOG(INFO) << "albert *** BR::MV::AddObserver";
   observers_.AddObserver(observer);
 }
 
@@ -348,14 +349,16 @@ void MessageView::SetSlideButtonWidth(int control_button_width) {
 }
 
 void MessageView::SetCornerRadius(int top_radius, int bottom_radius) {
-  LOG(INFO) << "albert *** UpdateCornerRadius" << top_radius << " " << bottom_radius;
   top_radius_ = top_radius;
   bottom_radius_ = bottom_radius;
 }
 
 void MessageView::OnCloseButtonPressed() {
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnCloseButtonPressed(notification_id_);
+  }
+  LOG(INFO) << "albert closing";
+  MessagePopupView::ClosePopup();
 // TODO
 //  MessageCenter::Get()->RemoveNotification(notification_id_, true /* by_user */);
 }

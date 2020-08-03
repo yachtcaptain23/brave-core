@@ -736,6 +736,7 @@ void NotificationViewMD::OnFocus() {
 
 bool NotificationViewMD::OnMousePressed(const ui::MouseEvent& event) {
   last_mouse_pressed_timestamp_ = base::TimeTicks(event.time_stamp());
+  LOG(INFO) << "albert ***NVMD::OnMousePressed";
   return true;
 }
 
@@ -744,6 +745,7 @@ bool NotificationViewMD::OnMouseDragged(const ui::MouseEvent& event) {
 }
 
 void NotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
+  LOG(INFO) << "albert ***NVMD::OnMouseReleased";
   if (!event.IsOnlyLeftMouseButton())
     return;
 

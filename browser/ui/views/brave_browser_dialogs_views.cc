@@ -25,9 +25,10 @@ void ShowAdsNotification(Profile* profile) {
      GURL("Brave Ad"), // origin url
      brave_custom_notification::RichNotificationData(), // option fields
      nullptr); // delegate
-  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(*notification);
+  brave_custom_notification::MessagePopupView::Show(*notification);
+//  brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView(*notification);
   // brave_custom_notification::MessagePopupView* mpv = new brave_custom_notification::MessagePopupView();
-  mpv->Show();
+  // mpv->Show();
   LOG(ERROR) << __FUNCTION__;
   static int show_count = 0;
   show_count++;

@@ -16,13 +16,13 @@ namespace brave_custom_notification {
 class MessageView;
 class Notification;
 
-// The widget delegate of a notification popup. The view is owned by the widget.
 class MessagePopupView : public views::WidgetDelegateView,
                          public views::WidgetObserver {
  public:
+  static void Show(const Notification& notification); // Returns static reference
+  static void ClosePopup(); // Destroys the widget
   MessagePopupView();
-  // MessagePopupView(Profile* profile);
-  MessagePopupView(const Notification& notification);
+   MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
 
   // Update notification contents to |notification|. Virtual for unit testing.
@@ -77,6 +77,7 @@ class MessagePopupView : public views::WidgetDelegateView,
 
   bool is_hovered_ = false;
   bool is_active_ = false;
+  views::Widget* popup_window_ = nullptr;
 
   ScopedObserver<views::Widget, views::WidgetObserver> observer_{this};
 

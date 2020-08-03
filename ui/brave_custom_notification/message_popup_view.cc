@@ -30,8 +30,26 @@
 #endif
 
 namespace brave_custom_notification {
-  constexpr gfx::Size kSmallContainerSize(328, 50);
+constexpr gfx::Size kSmallContainerSize(328, 50);
 
+namespace {
+static MessagePopupView* g_message_popup_view = nullptr;
+}
+
+// static
+void MessagePopupView::Show(const Notification& notification) {
+  if (g_message_popup_view == nullptr) {
+    g_message_popup_view = new MessagePopupView(notification);
+  }
+}
+
+// static
+void MessagePopupView::ClosePopup() {
+  if (g_message_popup_view) {
+    g_message_popup_view->Close();
+    g_message_popup_view = nullptr;
+  }
+}
 
 // Todo: Albert need to fix this error before we can compile
 //
@@ -80,6 +98,7 @@ MessagePopupView::MessagePopupView() {
   child->Init(std::move(child_params));
   child->Show();
   // child->SetContentsView(wv_container);
+  g_message_popup_view = this;
 }
 
 // Worries about bounds. 
@@ -98,20 +117,19 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
 #endif
   params.delegate = this;
-  views::Widget* widget = new views::Widget();
-  LOG(INFO) << "albert *** creating new widget";
-  widget->set_focus_on_creation(true);
-  observer_.Add(widget);
+  popup_window_ = new views::Widget();
+  popup_window_->set_focus_on_creation(true);
+  observer_.Add(popup_window_);
 
 #if defined(OS_WIN)
   // We want to ensure that this toast always goes to the native desktop,
   // not the Ash desktop (since there is already another toast contents view
   // there.
   if (!params.parent)
-    params.native_widget = new views::DesktopNativeWidgetAura(widget);
+    params.native_widget = new views::DesktopNativeWidgetAura(popup_window_);
 #endif
 
-  widget->Init(std::move(params));
+  popup_window_->Init(std::move(params));
 
 #if defined(OS_CHROMEOS)
   // On Chrome OS, this widget is shown in the shelf container. It means this
@@ -122,10 +140,11 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   native_window->SetEventTargeter(std::make_unique<aura::WindowTargeter>());
 #endif
 
-  widget->ShowInactive();
+  popup_window_->ShowInactive();
 
   AddChildView(message_view_);
   set_notify_enter_exit_on_child(true);
+  g_message_popup_view = this;
 }
 
 MessagePopupView::~MessagePopupView() {
