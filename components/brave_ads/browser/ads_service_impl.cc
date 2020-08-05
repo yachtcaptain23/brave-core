@@ -1837,10 +1837,10 @@ void AdsServiceImpl::LoadUserModelForLanguage(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
-  auto notification = CreateAdNotification(*info);
+  brave_custom_notification::Notification* notification = (brave_custom_notification::Notification*) CreateAdNotification(*info);
 
  //  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
-  brave_custom_notification::MessagePopupView::Show(notification);
+  brave_custom_notification::MessagePopupView::Show(*notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
 
