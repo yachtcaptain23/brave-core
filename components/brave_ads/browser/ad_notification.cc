@@ -33,7 +33,7 @@ std::unique_ptr<brave_custom_notification::Notification> CreateAdNotification(
   notification_data.context_message = base::ASCIIToUTF16(" ");
   auto notification = std::make_unique<brave_custom_notification::Notification>(
       brave_custom_notification::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
-      base::string16(), GURL(), notification_data, nullptr);
+      base::string16(), GURL(kBraveAdsUrlPrefix + info.uuid), notification_data, nullptr);
 
 #if !defined(OS_MACOSX) || defined(OFFICIAL_BUILD)
   // set_never_timeout uses an XPC service which requires signing

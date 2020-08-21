@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
-#include "content/public/browser/browser_context.h"
-
 #include <memory>
 #include <utility>
+
+#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "content/public/browser/browser_context.h"
 
 #if defined(OS_ANDROID)
 #include "base/android/application_status_listener.h"
@@ -60,6 +60,7 @@ void AdsNotificationHandler::OnClose(
   base::OnceClosure completed_closure_local =
       base::BindOnce(&AdsNotificationHandler::CloseOperationCompleted,
       base::Unretained(this), id);
+  pending_close_callbacks_.emplace(id, std::move(completed_closure));
 
   if (!ads_service_) {
     auto notification = base::BindOnce(
@@ -158,6 +159,11 @@ void AdsNotificationHandler::CloseOperationCompleted(
 #if defined(OS_ANDROID)
   StartShutDownTimerIfNecessary(notification_id);
 #endif
+  auto iter = pending_close_callbacks_.find(notification_id);	
+  if (iter != pending_close_callbacks_.end()) {	
+    std::move(iter->second).Run();	
+    pending_close_callbacks_.erase(iter);	
+  }
 }
 
 #if defined(OS_ANDROID)

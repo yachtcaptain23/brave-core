@@ -69,10 +69,9 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
 
   // If there's no delegate, replace it with a PassThroughDelegate so clicks
   // go back to the appropriate handler.
-  brave_custom_notification::Notification notification_with_delegate(notification);
-  notification_with_delegate.set_delegate(base::WrapRefCounted(
+  notification.set_delegate(base::WrapRefCounted(
       new PassThroughDelegate(profile_, notification)));
-  brave_custom_notification::MessagePopupView::Show(notification_with_delegate);
+  brave_custom_notification::MessagePopupView::Show(notification);
   brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile));
   handler->OnShow(profile_, notification.id());
 }
