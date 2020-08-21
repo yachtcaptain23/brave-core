@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ad_notification.h"
-#include "bat/ads/ad_notification_info.h"
 
+#include "bat/ads/ad_notification_info.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"

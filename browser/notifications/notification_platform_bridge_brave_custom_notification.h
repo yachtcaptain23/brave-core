@@ -7,8 +7,8 @@
 #define BRAVE_BROWSER_NOTIFICATIONS_NOTIFICATION_PLATFORM_BRIDGE_BRAVE_CUSTOM_NOTIFICATION_H_
 
 #include "base/macros.h"
+#include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
-#include "chrome/browser/notifications/notification_platform_bridge.h"
 
 class Profile;
 
@@ -24,14 +24,9 @@ class NotificationPlatformBridgeBraveCustomNotification {
   explicit NotificationPlatformBridgeBraveCustomNotification(Profile* profile);
   ~NotificationPlatformBridgeBraveCustomNotification();
 
-  void Display(NotificationHandler::Type notification_type,
-               Profile* profile,
-               brave_custom_notification::Notification& notification,
-               std::unique_ptr<NotificationCommon::Metadata> metadata);
+  void Display(Profile* profile,
+               brave_custom_notification::Notification& notification);
   void Close(Profile* profile, const std::string& notification_id);
-  void GetDisplayed(Profile* profile,
-                    GetDisplayedNotificationsCallback callback) const;
-  void DisplayServiceShutDown(Profile* profile);
 
  private:
   Profile* profile_;

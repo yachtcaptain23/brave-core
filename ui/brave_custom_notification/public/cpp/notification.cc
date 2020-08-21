@@ -9,13 +9,13 @@
 #include <memory>
 
 #include "base/logging.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/vector_icon_types.h"
-#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 
 namespace brave_custom_notification {
 

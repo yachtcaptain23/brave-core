@@ -26,16 +26,6 @@ void ThunkNotificationDelegate::Click(
     impl_->Click(button_index, reply);
 }
 
-void ThunkNotificationDelegate::SettingsClick() {
-  if (impl_)
-    impl_->SettingsClick();
-}
-
-void ThunkNotificationDelegate::DisableNotification() {
-  if (impl_)
-    impl_->DisableNotification();
-}
-
 ThunkNotificationDelegate::~ThunkNotificationDelegate() = default;
 
 HandleNotificationClickDelegate::HandleNotificationClickDelegate(

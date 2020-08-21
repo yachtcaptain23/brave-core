@@ -31,13 +31,6 @@ class NotificationObserver {
   // button.
   virtual void Click(const base::Optional<int>& button_index,
                      const base::Optional<base::string16>& reply) {}
-
-  // Called when the user clicks the settings button in a notification which has
-  // a DELEGATE settings button action.
-  virtual void SettingsClick() {}
-
-  // Called when the user attempts to disable the notification.
-  virtual void DisableNotification() {}
 };
 
 // Ref counted version of NotificationObserver, required to satisfy
@@ -63,8 +56,6 @@ class ThunkNotificationDelegate
   void Close(bool by_user) override;
   void Click(const base::Optional<int>& button_index,
              const base::Optional<base::string16>& reply) override;
-  void SettingsClick() override;
-  void DisableNotification() override;
 
  protected:
   ~ThunkNotificationDelegate() override;

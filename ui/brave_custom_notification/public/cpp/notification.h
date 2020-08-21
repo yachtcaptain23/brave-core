@@ -16,15 +16,15 @@
 #include "base/strings/string16.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/ui/brave_custom_notification/public/cpp/brave_custom_notification_public_export.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/gfx/vector_icon_types.h"
-#include "brave/ui/brave_custom_notification/public/cpp/brave_custom_notification_public_export.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "url/gurl.h"
 
 namespace gfx {

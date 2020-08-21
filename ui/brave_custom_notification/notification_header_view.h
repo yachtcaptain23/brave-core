@@ -9,8 +9,8 @@
 #include "base/macros.h"
 #include "base/optional.h"
 #include "base/timer/timer.h"
-#include "ui/gfx/text_constants.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
+#include "ui/gfx/text_constants.h"
 #include "ui/views/controls/button/button.h"
 
 namespace views {

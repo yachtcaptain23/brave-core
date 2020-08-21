@@ -4,13 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
-
+#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/message_view_factory.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "build/build_config.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
-#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
-#include "brave/ui/brave_custom_notification/message_view_factory.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/controls/textfield/textfield.h"

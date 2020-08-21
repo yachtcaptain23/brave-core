@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/logging.h"
-#include <base/debug/stack_trace.h>
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "brave/ui/brave_custom_notification/message_view.h"
-
+#include "brave/ui/brave_custom_notification/notification_background_painter.h"
+#include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "base/strings/utf_string_conversions.h"
 #include "build/build_config.h"
 #include "ui/accessibility/ax_enums.mojom.h"
@@ -18,11 +19,6 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
-#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
-#include "brave/ui/brave_custom_notification/notification_background_painter.h"
-#include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
-#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"

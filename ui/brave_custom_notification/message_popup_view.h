@@ -7,10 +7,10 @@
 #define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_MESSAGE_POPUP_VIEW_H_
 
 #include "base/scoped_observer.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 
 namespace brave_custom_notification {
 

@@ -17,8 +17,6 @@
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/notifications/notification_display_service_impl.h"
-#include "chrome/browser/notifications/notification_ui_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -28,30 +26,9 @@ namespace {
 class PassThroughDelegate : public brave_custom_notification::NotificationDelegate {
  public:
   PassThroughDelegate(Profile* profile,
-                      const brave_custom_notification::Notification& notification,
-                      NotificationHandler::Type notification_type)
+                      const brave_custom_notification::Notification& notification)
       : profile_(profile),
-        notification_(notification),
-        notification_type_(notification_type) {
-    DCHECK_NE(notification_type, NotificationHandler::Type::TRANSIENT);
-  }
-
-  void SettingsClick() override {
-    NotificationDisplayServiceImpl::GetForProfile(profile_)
-        ->ProcessNotificationOperation(
-            NotificationCommon::OPERATION_SETTINGS, notification_type_,
-            notification_.origin_url(), notification_.id(), base::nullopt,
-            base::nullopt, base::nullopt /* by_user */);
-  }
-
-  void DisableNotification() override {
-    NotificationDisplayServiceImpl::GetForProfile(profile_)
-        ->ProcessNotificationOperation(
-            NotificationCommon::OPERATION_DISABLE_PERMISSION,
-            notification_type_, notification_.origin_url(), notification_.id(),
-            base::nullopt /* action_index */, base::nullopt /* reply */,
-            base::nullopt /* by_user */);
-  }
+        notification_(notification) {}
 
   void Close(bool by_user) override {
     std::unique_ptr<brave_ads::AdsNotificationHandler> handler = std::make_unique<brave_ads::AdsNotificationHandler>(static_cast<content::BrowserContext*>(profile_));
@@ -72,7 +49,6 @@ class PassThroughDelegate : public brave_custom_notification::NotificationDelega
  private:
   Profile* profile_;
   brave_custom_notification::Notification notification_;
-  NotificationHandler::Type notification_type_;
 
   DISALLOW_COPY_AND_ASSIGN(PassThroughDelegate);
 };
@@ -87,17 +63,15 @@ NotificationPlatformBridgeBraveCustomNotification::
     ~NotificationPlatformBridgeBraveCustomNotification() = default;
 
 void NotificationPlatformBridgeBraveCustomNotification::Display(
-    NotificationHandler::Type notification_type,
     Profile* profile,
-    brave_custom_notification::Notification& notification,
-    std::unique_ptr<NotificationCommon::Metadata> /* metadata */) {
+    brave_custom_notification::Notification& notification) {
   DCHECK_EQ(profile, profile_);
 
   // If there's no delegate, replace it with a PassThroughDelegate so clicks
   // go back to the appropriate handler.
   brave_custom_notification::Notification notification_with_delegate(notification);
   notification_with_delegate.set_delegate(base::WrapRefCounted(
-      new PassThroughDelegate(profile_, notification, notification_type)));
+      new PassThroughDelegate(profile_, notification)));
   brave_custom_notification::MessagePopupView::Show(notification_with_delegate);
   brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile));
   handler->OnShow(profile_, notification.id());
@@ -106,12 +80,3 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
 void NotificationPlatformBridgeBraveCustomNotification::Close(
     Profile* profile,
     const std::string& notification_id) {}
-
-void NotificationPlatformBridgeBraveCustomNotification::GetDisplayed(
-    Profile* profile,
-    GetDisplayedNotificationsCallback callback) const {
-  return;
-}
-
-void NotificationPlatformBridgeBraveCustomNotification::DisplayServiceShutDown(
-    Profile* profile) {}

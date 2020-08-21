@@ -7,15 +7,15 @@
 
 #include <memory>
 
+#include "brave/app/vector_icons/vector_icons.h"
+#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/padded_button.h"
+#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/event.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "brave/ui/brave_custom_notification/public/cpp/constants.h"
-#include "brave/app/vector_icons/vector_icons.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
-#include "brave/ui/brave_custom_notification/padded_button.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
 #include "ui/views/layout/box_layout.h"

@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 
-#include <memory>
-#include <utility>
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "content/public/browser/browser_context.h"
+
+#include <memory>
+#include <utility>
 
 #if defined(OS_ANDROID)
 #include "base/android/application_status_listener.h"
@@ -45,7 +46,6 @@ void AdsNotificationHandler::OnShow(
 #if defined (OS_ANDROID)
   headless_shutdown_timer_.Stop();
 #endif
-
 
   ads_service_->OnShow(profile, id);
 }
