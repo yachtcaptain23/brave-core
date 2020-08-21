@@ -1140,7 +1140,7 @@ void AdsServiceImpl::OnURLRequestComplete(
 }
 
 bool AdsServiceImpl::CanShowBackgroundNotifications() const {
-  return true;
+  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
