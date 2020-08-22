@@ -12,13 +12,6 @@
 
 class Profile;
 
-// Implementation of the platform bridge that enables delivering notifications
-// through Chrome's Message Center. Default bridge for Windows, fallback bridge
-// for mac OS and Linux.
-//
-// Different from the other platform bridges, which are global to the process,
-// the Message Center bridge will be created on demand by the notification
-// display service and is thereby associated with a particular profile.
 class NotificationPlatformBridgeBraveCustomNotification {
  public:
   explicit NotificationPlatformBridgeBraveCustomNotification(Profile* profile);

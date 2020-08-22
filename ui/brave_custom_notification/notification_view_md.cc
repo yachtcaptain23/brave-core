@@ -458,7 +458,7 @@ void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
   DCHECK_EQ(sender, textfield_);
   button_->SetImage(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(kBraveAdsCloseIcon, kInputReplyButtonSize,
+      gfx::CreateVectorIcon(kBraveAdsCloseButtonIcon, kInputReplyButtonSize,
                             textfield_->GetText().empty()
                                 ? kTextfieldPlaceholderIconColorMD
                                 : SK_ColorWHITE));

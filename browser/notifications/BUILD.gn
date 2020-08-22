@@ -4,14 +4,14 @@ source_set("notifications") {
 
   if (is_mac || is_linux || is_win) {
       sources = [
-        "notification_platform_bridge_brave_custom_notification.h",
-        "notification_platform_bridge_brave_custom_notification.cc"
+        "notification_platform_bridge_brave_custom_notification.cc",
+        "notification_platform_bridge_brave_custom_notification.h"
       ]
 
       deps = [
         "//base",
-        "//skia",
         "//brave/vendor/bat-native-ads",
+        "//skia",
       ]
   } else if (is_android) {
     sources = [
