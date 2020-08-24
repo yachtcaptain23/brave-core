@@ -18,7 +18,6 @@
 #include "base/values.h"
 #include "brave/ui/brave_custom_notification/public/cpp/brave_custom_notification_public_export.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/image/image.h"
@@ -32,14 +31,6 @@ struct VectorIcon;
 }  // namespace gfx
 
 namespace brave_custom_notification {
-
-// Represents an individual item in NOTIFICATION_TYPE_MULTIPLE notifications.
-struct BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT NotificationItem {
-  base::string16 title;
-  base::string16 message;
-};
-
-enum class SystemNotificationWarningLevel { NORMAL, WARNING, CRITICAL_WARNING };
 
 // Represents a button to be shown as part of a notification.
 struct BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT ButtonInfo {
@@ -77,10 +68,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT RichNotificationData {
   RichNotificationData(const RichNotificationData& other);
   ~RichNotificationData();
 
-  // Priority of the notification. This must be one of the NotificationPriority
-  // values defined in notification_types.h.
-  int priority = DEFAULT_PRIORITY;
-
   // Whether the notification should remain on screen indefinitely.
   bool never_timeout = false;
 
@@ -112,19 +99,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT RichNotificationData {
   // TODO(tetsui): Remove the pointer, after fixing VectorIconSource not to
   // retain VectorIcon reference.  https://crbug.com/760866
   const gfx::VectorIcon* vector_small_image = &gfx::kNoneIcon;
-
-  // Items to display on the notification. Only applicable for notifications
-  // that have type NOTIFICATION_TYPE_MULTIPLE.
-  std::vector<NotificationItem> items;
-
-  // Progress, in range of [0-100], of NOTIFICATION_TYPE_PROGRESS notifications.
-  // Values outside of the range (e.g. -1) will show an infinite loading
-  // progress bar.
-  int progress = 0;
-
-  // Status text string shown in NOTIFICATION_TYPE_PROGRESS notifications.
-  // If MD style notification is not enabled, this attribute is ignored.
-  base::string16 progress_status;
 
   // Buttons that should show up on the notification. A maximum of 16 buttons
   // is supported by the current implementation, but this may differ between
@@ -191,8 +165,7 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
   //                    features to notifications.
   // |delegate|: Delegate that will influence the behaviour of this notification
   //             and receives events on its behalf. May be omitted.
-  Notification(NotificationType type,
-               const std::string& id,
+  Notification(const std::string& id,
                const base::string16& title,
                const base::string16& message,
                const base::string16& display_source,
@@ -227,9 +200,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
       bool include_small_image,
       bool include_icon_images);
 
-  NotificationType type() const { return type_; }
-  void set_type(NotificationType type) { type_ = type; }
-
   // Uniquely identifies a notification in the message center. For
   // notification front ends that support multiple profiles, this id should
   // identify a unique profile + frontend_notification_id combination. You can
@@ -254,10 +224,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
 
   void set_profile_id(const std::string& profile_id) {
   }
-
-  // Begin unpacked values from optional_fields.
-  int priority() const { return optional_fields_.priority; }
-  void set_priority(int priority) { optional_fields_.priority = priority; }
 
   // This vibration_pattern property currently has no effect on
   // non-Android platforms.
@@ -294,25 +260,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
 
   // Decides if the notification origin should be used as a context message
   bool UseOriginAsContextMessage() const;
-
-  const std::vector<NotificationItem>& items() const {
-    return optional_fields_.items;
-  }
-  void set_items(const std::vector<NotificationItem>& items) {
-    optional_fields_.items = items;
-  }
-
-  int progress() const { return optional_fields_.progress; }
-  void set_progress(int progress) { optional_fields_.progress = progress; }
-
-  base::string16 progress_status() const {
-    return optional_fields_.progress_status;
-  }
-  void set_progress_status(const base::string16& progress_status) {
-    optional_fields_.progress_status = progress_status;
-  }
-
-  // End unpacked values.
 
   // Images fetched asynchronously.
   const gfx::Image& icon() const { return icon_; }
@@ -405,20 +352,7 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
     delegate_ = delegate;
   }
 
-  // Set the priority to SYSTEM. The system priority user needs to call this
-  // method explicitly, to avoid setting it accidentally.
-  void SetSystemPriority();
-
-  const std::string& custom_view_type() const { return custom_view_type_; }
-  void set_custom_view_type(const std::string& custom_view_type) {
-    DCHECK_EQ(type(), NotificationType::NOTIFICATION_TYPE_CUSTOM);
-    custom_view_type_ = custom_view_type;
-  }
-
  protected:
-  // The type of notification we'd like displayed.
-  NotificationType type_;
-
   std::string id_;
   base::string16 title_;
   base::string16 message_;
@@ -445,11 +379,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
   // A proxy object that allows access back to the JavaScript object that
   // represents the notification, for firing events.
   scoped_refptr<NotificationDelegate> delegate_;
-
-  // For custom notifications this determines which factory will be used for
-  // creating the view for this notification. The type should match the type
-  // used to register the factory in MessageViewFactory.
-  std::string custom_view_type_;
 };
 
 }  // namespace brave_custom_notification

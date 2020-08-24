@@ -37,24 +37,6 @@
 namespace brave_custom_notification {
 
 namespace {
-
-// Creates a text for spoken feedback from the data contained in the
-// notification.
-base::string16 CreateAccessibleName(const Notification& notification) {
-  if (!notification.accessible_name().empty())
-    return notification.accessible_name();
-
-  // Fall back to a text constructed from the notification.
-  std::vector<base::string16> accessible_lines = {
-      notification.title(), notification.message(),
-      notification.context_message()};
-  std::vector<NotificationItem> items = notification.items();
-  for (size_t i = 0; i < items.size() && i < 20; ++i) {
-    accessible_lines.push_back(items[i].title + base::ASCIIToUTF16(" ") +
-                               items[i].message);
-  }
-  return base::JoinString(accessible_lines, base::ASCIIToUTF16("\n"));
-}
 bool ShouldShowAeroShadowBorder() {
 #if defined(OS_WIN)
   return ui::win::IsAeroGlassEnabled();
@@ -110,11 +92,6 @@ MessageView::~MessageView() {
 }
 
 void MessageView::UpdateWithNotification(const Notification& notification) {
-  base::string16 new_accessible_name = CreateAccessibleName(notification);
-  if (new_accessible_name != accessible_name_) {
-    accessible_name_ = new_accessible_name;
-    NotifyAccessibilityEvent(ax::mojom::Event::kTextChanged, true);
-  }
   slide_out_controller_.set_slide_mode(CalculateSlideMode());
 }
 

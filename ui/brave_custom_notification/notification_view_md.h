@@ -33,28 +33,6 @@ namespace brave_custom_notification {
 class NotificationHeaderView;
 class ProportionalImageView;
 
-// CompactTitleMessageView shows notification title and message in a single
-// line. This view is used for NOTIFICATION_TYPE_PROGRESS.
-class CompactTitleMessageView : public views::View {
- public:
-  explicit CompactTitleMessageView();
-  ~CompactTitleMessageView() override;
-
-  const char* GetClassName() const override;
-
-  gfx::Size CalculatePreferredSize() const override;
-  void Layout() override;
-
-  void set_title(const base::string16& title);
-  void set_message(const base::string16& message);
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(CompactTitleMessageView);
-
-  views::Label* title_ = nullptr;
-  views::Label* message_ = nullptr;
-};
-
 class LargeImageView : public views::View {
  public:
   LargeImageView();
@@ -243,7 +221,6 @@ class NotificationViewMD
   void CreateOrUpdateContextTitleView(const Notification& notification);
   void CreateOrUpdateTitleView(const Notification& notification);
   void CreateOrUpdateMessageView(const Notification& notification);
-  void CreateOrUpdateCompactTitleMessageView(const Notification& notification);
   void CreateOrUpdateProgressBarView(const Notification& notification);
   void CreateOrUpdateProgressStatusView(const Notification& notification);
   void CreateOrUpdateListItemViews(const Notification& notification);
@@ -300,7 +277,6 @@ class NotificationViewMD
   std::vector<NotificationButtonMD*> action_buttons_;
   std::vector<views::View*> item_views_;
   views::ProgressBar* progress_bar_view_ = nullptr;
-  CompactTitleMessageView* compact_title_message_view_ = nullptr;
   views::View* action_buttons_row_ = nullptr;
   NotificationInputContainerMD* inline_reply_ = nullptr;
 

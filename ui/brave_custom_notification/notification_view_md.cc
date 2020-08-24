@@ -25,7 +25,6 @@
 #include "brave/ui/brave_custom_notification/proportional_image_view.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "build/build_config.h"
 #include "components/url_formatter/elide_url.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -74,7 +73,7 @@ constexpr gfx::Insets kContentRowPadding(0, 12, 16, 12);
 constexpr gfx::Insets kActionsRowPadding(8, 8, 8, 8);
 constexpr int kActionsRowHorizontalSpacing = 8;
 constexpr gfx::Insets kActionButtonPadding(0, 12, 0, 12);
-constexpr gfx::Insets kStatusTextPadding(4, 0, 0, 0);
+// constexpr gfx::Insets kStatusTextPadding(4, 0, 0, 0);
 constexpr gfx::Size kActionButtonMinSize(0, 32);
 // TODO(tetsui): Move |kIconViewSize| to public/cpp/message_center_constants.h
 // and merge with contradicting |kNotificationIconSize|.
@@ -116,9 +115,9 @@ constexpr int kMaxLinesForTitleView = 1;
 constexpr int kMaxLinesForMessageView = 1;
 constexpr int kMaxLinesForExpandedMessageView = 4;
 
-constexpr int kCompactTitleMessageViewSpacing = 12;
+// constexpr int kCompactTitleMessageViewSpacing = 12;
 
-constexpr int kProgressBarHeight = 4;
+// constexpr int kProgressBarHeight = 4;
 
 constexpr int kMessageViewWidthWithIcon =
     kNotificationWidth - kIconViewSize.width() -
@@ -138,7 +137,7 @@ constexpr int kTextFontSizeDelta = 1;
 // message would be prioritized and the title would be elided.
 // However, it is not perferable that we completely omit the title, so
 // the ratio of the message width is limited to this value.
-constexpr double kProgressNotificationMessageRatio = 0.7;
+// constexpr double kProgressNotificationMessageRatio = 0.7;
 
 // Line height of title and message views.
 constexpr int kLineHeightMD = 17;
@@ -173,100 +172,7 @@ class ClickActivator : public ui::EventHandler {
   DISALLOW_COPY_AND_ASSIGN(ClickActivator);
 };
 
-// Creates a view responsible for drawing each list notification item's title
-// and message next to each other within a single column.
-std::unique_ptr<views::View> CreateItemView(const NotificationItem& item) {
-  auto view = std::make_unique<views::View>();
-  view->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 0));
-
-  const gfx::FontList font_list = GetTextFontList();
-
-  auto* title = new views::Label(item.title);
-  title->SetFontList(font_list);
-  title->SetCollapseWhenHidden(true);
-  title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  title->SetEnabledColor(kRegularTextColorMD);
-  title->SetBackgroundColor(kNotificationBackgroundColor);
-  title->SetAutoColorReadabilityEnabled(false);
-  view->AddChildView(title);
-
-  views::Label* message = new views::Label(l10n_util::GetStringFUTF16(
-      IDS_MESSAGE_CENTER_LIST_NOTIFICATION_MESSAGE_WITH_DIVIDER, item.message));
-  message->SetFontList(font_list);
-  message->SetCollapseWhenHidden(true);
-  message->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  message->SetEnabledColor(kDimTextColorMD);
-  message->SetBackgroundColor(kNotificationBackgroundColor);
-  message->SetAutoColorReadabilityEnabled(false);
-  view->AddChildView(message);
-  return view;
-}
-
 }  // anonymous namespace
-
-// CompactTitleMessageView /////////////////////////////////////////////////////
-
-CompactTitleMessageView::~CompactTitleMessageView() = default;
-
-const char* CompactTitleMessageView::GetClassName() const {
-  return "CompactTitleMessageView";
-}
-
-CompactTitleMessageView::CompactTitleMessageView() {
-  const gfx::FontList& font_list = GetTextFontList();
-
-  title_ = new views::Label();
-  title_->SetFontList(font_list);
-  title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  title_->SetEnabledColor(kRegularTextColorMD);
-  title_->SetBackgroundColor(kNotificationBackgroundColor);
-  AddChildView(title_);
-
-  message_ = new views::Label();
-  message_->SetFontList(font_list);
-  message_->SetHorizontalAlignment(gfx::ALIGN_RIGHT);
-  message_->SetEnabledColor(kDimTextColorMD);
-  message_->SetBackgroundColor(kNotificationBackgroundColor);
-  AddChildView(message_);
-}
-
-gfx::Size CompactTitleMessageView::CalculatePreferredSize() const {
-  gfx::Size title_size = title_->GetPreferredSize();
-  gfx::Size message_size = message_->GetPreferredSize();
-  return gfx::Size(title_size.width() + message_size.width() +
-                       kCompactTitleMessageViewSpacing,
-                   std::max(title_size.height(), message_size.height()));
-}
-
-void CompactTitleMessageView::Layout() {
-  // Elides title and message.
-  // * If the message is too long, the message occupies at most
-  //   kProgressNotificationMessageRatio of the width.
-  // * If the title is too long, the full content of the message is shown,
-  //   kCompactTitleMessageViewSpacing is added between them, and the elided
-  //   title is shown.
-  // * If they are short enough, the title is left-aligned and the message is
-  //   right-aligned.
-  const int message_width = std::min(
-      message_->GetPreferredSize().width(),
-      title_->GetPreferredSize().width() > 0
-          ? static_cast<int>(kProgressNotificationMessageRatio * width())
-          : width());
-  const int title_width =
-      std::max(0, width() - message_width - kCompactTitleMessageViewSpacing);
-
-  title_->SetBounds(0, 0, title_width, height());
-  message_->SetBounds(width() - message_width, 0, message_width, height());
-}
-
-void CompactTitleMessageView::set_title(const base::string16& title) {
-  title_->SetText(title);
-}
-
-void CompactTitleMessageView::set_message(const base::string16& message) {
-  message_->SetText(message);
-}
 
 // LargeImageView //////////////////////////////////////////////////////////////
 
@@ -552,10 +458,6 @@ void NotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
   CreateOrUpdateContextTitleView(notification);
   CreateOrUpdateTitleView(notification);
   CreateOrUpdateMessageView(notification);
-  CreateOrUpdateCompactTitleMessageView(notification);
-  CreateOrUpdateProgressBarView(notification);
-  CreateOrUpdateProgressStatusView(notification);
-  CreateOrUpdateListItemViews(notification);
   CreateOrUpdateSmallIconView(notification);
   CreateOrUpdateImageView(notification);
   UpdateViewForExpandedState(expanded_);
@@ -855,14 +757,6 @@ void NotificationViewMD::CreateOrUpdateContextTitleView(
 
 void NotificationViewMD::CreateOrUpdateTitleView(
     const Notification& notification) {
-  if (notification.title().empty() ||
-      notification.type() == NOTIFICATION_TYPE_PROGRESS) {
-    DCHECK(!title_view_ || left_content_->Contains(title_view_));
-    delete title_view_;
-    title_view_ = nullptr;
-    return;
-  }
-
   int title_character_limit =
       kNotificationWidth * kMaxTitleLines / kMinPixelsPerTitleCharacterMD;
 
@@ -893,13 +787,6 @@ void NotificationViewMD::CreateOrUpdateTitleView(
 
 void NotificationViewMD::CreateOrUpdateMessageView(
     const Notification& notification) {
-  if (notification.type() == NOTIFICATION_TYPE_PROGRESS ||
-      notification.message().empty()) {
-    // Deletion will also remove |message_view_| from its parent.
-    delete message_view_;
-    message_view_ = nullptr;
-    return;
-  }
 
   base::string16 text = gfx::TruncateString(
       notification.message(), kMessageCharacterLimitMD, gfx::WORD_BREAK);
@@ -921,107 +808,8 @@ void NotificationViewMD::CreateOrUpdateMessageView(
     message_view_->SetText(text);
   }
 
-  message_view_->SetVisible(notification.items().empty());
+  message_view_->SetVisible(true);
   left_content_count_++;
-}
-
-void NotificationViewMD::CreateOrUpdateCompactTitleMessageView(
-    const Notification& notification) {
-  if (notification.type() != NOTIFICATION_TYPE_PROGRESS) {
-    DCHECK(!compact_title_message_view_ ||
-           left_content_->Contains(compact_title_message_view_));
-    delete compact_title_message_view_;
-    compact_title_message_view_ = nullptr;
-    return;
-  }
-  if (!compact_title_message_view_) {
-    compact_title_message_view_ = new CompactTitleMessageView();
-    left_content_->AddChildViewAt(compact_title_message_view_,
-                                  left_content_count_);
-  }
-
-  compact_title_message_view_->set_title(notification.title());
-  compact_title_message_view_->set_message(notification.message());
-  left_content_->InvalidateLayout();
-  left_content_count_++;
-}
-
-void NotificationViewMD::CreateOrUpdateProgressBarView(
-    const Notification& notification) {
-  if (notification.type() != NOTIFICATION_TYPE_PROGRESS) {
-    DCHECK(!progress_bar_view_ || left_content_->Contains(progress_bar_view_));
-    delete progress_bar_view_;
-    progress_bar_view_ = nullptr;
-    return;
-  }
-
-  DCHECK(left_content_);
-
-  if (!progress_bar_view_) {
-    progress_bar_view_ = new views::ProgressBar(kProgressBarHeight,
-                                                /* allow_round_corner */ false);
-    progress_bar_view_->SetBorder(
-        views::CreateEmptyBorder(kProgressBarTopPadding, 0, 0, 0));
-    progress_bar_view_->SetForegroundColor(kActionButtonTextColor);
-    left_content_->AddChildViewAt(progress_bar_view_, left_content_count_);
-  }
-
-  progress_bar_view_->SetValue(notification.progress() / 100.0);
-  progress_bar_view_->SetVisible(notification.items().empty());
-
-  if (0 <= notification.progress() && notification.progress() <= 100)
-    header_row_->SetProgress(notification.progress());
-
-  left_content_count_++;
-}
-
-void NotificationViewMD::CreateOrUpdateProgressStatusView(
-    const Notification& notification) {
-  if (notification.type() != NOTIFICATION_TYPE_PROGRESS ||
-      notification.progress_status().empty()) {
-    if (!status_view_)
-      return;
-    DCHECK(left_content_->Contains(status_view_));
-    delete status_view_;
-    status_view_ = nullptr;
-    return;
-  }
-
-  if (!status_view_) {
-    const gfx::FontList& font_list = GetTextFontList();
-    status_view_ = new views::Label();
-    status_view_->SetFontList(font_list);
-    status_view_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-    status_view_->SetEnabledColor(kDimTextColorMD);
-    status_view_->SetBackgroundColor(kNotificationBackgroundColor);
-    status_view_->SetBorder(views::CreateEmptyBorder(kStatusTextPadding));
-    left_content_->AddChildViewAt(status_view_, left_content_count_);
-  }
-
-  status_view_->SetText(notification.progress_status());
-  left_content_count_++;
-}
-
-void NotificationViewMD::CreateOrUpdateListItemViews(
-    const Notification& notification) {
-  for (auto* item_view : item_views_)
-    delete item_view;
-  item_views_.clear();
-
-  const std::vector<NotificationItem>& items = notification.items();
-
-  for (size_t i = 0; i < items.size() && i < kMaxLinesForExpandedMessageView;
-       ++i) {
-    std::unique_ptr<views::View> item_view = CreateItemView(items[i]);
-    item_views_.push_back(item_view.get());
-    left_content_->AddChildViewAt(item_view.release(), left_content_count_++);
-  }
-
-  list_items_count_ = items.size();
-
-  // Needed when CreateOrUpdateViews is called for update.
-  if (!item_views_.empty())
-    left_content_->InvalidateLayout();
 }
 
 void NotificationViewMD::CreateOrUpdateSmallIconView(

@@ -9,7 +9,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 
 namespace brave_ads {
 
@@ -32,8 +31,8 @@ std::unique_ptr<brave_custom_notification::Notification> CreateAdNotification(
   // since we're using that to get the notification_id to OpenSettings
   notification_data.context_message = base::ASCIIToUTF16(" ");
   auto notification = std::make_unique<brave_custom_notification::Notification>(
-      brave_custom_notification::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
-      base::string16(), GURL(kBraveAdsUrlPrefix + info.uuid), notification_data, nullptr);
+      info.uuid, title, body, base::string16(), GURL(kBraveAdsUrlPrefix + info.uuid), 
+      notification_data, nullptr);
 
 #if !defined(OS_MACOSX) || defined(OFFICIAL_BUILD)
   // set_never_timeout uses an XPC service which requires signing

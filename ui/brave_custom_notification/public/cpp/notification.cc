@@ -11,7 +11,6 @@
 #include "base/logging.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_delegate.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -57,16 +56,14 @@ RichNotificationData::RichNotificationData(const RichNotificationData& other) =
 
 RichNotificationData::~RichNotificationData() = default;
 
-Notification::Notification(NotificationType type,
-                           const std::string& id,
+Notification::Notification(const std::string& id,
                            const base::string16& title,
                            const base::string16& message,
                            const base::string16& display_source,
                            const GURL& origin_url,
                            const RichNotificationData& optional_fields,
                            scoped_refptr<NotificationDelegate> delegate)
-    : type_(type),
-      id_(id),
+    : id_(id),
       title_(title),
       message_(message),
       display_source_(display_source),
@@ -119,11 +116,6 @@ void Notification::SetButtonIcon(size_t index, const gfx::Image& icon) {
   if (index >= optional_fields_.buttons.size())
     return;
   optional_fields_.buttons[index].icon = icon;
-}
-
-void Notification::SetSystemPriority() {
-  optional_fields_.priority = SYSTEM_PRIORITY;
-  optional_fields_.never_timeout = true;
 }
 
 bool Notification::UseOriginAsContextMessage() const {

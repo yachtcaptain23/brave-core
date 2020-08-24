@@ -16,7 +16,6 @@ jumbo_component("cpp") {
     "notification.h",
     "notification_delegate.cc",
     "notification_delegate.h",
-    "notification_types.h",
   ]
 
   defines = [ "BRAVE_CUSTOM_NOTIFICATION_PUBLIC_IMPLEMENTATION" ]
