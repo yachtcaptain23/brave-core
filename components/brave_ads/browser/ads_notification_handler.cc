@@ -60,7 +60,6 @@ void AdsNotificationHandler::OnClose(
   base::OnceClosure completed_closure_local =
       base::BindOnce(&AdsNotificationHandler::CloseOperationCompleted,
       base::Unretained(this), id);
-  pending_close_callbacks_.emplace(id, std::move(completed_closure));
 
   if (!ads_service_) {
     auto notification = base::BindOnce(
@@ -159,11 +158,6 @@ void AdsNotificationHandler::CloseOperationCompleted(
 #if defined(OS_ANDROID)
   StartShutDownTimerIfNecessary(notification_id);
 #endif
-  auto iter = pending_close_callbacks_.find(notification_id);	
-  if (iter != pending_close_callbacks_.end()) {	
-    std::move(iter->second).Run();	
-    pending_close_callbacks_.erase(iter);	
-  }
 }
 
 #if defined(OS_ANDROID)
