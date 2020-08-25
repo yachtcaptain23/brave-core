@@ -679,6 +679,7 @@ void NotificationViewMD::UpdateWithNotification(
 // TODO(yoshiki): Move this to the parent class (MessageView).
 void NotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
     const Notification& notification) {
+  control_buttons_view_->ShowCloseButton(true);
   UpdateControlButtonsVisibility();
 }
 
