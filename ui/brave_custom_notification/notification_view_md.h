@@ -51,86 +51,6 @@ class LargeImageView : public views::View {
   DISALLOW_COPY_AND_ASSIGN(LargeImageView);
 };
 
-// This class is needed in addition to LabelButton mainly becuase we want to set
-// visible_opacity of InkDropHighlight.
-// This button capitalizes the given label string.
-class NotificationButtonMD : public views::LabelButton {
- public:
-  // |is_inline_reply| is true when the notification action takes text as the
-  // return value i.e. the notification action is inline reply.
-  // The input field would be shown when the button is clicked.
-  // |placeholder| is placeholder text shown on the input field. Only used when
-  // |is_inline_reply| is true.
-  NotificationButtonMD(views::ButtonListener* listener,
-                       const base::string16& label,
-                       const base::Optional<base::string16>& placeholder);
-  ~NotificationButtonMD() override;
-
-  void SetText(const base::string16& text) override;
-  const char* GetClassName() const override;
-
-  std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
-      const override;
-
-  SkColor enabled_color_for_testing() { return label()->GetEnabledColor(); }
-
-  const base::Optional<base::string16>& placeholder() const {
-    return placeholder_;
-  }
-  void set_placeholder(const base::Optional<base::string16>& placeholder) {
-    placeholder_ = placeholder;
-  }
-
- private:
-  base::Optional<base::string16> placeholder_;
-
-  DISALLOW_COPY_AND_ASSIGN(NotificationButtonMD);
-};
-
-class NotificationInputDelegate {
- public:
-  virtual void OnNotificationInputSubmit(size_t index,
-                                         const base::string16& text) = 0;
-  virtual ~NotificationInputDelegate() = default;
-};
-
-class NotificationInputContainerMD : public views::InkDropHostView,
-                                     public views::ButtonListener,
-                                     public views::TextfieldController {
- public:
-  NotificationInputContainerMD(NotificationInputDelegate* delegate);
-  ~NotificationInputContainerMD() override;
-
-  void AnimateBackground(const ui::Event& event);
-
-  // views::InkDropHostView:
-  void AddLayerBeneathView(ui::Layer* layer) override;
-  void RemoveLayerBeneathView(ui::Layer* layer) override;
-  std::unique_ptr<views::InkDropRipple> CreateInkDropRipple() const override;
-  SkColor GetInkDropBaseColor() const override;
-
-  // Overridden from views::TextfieldController:
-  bool HandleKeyEvent(views::Textfield* sender,
-                      const ui::KeyEvent& key_event) override;
-  void OnAfterUserAction(views::Textfield* sender) override;
-
-  // Overridden from views::ButtonListener:
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
-
-  views::Textfield* textfield() const { return textfield_; }
-  views::ImageButton* button() const { return button_; }
-
- private:
-  NotificationInputDelegate* const delegate_;
-
-  views::InkDropContainerView* const ink_drop_container_;
-
-  views::Textfield* const textfield_;
-  views::ImageButton* const button_;
-
-  DISALLOW_COPY_AND_ASSIGN(NotificationInputContainerMD);
-};
-
 // View that displays all current types of notification (web, basic, image, and
 // list) except the custom notification. Future notification types may be
 // handled by other classes, in which case instances of those classes would be
@@ -138,7 +58,6 @@ class NotificationInputContainerMD : public views::InkDropHostView,
 class NotificationViewMD
     : public MessageView,
       public views::InkDropObserver,
-      public NotificationInputDelegate,
       public views::ButtonListener {
  public:
   explicit NotificationViewMD(const Notification& notification);
@@ -171,10 +90,6 @@ class NotificationViewMD
 
   void InkDropAnimationStarted() override;
   void InkDropRippleAnimationEnded(views::InkDropState ink_drop_state) override;
-
-  // Overridden from NotificationInputDelegate:
-  void OnNotificationInputSubmit(size_t index,
-                                 const base::string16& text) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameExtension);
@@ -274,11 +189,9 @@ class NotificationViewMD
   views::Label* message_view_ = nullptr;
   views::Label* status_view_ = nullptr;
   views::View* image_container_view_ = nullptr;
-  std::vector<NotificationButtonMD*> action_buttons_;
   std::vector<views::View*> item_views_;
   views::ProgressBar* progress_bar_view_ = nullptr;
   views::View* action_buttons_row_ = nullptr;
-  NotificationInputContainerMD* inline_reply_ = nullptr;
 
   // Counter for view layouting, which is used during the CreateOrUpdate*
   // phases to keep track of the view ordering. See crbug.com/901045
