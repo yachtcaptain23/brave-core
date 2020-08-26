@@ -37,16 +37,17 @@ void MessagePopupView::Show(const Notification& notification) {
 // static
 void MessagePopupView::Clicked(const std::string& notification_id) {
   MessagePopupView* message_popup_view = g_notifications_[notification_id];
-  message_popup_view->Close();
   message_popup_view->notification_.delegate()->Click(base::nullopt, base::nullopt);
+  message_popup_view->Close();
+  g_notifications_.erase(notification_id);
 }
 
 // static
 void MessagePopupView::ClosePopup() {
   for (auto iter = g_notifications_.begin(); iter != g_notifications_.end(); ++iter) {
     MessagePopupView* message_popup_view = g_notifications_[iter->first];
-    message_popup_view->Close();
     message_popup_view->notification_.delegate()->Close(true);
+    message_popup_view->Close();
   }
 }
 
@@ -87,8 +88,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
   // g_message_popup_view = this;
 }
 
-MessagePopupView::~MessagePopupView() {
-}
+MessagePopupView::~MessagePopupView() {}
 
 #if !defined(OS_MACOSX)
 float MessagePopupView::GetOpacity() const {
