@@ -34,12 +34,12 @@ namespace brave_custom_notification {
 class Notification;
 class NotificationControlButtonsView;
 
-class MessageView 
+class NotificationView 
     : public views::InkDropHostView,
       public views::SlideOutControllerDelegate,
       public views::FocusChangeListener {
  public:
-  explicit MessageView(const Notification& notification);
+  explicit NotificationView(const Notification& notification);
   class Observer {
    public:
     virtual ~Observer() = default;
@@ -51,7 +51,7 @@ class MessageView
     virtual void OnCloseButtonPressed(const std::string& notification_id) {}
   };
 
-  ~MessageView() override;
+  ~NotificationView() override;
   virtual void UpdateWithNotification(const Notification& notification);
   virtual NotificationControlButtonsView* GetControlButtonsView() const = 0;
   virtual void CloseSwipeControl();
@@ -59,10 +59,10 @@ class MessageView
 
   virtual void UpdateCornerRadius(int top_radius, int bottom_radius);
 
-  // Invoked when the container view of MessageView (e.g. MessageCenterView in
+  // Invoked when the container view of NotificationView (e.g. MessageCenterView in
   // ash) is starting the animation that possibly hides some part of
-  // the MessageView.
-  // During the animation, MessageView should comply with the Z order in views.
+  // the NotificationView.
+  // During the animation, NotificationView should comply with the Z order in views.
   virtual void OnContainerAnimationStarted();
   virtual void OnContainerAnimationEnded();
   void OnCloseButtonPressed();
@@ -144,7 +144,7 @@ class MessageView
   int top_radius_ = 0;
   int bottom_radius_ = 0;
 
-  DISALLOW_COPY_AND_ASSIGN(MessageView);
+  DISALLOW_COPY_AND_ASSIGN(NotificationView);
 };
 
 }

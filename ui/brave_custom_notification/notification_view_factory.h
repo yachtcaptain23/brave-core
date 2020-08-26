@@ -13,16 +13,16 @@
 
 namespace brave_custom_notification {
 
-class MessageView;
+class NotificationView;
 class Notification;
 
-// Creates appropriate MessageViews for notifications depending on the
+// Creates appropriate NotificationViews for notifications depending on the
 // notification type. A notification is top level if it needs to be rendered
 // outside the browser window. No custom shadows are created for top level
 // notifications on Linux with Aura.
-class MessageViewFactory {
+class NotificationViewFactory {
  public:
-  static MessageView* Create(const Notification& notification);
+  static NotificationView* Create(const Notification& notification);
 };
 
 }  // namespace message_center

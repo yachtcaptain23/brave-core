@@ -21,7 +21,7 @@ class Button;
 
 namespace brave_custom_notification {
 
-class MessageView;
+class NotificationView;
 class PaddedButton;
 
 class NotificationControlButtonsView
@@ -31,7 +31,7 @@ class NotificationControlButtonsView
   // String to be returned by GetClassName() method.
   static const char kViewClassName[];
 
-  explicit NotificationControlButtonsView(MessageView* message_view);
+  explicit NotificationControlButtonsView(NotificationView* message_view);
   ~NotificationControlButtonsView() override;
 
   // Change the visibility of the close button. True to show, false to hide.
@@ -56,7 +56,7 @@ class NotificationControlButtonsView
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
  private:
-  MessageView* message_view_;
+  NotificationView* message_view_;
 
   std::unique_ptr<PaddedButton> close_button_;
 

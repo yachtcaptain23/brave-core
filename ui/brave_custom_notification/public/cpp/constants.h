@@ -51,7 +51,7 @@ const int kIconBottomPadding = 16;  // Minimum non-zero V space between icon
 // H space between the context message and the end of the card.
 const int kTextRightPadding = 23;
 const int kTextLeftPadding = kNotificationIconSize + kIconToTextPadding;
-const int kContextMessageViewWidth =
+const int kContextNotificationViewWidth =
     kNotificationWidth - kTextLeftPadding - kTextRightPadding;
 // space between buttons and frame.
 const int kControlButtonPadding = 2;

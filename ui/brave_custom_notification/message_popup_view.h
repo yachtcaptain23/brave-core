@@ -14,7 +14,7 @@
 
 namespace brave_custom_notification {
 
-class MessageView;
+class NotificationView;
 // class Notification;
 
 class MessagePopupView : public views::WidgetDelegateView,
@@ -55,7 +55,7 @@ class MessagePopupView : public views::WidgetDelegateView,
   bool is_hovered() const { return is_hovered_; }
   bool is_active() const { return is_active_; }
 
-  MessageView* message_view() { return message_view_; }
+  NotificationView* message_view() { return message_view_; }
 
  private:
   // True if the view has a widget and the widget is not closed.
@@ -63,7 +63,7 @@ class MessagePopupView : public views::WidgetDelegateView,
   int GetBodyHeight(const base::string16& message);
 
   // Owned by views hierarchy.
-  MessageView* message_view_;
+  NotificationView* message_view_;
 
   bool is_hovered_ = false;
   bool is_active_ = false;

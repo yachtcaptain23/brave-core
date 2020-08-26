@@ -13,7 +13,7 @@
 #include "base/macros.h"
 #include "base/optional.h"
 #include "base/time/time.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/notification_view.h"
 #include "ui/views/animation/ink_drop_observer.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
@@ -55,20 +55,20 @@ class LargeImageView : public views::View {
 // list) except the custom notification. Future notification types may be
 // handled by other classes, in which case instances of those classes would be
 // returned by the Create() factory method below.
-class NotificationViewMD
-    : public MessageView,
+class AdNotificationViewMD
+    : public NotificationView,
       public views::InkDropObserver,
       public views::ButtonListener {
  public:
-  explicit NotificationViewMD(const Notification& notification);
-  ~NotificationViewMD() override;
+  explicit AdNotificationViewMD(const Notification& notification);
+  ~AdNotificationViewMD() override;
 
   void Activate();
 
   void AddBackgroundAnimation(const ui::Event& event);
   void RemoveBackgroundAnimation();
 
-  // MessageView:
+  // NotificationView:
   void AddLayerBeneathView(ui::Layer* layer) override;
   void RemoveLayerBeneathView(ui::Layer* layer) override;
   void Layout() override;
@@ -92,41 +92,7 @@ class NotificationViewMD
   void InkDropRippleAnimationEnded(views::InkDropState ink_drop_state) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameExtension);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameSystemNotification);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, AppNameWebNotification);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, CreateOrUpdateTest);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, ExpandLongMessage);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, InlineSettings);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
-                           InlineSettingsInkDropAnimation);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, NotificationWithoutIcon);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, ShowProgress);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestAccentColor);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestActionButtonClick);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestClick);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestClickExpanded);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
-                           TestDeleteOnDisableNotification);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestDeleteOnToggleExpanded);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestIconSizing);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestInlineReply);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
-                           TestInlineReplyActivateWithKeyPress);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest,
-                           TestInlineReplyRemovedByUpdate);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, TestLongTitleAndMessage);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateAddingIcon);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateButtonCountTest);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateButtonsStateTest);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateInSettings);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateType);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UpdateViewsOrderingTest);
-  FRIEND_TEST_ALL_PREFIXES(NotificationViewMDTest, UseImageAsIcon);
-
-  friend class NotificationViewMDTest;
-
-  class NotificationViewMDPathGenerator;
+  class AdNotificationViewMDPathGenerator;
 
   void UpdateControlButtonsVisibilityWithNotification(
       const Notification& notification);
@@ -135,7 +101,7 @@ class NotificationViewMD
 
   void CreateOrUpdateContextTitleView(const Notification& notification);
   void CreateOrUpdateTitleView(const Notification& notification);
-  void CreateOrUpdateMessageView(const Notification& notification);
+  void CreateOrUpdateNotificationView(const Notification& notification);
   void CreateOrUpdateProgressBarView(const Notification& notification);
   void CreateOrUpdateProgressStatusView(const Notification& notification);
   void CreateOrUpdateListItemViews(const Notification& notification);
@@ -204,15 +170,15 @@ class NotificationViewMD
 
   // Owned by views properties. Guaranteed to be not null for the lifetime of
   // |this| because views properties are the last thing cleaned up.
-  NotificationViewMDPathGenerator* highlight_path_generator_ = nullptr;
+  AdNotificationViewMDPathGenerator* highlight_path_generator_ = nullptr;
 
   std::unique_ptr<ui::EventHandler> click_activator_;
 
   base::TimeTicks last_mouse_pressed_timestamp_;
 
-  base::WeakPtrFactory<NotificationViewMD> weak_ptr_factory_{this};
+  base::WeakPtrFactory<AdNotificationViewMD> weak_ptr_factory_{this};
 
-  DISALLOW_COPY_AND_ASSIGN(NotificationViewMD);
+  DISALLOW_COPY_AND_ASSIGN(AdNotificationViewMD);
 };
 
 }

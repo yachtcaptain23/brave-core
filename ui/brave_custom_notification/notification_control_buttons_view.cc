@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
+#include "brave/ui/brave_custom_notification/notification_view.h"
 #include "brave/ui/brave_custom_notification/padded_button.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -26,7 +26,7 @@ const char NotificationControlButtonsView::kViewClassName[] =
     "NotificationControlButtonsView";
 
 NotificationControlButtonsView::NotificationControlButtonsView(
-    MessageView* message_view)
+    NotificationView* message_view)
     : message_view_(message_view), icon_color_(gfx::kChromeIconGrey) {
   DCHECK(message_view);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
