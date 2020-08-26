@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ui/brave_custom_notification/notification_view_md.h"
+#include "brave/ui/brave_custom_notification/ad_notification_view_md.h"
 #include "base/logging.h"
 
 #include <stddef.h>
@@ -86,14 +86,14 @@ constexpr SkColor kInlineSettingsBackgroundColor =
 // Max number of lines for title_view_.
 constexpr int kMaxLinesForTitleView = 1;
 // Max number of lines for message_view_.
-constexpr int kMaxLinesForMessageView = 1;
-constexpr int kMaxLinesForExpandedMessageView = 4;
+constexpr int kMaxLinesForNotificationView = 1;
+constexpr int kMaxLinesForExpandedNotificationView = 4;
 
-// constexpr int kCompactTitleMessageViewSpacing = 12;
+// constexpr int kCompactTitleNotificationViewSpacing = 12;
 
 // constexpr int kProgressBarHeight = 4;
 
-constexpr int kMessageViewWidthWithIcon =
+constexpr int kNotificationViewWidthWithIcon =
     kNotificationWidth - kIconViewSize.width() -
     kLeftContentPaddingWithIcon.left() - kLeftContentPaddingWithIcon.right() -
     kContentRowPadding.left() - kContentRowPadding.right();
@@ -128,7 +128,7 @@ gfx::FontList GetTitleFontList() {
 
 class ClickActivator : public ui::EventHandler {
  public:
-  explicit ClickActivator(NotificationViewMD* owner) : owner_(owner) {}
+  explicit ClickActivator(AdNotificationViewMD* owner) : owner_(owner) {}
   ~ClickActivator() override = default;
 
  private:
@@ -140,7 +140,7 @@ class ClickActivator : public ui::EventHandler {
     }
   }
 
-  NotificationViewMD* const owner_;
+  AdNotificationViewMD* const owner_;
 
   DISALLOW_COPY_AND_ASSIGN(ClickActivator);
 };
@@ -223,17 +223,17 @@ class NotificationInkDropImpl : public views::InkDropImpl {
 };
 
 // ////////////////////////////////////////////////////////////
-// NotificationViewMD
+// AdNotificationViewMD
 // ////////////////////////////////////////////////////////////
 
-class NotificationViewMD::NotificationViewMDPathGenerator
+class AdNotificationViewMD::AdNotificationViewMDPathGenerator
     : public views::HighlightPathGenerator {
  public:
-  NotificationViewMDPathGenerator() = default;
-  NotificationViewMDPathGenerator(const NotificationViewMDPathGenerator&) =
+  AdNotificationViewMDPathGenerator() = default;
+  AdNotificationViewMDPathGenerator(const AdNotificationViewMDPathGenerator&) =
       delete;
-  NotificationViewMDPathGenerator& operator=(
-      const NotificationViewMDPathGenerator&) = delete;
+  AdNotificationViewMDPathGenerator& operator=(
+      const AdNotificationViewMDPathGenerator&) = delete;
 
   base::Optional<gfx::RRectF> GetRoundRect(const gfx::RectF& rect) override {
     gfx::RectF bounds = rect;
@@ -260,19 +260,19 @@ class NotificationViewMD::NotificationViewMDPathGenerator
   gfx::Size preferred_size_;
 };
 
-void NotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
+void AdNotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
   left_content_count_ = 0;
 
   CreateOrUpdateContextTitleView(notification);
   CreateOrUpdateTitleView(notification);
-  CreateOrUpdateMessageView(notification);
+  CreateOrUpdateNotificationView(notification);
   CreateOrUpdateSmallIconView(notification);
   CreateOrUpdateImageView(notification);
   UpdateViewForExpandedState(expanded_);
 }
 
-NotificationViewMD::NotificationViewMD(const Notification& notification)
-    : MessageView(notification),
+AdNotificationViewMD::AdNotificationViewMD(const Notification& notification)
+    : NotificationView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
@@ -325,23 +325,23 @@ NotificationViewMD::NotificationViewMD(const Notification& notification)
 
   click_activator_ = std::make_unique<ClickActivator>(this);
   // Reasons to use pretarget handler instead of OnMousePressed:
-  // - NotificationViewMD::OnMousePresssed would not fire on the inline reply
+  // - AdNotificationViewMD::OnMousePresssed would not fire on the inline reply
   //   textfield click in native notification.
   // - To make it look similar to ArcNotificationContentView::EventForwarder.
   AddPreTargetHandler(click_activator_.get());
   auto highlight_path_generator =
-      std::make_unique<NotificationViewMDPathGenerator>();
+      std::make_unique<AdNotificationViewMDPathGenerator>();
   highlight_path_generator_ = highlight_path_generator.get();
   views::HighlightPathGenerator::Install(this,
                                          std::move(highlight_path_generator));
   UpdateCornerRadius(kNotificationCornerRadius, kNotificationCornerRadius);
 }
 
-NotificationViewMD::~NotificationViewMD() {
+AdNotificationViewMD::~AdNotificationViewMD() {
   RemovePreTargetHandler(click_activator_.get());
 }
 
-void NotificationViewMD::AddLayerBeneathView(ui::Layer* layer) {
+void AdNotificationViewMD::AddLayerBeneathView(ui::Layer* layer) {
   GetInkDrop()->AddObserver(this);
   for (auto* child : GetChildrenForLayerAdjustment()) {
     child->SetPaintToLayer();
@@ -350,15 +350,15 @@ void NotificationViewMD::AddLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->AddLayerBeneathView(layer);
 }
 
-void NotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
+void AdNotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
   ink_drop_container_->RemoveLayerBeneathView(layer);
   for (auto* child : GetChildrenForLayerAdjustment())
     child->DestroyLayer();
   GetInkDrop()->RemoveObserver(this);
 }
 
-void NotificationViewMD::Layout() {
-    MessageView::Layout();
+void AdNotificationViewMD::Layout() {
+    NotificationView::Layout();
 
   // We need to call IsExpandable() at the end of Layout() call, since whether
   // we should show expand button or not depends on the current view layout.
@@ -366,7 +366,7 @@ void NotificationViewMD::Layout() {
   // header_row_->SetExpandButtonEnabled(IsExpandable());
   header_row_->Layout();
 
-  // The notification background is rounded in MessageView::Layout(),
+  // The notification background is rounded in NotificationView::Layout(),
   // but we also have to round the actions row background here.
   if (actions_row_->GetVisible()) {
     constexpr SkScalar kCornerRadius = SkIntToScalar(kNotificationCornerRadius);
@@ -384,21 +384,21 @@ void NotificationViewMD::Layout() {
   ink_drop_container_->SetBoundsRect(GetLocalBounds());
 }
 
-void NotificationViewMD::OnFocus() {
-  MessageView::OnFocus();
+void AdNotificationViewMD::OnFocus() {
+  NotificationView::OnFocus();
   ScrollRectToVisible(GetLocalBounds());
 }
 
-bool NotificationViewMD::OnMousePressed(const ui::MouseEvent& event) {
+bool AdNotificationViewMD::OnMousePressed(const ui::MouseEvent& event) {
   last_mouse_pressed_timestamp_ = base::TimeTicks(event.time_stamp());
   return true;
 }
 
-bool NotificationViewMD::OnMouseDragged(const ui::MouseEvent& event) {
+bool AdNotificationViewMD::OnMouseDragged(const ui::MouseEvent& event) {
   return true;
 }
 
-void NotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
+void AdNotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
   if (!event.IsOnlyLeftMouseButton())
     return;
 
@@ -426,10 +426,10 @@ void NotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
     return;
 
   MessagePopupView::Clicked(notification_id());
-  MessageView::OnMouseReleased(event);
+  NotificationView::OnMouseReleased(event);
 }
 
-void NotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
+void AdNotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
   switch (event->type()) {
     case ui::ET_MOUSE_ENTERED:
       UpdateControlButtonsVisibility();
@@ -443,21 +443,21 @@ void NotificationViewMD::OnMouseEvent(ui::MouseEvent* event) {
   View::OnMouseEvent(event);
 }
 
-void NotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
+void AdNotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
   if (event->type() == ui::ET_GESTURE_LONG_TAP) {
     ToggleInlineSettings(*event);
     return;
   }
-  MessageView::OnGestureEvent(event);
+  NotificationView::OnGestureEvent(event);
 }
 
-void NotificationViewMD::PreferredSizeChanged() {
-  MessageView::PreferredSizeChanged();
+void AdNotificationViewMD::PreferredSizeChanged() {
+  NotificationView::PreferredSizeChanged();
 }
 
-void NotificationViewMD::UpdateWithNotification(
+void AdNotificationViewMD::UpdateWithNotification(
     const Notification& notification) {
-  MessageView::UpdateWithNotification(notification);
+  NotificationView::UpdateWithNotification(notification);
   UpdateControlButtonsVisibilityWithNotification(notification);
 
   CreateOrUpdateViews(notification);
@@ -465,13 +465,13 @@ void NotificationViewMD::UpdateWithNotification(
   SchedulePaint();
 }
 
-void NotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
+void AdNotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
     const Notification& notification) {
   control_buttons_view_->ShowCloseButton(true);
   UpdateControlButtonsVisibility();
 }
 
-void NotificationViewMD::ButtonPressed(views::Button* sender,
+void AdNotificationViewMD::ButtonPressed(views::Button* sender,
                                        const ui::Event& event) {
   // Tapping anywhere on |header_row_| can expand the notification, though only
   // |expand_button| can be focused by TAB.
@@ -489,7 +489,7 @@ void NotificationViewMD::ButtonPressed(views::Button* sender,
   }
 }
 
-void NotificationViewMD::CreateOrUpdateContextTitleView(
+void AdNotificationViewMD::CreateOrUpdateContextTitleView(
     const Notification& notification) {
   header_row_->SetAccentColor(SK_ColorTRANSPARENT);
   header_row_->SetBackgroundColor(kNotificationBackgroundColor);
@@ -510,7 +510,7 @@ void NotificationViewMD::CreateOrUpdateContextTitleView(
   header_row_->SetAppName(base::UTF8ToUTF16("Brave Ad"));
 }
 
-void NotificationViewMD::CreateOrUpdateTitleView(
+void AdNotificationViewMD::CreateOrUpdateTitleView(
     const Notification& notification) {
   int title_character_limit =
       kNotificationWidth * kMaxTitleLines / kMinPixelsPerTitleCharacterMD;
@@ -540,7 +540,7 @@ void NotificationViewMD::CreateOrUpdateTitleView(
   left_content_count_++;
 }
 
-void NotificationViewMD::CreateOrUpdateMessageView(
+void AdNotificationViewMD::CreateOrUpdateNotificationView(
     const Notification& notification) {
 
   base::string16 text = gfx::TruncateString(
@@ -556,7 +556,7 @@ void NotificationViewMD::CreateOrUpdateMessageView(
     message_view_->SetBackgroundColor(kNotificationBackgroundColor);
     message_view_->SetLineHeight(kLineHeightMD);
     message_view_->SetMultiLine(true);
-    message_view_->SetMaxLines(kMaxLinesForMessageView);
+    message_view_->SetMaxLines(kMaxLinesForNotificationView);
     message_view_->SetAllowCharacterBreak(true);
     left_content_->AddChildViewAt(message_view_, left_content_count_);
   } else {
@@ -567,7 +567,7 @@ void NotificationViewMD::CreateOrUpdateMessageView(
   left_content_count_++;
 }
 
-void NotificationViewMD::CreateOrUpdateSmallIconView(
+void AdNotificationViewMD::CreateOrUpdateSmallIconView(
     const Notification& notification) {
   // TODO(knollr): figure out if this has a performance impact and
   // cache images if so. (crbug.com/768748)
@@ -582,7 +582,7 @@ void NotificationViewMD::CreateOrUpdateSmallIconView(
   }
 }
 
-void NotificationViewMD::CreateOrUpdateImageView(
+void AdNotificationViewMD::CreateOrUpdateImageView(
     const Notification& notification) {
   if (notification.image().IsEmpty()) {
     if (image_container_view_) {
@@ -617,27 +617,27 @@ void NotificationViewMD::CreateOrUpdateImageView(
       ->SetImage(notification.image().AsImageSkia());
 }
 
-bool NotificationViewMD::IsExpandable() {
+bool AdNotificationViewMD::IsExpandable() {
   return false;
 }
 
-void NotificationViewMD::UpdateViewForExpandedState(bool expanded) {
+void AdNotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   if (message_view_) {
-    message_view_->SetMaxLines(expanded ? kMaxLinesForExpandedMessageView
-                                        : kMaxLinesForMessageView);
+    message_view_->SetMaxLines(expanded ? kMaxLinesForExpandedNotificationView
+                                        : kMaxLinesForNotificationView);
   }
   if (image_container_view_) {
     image_container_view_->SetSize(kLargeImageMaxSize);
     image_container_view_->SetVisible(expanded);
   }
 
-  for (size_t i = kMaxLinesForMessageView; i < item_views_.size(); ++i) {
+  for (size_t i = kMaxLinesForNotificationView; i < item_views_.size(); ++i) {
     item_views_[i]->SetVisible(expanded);
   }
   if (status_view_)
     status_view_->SetVisible(expanded);
 
-  int max_items = expanded ? item_views_.size() : kMaxLinesForMessageView;
+  int max_items = expanded ? item_views_.size() : kMaxLinesForNotificationView;
   if (list_items_count_ > max_items)
     header_row_->SetOverflowIndicator(list_items_count_ - max_items);
   else if (!item_views_.empty())
@@ -651,7 +651,7 @@ void NotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   // Ideally, we should fix the original bug, but it seems there's no obvious
   // solution for the bug according to https://crbug.com/678337#c7, we should
   // ensure that the change won't break any of the users of BoxLayout class.
-  const int message_view_width = kMessageViewWidthWithIcon -
+  const int message_view_width = kNotificationViewWidthWithIcon -
       GetInsets().width();
   if (title_view_)
     title_view_->SizeToFit(message_view_width);
@@ -661,7 +661,7 @@ void NotificationViewMD::UpdateViewForExpandedState(bool expanded) {
   content_row_->InvalidateLayout();
 }
 
-void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
+void AdNotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
   if (!settings_row_)
     return;
 
@@ -699,23 +699,23 @@ void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
   SchedulePaint();
 }
 
-void NotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
-  MessageView::UpdateCornerRadius(top_radius, bottom_radius);
+void AdNotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
+  NotificationView::UpdateCornerRadius(top_radius, bottom_radius);
   highlight_path_generator_->set_top_radius(top_radius);
   highlight_path_generator_->set_bottom_radius(bottom_radius);
 }
 
-NotificationControlButtonsView* NotificationViewMD::GetControlButtonsView()
+NotificationControlButtonsView* AdNotificationViewMD::GetControlButtonsView()
     const {
   return control_buttons_view_.get();
 }
 
-void NotificationViewMD::Activate() {
+void AdNotificationViewMD::Activate() {
   GetWidget()->widget_delegate()->SetCanActivate(true);
   GetWidget()->Activate();
 }
 
-void NotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
+void AdNotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
   SetInkDropMode(InkDropMode::ON_NO_GESTURE_HANDLER);
   // In case the animation is triggered from keyboard operation.
   if (!event.IsLocatedEvent()) {
@@ -724,7 +724,7 @@ void NotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
   }
 
   // Convert the point of |event| from the coordinate system of
-  // |control_buttons_view_| to that of NotificationViewMD, create a new
+  // |control_buttons_view_| to that of AdNotificationViewMD, create a new
   // LocatedEvent which has the new point.
   views::View* target = static_cast<views::View*>(event.target());
   const gfx::Point& location = event.AsLocatedEvent()->location();
@@ -743,42 +743,42 @@ void NotificationViewMD::AddBackgroundAnimation(const ui::Event& event) {
   AnimateInkDrop(views::InkDropState::ACTION_PENDING, cloned_located_event);
 }
 
-void NotificationViewMD::RemoveBackgroundAnimation() {
+void AdNotificationViewMD::RemoveBackgroundAnimation() {
   SetInkDropMode(InkDropMode::OFF);
   AnimateInkDrop(views::InkDropState::HIDDEN, nullptr);
 }
 
-std::unique_ptr<views::InkDrop> NotificationViewMD::CreateInkDrop() {
+std::unique_ptr<views::InkDrop> AdNotificationViewMD::CreateInkDrop() {
   return std::make_unique<NotificationInkDropImpl>(this, size());
 }
 
-std::unique_ptr<views::InkDropRipple> NotificationViewMD::CreateInkDropRipple()
+std::unique_ptr<views::InkDropRipple> AdNotificationViewMD::CreateInkDropRipple()
     const {
   return std::make_unique<views::FloodFillInkDropRipple>(
       GetPreferredSize(), GetInkDropCenterBasedOnLastEvent(),
       GetInkDropBaseColor(), ink_drop_visible_opacity());
 }
 
-std::vector<views::View*> NotificationViewMD::GetChildrenForLayerAdjustment()
+std::vector<views::View*> AdNotificationViewMD::GetChildrenForLayerAdjustment()
     const {
   return {header_row_, block_all_button_, dont_block_button_,
           settings_done_button_};
 }
 
-std::unique_ptr<views::InkDropMask> NotificationViewMD::CreateInkDropMask()
+std::unique_ptr<views::InkDropMask> AdNotificationViewMD::CreateInkDropMask()
     const {
   return nullptr;
 }
 
-SkColor NotificationViewMD::GetInkDropBaseColor() const {
+SkColor AdNotificationViewMD::GetInkDropBaseColor() const {
   return kInlineSettingsBackgroundColor;
 }
 
-void NotificationViewMD::InkDropAnimationStarted() {
+void AdNotificationViewMD::InkDropAnimationStarted() {
   header_row_->SetSubpixelRenderingEnabled(false);
 }
 
-void NotificationViewMD::InkDropRippleAnimationEnded(
+void AdNotificationViewMD::InkDropRippleAnimationEnded(
     views::InkDropState ink_drop_state) {
   if (ink_drop_state == views::InkDropState::HIDDEN)
     header_row_->SetSubpixelRenderingEnabled(true);

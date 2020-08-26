@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
-#include "brave/ui/brave_custom_notification/message_view.h"
-#include "brave/ui/brave_custom_notification/message_view_factory.h"
+#include "brave/ui/brave_custom_notification/notification_view.h"
+#include "brave/ui/brave_custom_notification/notification_view_factory.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "build/build_config.h"
 #include "ui/display/display.h"
@@ -82,7 +82,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
   popup_window_->Init(std::move(params));
   popup_window_->ShowInactive();
 
-  MessageView* message_view_ = MessageViewFactory::Create(notification);
+  NotificationView* message_view_ = NotificationViewFactory::Create(notification);
   popup_window_->SetContentsView(message_view_);
   set_notify_enter_exit_on_child(true);
   // g_message_popup_view = this;
@@ -125,7 +125,7 @@ const char* MessagePopupView::GetClassName() const {
 
 void MessagePopupView::OnFocus() {
   // This view is just a container, so advance focus to the underlying
-  // MessageView.
+  // NotificationView.
   GetFocusManager()->SetFocusedView(message_view_);
 }
 
