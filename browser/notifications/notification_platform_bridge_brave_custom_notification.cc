@@ -71,11 +71,14 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
   // go back to the appropriate handler.
   notification.set_delegate(base::WrapRefCounted(
       new PassThroughDelegate(profile_, notification)));
+
   brave_custom_notification::MessagePopupView::Show(notification);
-  brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile));
+
+  std::unique_ptr<brave_ads::AdsNotificationHandler> handler = std::make_unique<brave_ads::AdsNotificationHandler>(static_cast<content::BrowserContext*>(profile));
   handler->OnShow(profile_, notification.id());
 }
 
 void NotificationPlatformBridgeBraveCustomNotification::Close(
     Profile* profile,
     const std::string& notification_id) {}
+

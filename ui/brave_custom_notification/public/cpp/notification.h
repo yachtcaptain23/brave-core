@@ -349,7 +349,7 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
 
   void set_delegate(scoped_refptr<NotificationDelegate> delegate) {
     DCHECK(!delegate_);
-    delegate_ = delegate;
+    delegate_ = std::move(delegate);
   }
 
  protected:
