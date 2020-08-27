@@ -43,4 +43,4 @@ void NotificationBackgroundPainter::Paint(gfx::Canvas* canvas,
   canvas->DrawPath(path, flags);
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

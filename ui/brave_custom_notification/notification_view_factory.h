@@ -25,6 +25,6 @@ class NotificationViewFactory {
   static NotificationView* Create(const Notification& notification);
 };
 
-}  // namespace message_center
+}  // namespace brave_custom_notification
 
 #endif  // UI_BRAVE_CUSTOM_NOTIFICATION_MESSAGE_VIEW_FACTORY_H_

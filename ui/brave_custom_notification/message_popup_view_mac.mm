@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "ui/message_center/views/message_popup_view.h"
+#import "brave/ui/brave_custom_notification/message_popup_view.h"
 
 #import <Cocoa/Cocoa.h>
 
 #include "ui/views/widget/widget.h"
 
-namespace message_center {
+namespace brave_custom_notification {
 
 float MessagePopupView::GetOpacity() const {
   if (!IsWidgetValid())
@@ -17,4 +17,4 @@ float MessagePopupView::GetOpacity() const {
   return [GetWidget()->GetNativeWindow().GetNativeNSWindow() alphaValue];
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

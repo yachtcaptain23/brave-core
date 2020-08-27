@@ -44,4 +44,4 @@ void PaddedButton::OnThemeChanged() {
       ui::NativeTheme::kColorId_PaddedButtonInkDropColor));
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

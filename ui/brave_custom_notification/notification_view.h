@@ -59,16 +59,14 @@ class NotificationView
 
   virtual void UpdateCornerRadius(int top_radius, int bottom_radius);
 
-  // Invoked when the container view of NotificationView (e.g. MessageCenterView in
-  // ash) is starting the animation that possibly hides some part of
+  // Invoked when the container view of NotificationView 
+  // is starting the animation that possibly hides some part of
   // the NotificationView.
   // During the animation, NotificationView should comply with the Z order in views.
   virtual void OnContainerAnimationStarted();
   virtual void OnContainerAnimationEnded();
   void OnCloseButtonPressed();
-  // virtual void OnSettingsButtonPressed(const ui::Event& event);
-
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
+  
   void OnPaint(gfx::Canvas* canvas) override;
   void OnGestureEvent(ui::GestureEvent* event) override;
   void RemovedFromWidget() override;
@@ -125,10 +123,6 @@ class NotificationView
 
   std::string notification_id_;
   views::ScrollView* scroller_ = nullptr;
-
-  base::string16 accessible_name_;
-// TODO: Figure out a way to pass along the PopupView as the widget container
-//  MessagePopupView message_popup_view_;
 
   views::SlideOutController slide_out_controller_;
   base::ObserverList<Observer>::Unchecked observers_;

@@ -34,7 +34,7 @@ class NotificationObserver {
 };
 
 // Ref counted version of NotificationObserver, required to satisfy
-// message_center::Notification::delegate_.
+// brave_custom_notification::Notification::delegate_.
 class NotificationDelegate : public NotificationObserver, public base::RefCountedThreadSafe<NotificationDelegate> {
  protected:
   virtual ~NotificationDelegate() = default;

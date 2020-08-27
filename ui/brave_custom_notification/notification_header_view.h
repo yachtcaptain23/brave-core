@@ -28,9 +28,8 @@ class NotificationHeaderView : public views::Button {
   void SetAppName(const base::string16& name);
   void SetAppNameElideBehavior(gfx::ElideBehavior elide_behavior);
 
-  // Progress, summary and overflow indicator are all the same UI element so are
+  // Summary and overflow indicator are all the same UI element so are
   // mutually exclusive.
-  void SetProgress(int progress);
   void SetSummaryText(const base::string16& text);
   void SetOverflowIndicator(int count);
 
@@ -47,11 +46,6 @@ class NotificationHeaderView : public views::Button {
 
   // Shows or hides the app icon.
   void SetAppIconVisible(bool visible);
-
-  // views::View:
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
-
-  views::ImageView* expand_button() { return expand_button_; }
 
   SkColor accent_color_for_testing() { return accent_color_; }
 
@@ -76,10 +70,7 @@ class NotificationHeaderView : public views::Button {
   views::View* detail_views_ = nullptr;
   views::Label* summary_text_divider_ = nullptr;
   views::Label* summary_text_view_ = nullptr;
-  views::ImageView* expand_button_ = nullptr;
 
-  bool has_progress_ = false;
-  // bool is_expanded_ = false;
   bool using_default_app_icon_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(NotificationHeaderView);

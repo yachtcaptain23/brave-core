@@ -784,4 +784,4 @@ void AdNotificationViewMD::InkDropRippleAnimationEnded(
     header_row_->SetSubpixelRenderingEnabled(true);
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification
