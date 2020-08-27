@@ -55,12 +55,6 @@ struct BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT ButtonInfo {
   base::Optional<base::string16> placeholder;
 };
 
-enum class FullscreenVisibility {
-  NONE = 0,       // Don't show the notification over fullscreen (default).
-  OVER_USER = 1,  // Show over the current fullscreened client window.
-                  // windows (like Chrome OS login).
-};
-
 // Represents rich features available for notifications.
 class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT RichNotificationData {
  public:
@@ -141,8 +135,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT RichNotificationData {
 
   // Controls whether a snooze button should appear on the notification.
   bool should_show_snooze_button = false;
-
-  FullscreenVisibility fullscreen_visibility = FullscreenVisibility::NONE;
 };
 
 class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
@@ -324,13 +316,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
 
   bool should_show_snooze_button() const {
     return optional_fields_.should_show_snooze_button;
-  }
-
-  FullscreenVisibility fullscreen_visibility() const {
-    return optional_fields_.fullscreen_visibility;
-  }
-  void set_fullscreen_visibility(FullscreenVisibility visibility) {
-    optional_fields_.fullscreen_visibility = visibility;
   }
 
   NotificationDelegate* delegate() const { return delegate_.get(); }
