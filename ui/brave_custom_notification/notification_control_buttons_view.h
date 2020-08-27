@@ -66,6 +66,6 @@ class NotificationControlButtonsView
   DISALLOW_COPY_AND_ASSIGN(NotificationControlButtonsView);
 };
 
-}  // namespace message_center
+}  // namespace brave_custom_notification
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_NOTIFICATION_CONTROL_BUTTONS_VIEW_H_
+#endif  // UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_CONTROL_BUTTONS_VIEW_H_

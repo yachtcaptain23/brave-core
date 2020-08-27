@@ -128,9 +128,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT RichNotificationData {
   // the notification.
   bool silent = false;
 
-  // An accessible description of the notification's contents.
-  base::string16 accessible_name;
-
   // Unified theme color used in new style notification.
   // Usually, it should not be set directly.
   // For system notification, ash::CreateSystemNotification with
@@ -319,11 +316,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
 #if defined(OS_CHROMEOS)
   void set_pinned(bool pinned) { optional_fields_.pinned = pinned; }
 #endif  // defined(OS_CHROMEOS)
-
-  // Gets a text for spoken feedback.
-  const base::string16& accessible_name() const {
-    return optional_fields_.accessible_name;
-  }
 
   SkColor accent_color() const { return optional_fields_.accent_color; }
   void set_accent_color(SkColor accent_color) {

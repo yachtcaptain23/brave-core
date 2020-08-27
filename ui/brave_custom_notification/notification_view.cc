@@ -5,11 +5,11 @@
 
 #include "brave/ui/brave_custom_notification/notification_view.h"
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "brave/ui/brave_custom_notification/notification_background_painter.h"
 #include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
-#include "base/strings/utf_string_conversions.h"
 #include "build/build_config.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
@@ -38,6 +38,7 @@
 namespace brave_custom_notification {
 
 namespace {
+
 bool ShouldShowAeroShadowBorder() {
 #if defined(OS_WIN)
   return ui::win::IsAeroGlassEnabled();
@@ -47,9 +48,6 @@ bool ShouldShowAeroShadowBorder() {
 }
 
 }  // namespace
-
-// static
-// const char kViewClassName[] = "NotificationView";
 
 class NotificationView::HighlightPathGenerator
     : public views::HighlightPathGenerator {
@@ -143,14 +141,6 @@ void NotificationView::OnContainerAnimationEnded() {
   // Not implemented by default.
 }
 
-void NotificationView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->role = ax::mojom::Role::kGenericContainer;
-  node_data->AddStringAttribute(
-      ax::mojom::StringAttribute::kRoleDescription,
-      l10n_util::GetStringUTF8(IDS_MESSAGE_NOTIFICATION_ACCESSIBLE_NAME));
-  node_data->SetName(accessible_name_);
-}
-
 void NotificationView::OnPaint(gfx::Canvas* canvas) {
   if (ShouldShowAeroShadowBorder()) {
     // If the border is shadow, paint border first.
@@ -177,7 +167,6 @@ void NotificationView::OnGestureEvent(ui::GestureEvent* event) {
     case ui::ET_GESTURE_TAP: {
       SetDrawBackgroundAsActive(false);
       // TODO: Handle clicks
-      // MessageCenter::Get()->ClickOnNotification(notification_id_);
       event->SetHandled();
       return;
     }

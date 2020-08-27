@@ -15,7 +15,6 @@
 namespace brave_custom_notification {
 
 class NotificationView;
-// class Notification;
 
 class MessagePopupView : public views::WidgetDelegateView,
                          public views::WidgetObserver {
@@ -74,6 +73,6 @@ class MessagePopupView : public views::WidgetDelegateView,
   DISALLOW_COPY_AND_ASSIGN(MessagePopupView);
 };
 
-}  // namespace message_center
+}  // namespace brave_custom_notification
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_MESSAGE_POPUP_VIEW_H_
+#endif  // BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_MESSAGE_POPUP_VIEW_H_

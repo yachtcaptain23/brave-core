@@ -20,4 +20,4 @@ NotificationView* NotificationViewFactory::Create(const Notification& notificati
   return notification_view;
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

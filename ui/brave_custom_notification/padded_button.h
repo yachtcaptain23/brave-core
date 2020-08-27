@@ -34,4 +34,4 @@ class PaddedButton : public views::ImageButton {
 
 }  // namespace brave_custom_notification
 
-#endif  // UI_MESSAGE_CENTER_VIEWS_PADDED_BUTTON_H_
+#endif  // BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PADDED_BUTTON_H_

@@ -54,13 +54,6 @@ constexpr gfx::Insets kTextViewPaddingDefault(9, 0, 6, 0);
 // Right: 4px = 6px (from the mock) - kHeaderHorizontalSpacing.
 constexpr gfx::Insets kAppIconPadding(8, 14, 4, 4);
 
-// Size of the expand icon. 8px = 32px - 15px - 9px (values from the mock).
-constexpr int kExpandIconSize = 8;
-// Paddings of the expand buttons.
-// Top: 13px = 15px (from the mock) - 2px (outer padding).
-// Bottom: 9px from the mock.
-constexpr gfx::Insets kExpandIconViewPadding(13, 2, 9, 0);
-
 // Bullet character. The divider symbol between different parts of the header.
 constexpr wchar_t kNotificationHeaderDivider[] = L" \u2022 ";
 
@@ -81,7 +74,6 @@ class ExpandButton : public views::ImageView {
   void OnPaint(gfx::Canvas* canvas) override;
   void OnFocus() override;
   void OnBlur() override;
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
  private:
   std::unique_ptr<views::Painter> focus_painter_;
@@ -110,11 +102,6 @@ void ExpandButton::OnFocus() {
 void ExpandButton::OnBlur() {
   views::ImageView::OnBlur();
   SchedulePaint();
-}
-
-void ExpandButton::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->role = ax::mojom::Role::kButton;
-  node_data->SetName(GetTooltipText(gfx::Point()));
 }
 
 gfx::FontList GetHeaderTextFontList() {
@@ -216,15 +203,6 @@ NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
   summary_text_view_->SetVisible(false);
   detail_views_->AddChildView(summary_text_view_);
 
-  // Expand button view
-  expand_button_ = new ExpandButton();
-  expand_button_->SetBorder(views::CreateEmptyBorder(kExpandIconViewPadding));
-  expand_button_->SetVerticalAlignment(views::ImageView::Alignment::kLeading);
-  expand_button_->SetHorizontalAlignment(views::ImageView::Alignment::kLeading);
-  expand_button_->SetImageSize(gfx::Size(kExpandIconSize, kExpandIconSize));
-  DCHECK_EQ(kInnerHeaderHeight, expand_button_->GetPreferredSize().height());
-  detail_views_->AddChildView(expand_button_);
-
   // Spacer between left-aligned views and right-aligned views
   views::View* spacer = new views::View;
   spacer->SetPreferredSize(
@@ -256,32 +234,15 @@ void NotificationHeaderView::SetAppNameElideBehavior(
   app_name_view_->SetElideBehavior(elide_behavior);
 }
 
-void NotificationHeaderView::SetProgress(int progress) {
-  summary_text_view_->SetText(l10n_util::GetStringFUTF16Int(
-      IDS_MESSAGE_CENTER_NOTIFICATION_PROGRESS_PERCENTAGE, progress));
-  has_progress_ = true;
-  UpdateSummaryTextVisibility();
-}
-
 void NotificationHeaderView::SetSummaryText(const base::string16& text) {
   summary_text_view_->SetText(text);
-  has_progress_ = false;
   UpdateSummaryTextVisibility();
 }
 
 void NotificationHeaderView::SetOverflowIndicator(int count) {
   summary_text_view_->SetText(l10n_util::GetStringFUTF16Int(
       IDS_MESSAGE_CENTER_LIST_NOTIFICATION_HEADER_OVERFLOW_INDICATOR, count));
-  has_progress_ = false;
   UpdateSummaryTextVisibility();
-}
-
-void NotificationHeaderView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  Button::GetAccessibleNodeData(node_data);
-
-  node_data->role = ax::mojom::Role::kGenericContainer;
-  node_data->SetName(app_name_view_->GetText());
-  node_data->SetDescription(summary_text_view_->GetText());
 }
 
 void NotificationHeaderView::SetAccentColor(SkColor color) {
@@ -329,4 +290,4 @@ void NotificationHeaderView::UpdateSummaryTextVisibility() {
   detail_views_->InvalidateLayout();
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

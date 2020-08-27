@@ -5,7 +5,7 @@
 
 import("//build/config/jumbo.gni")
 
-# C++ headers and sources that can be used outside message_center.
+# C++ headers and sources that can be used outside brave_custom_notification.
 jumbo_component("cpp") {
   output_name = "brave_ui_brave_custom_notification_cpp"
 

@@ -216,7 +216,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
     bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
-
   DCHECK(!profile_->IsOffTheRecord());
 
   MigratePrefs();

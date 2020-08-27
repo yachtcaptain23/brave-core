@@ -28,17 +28,8 @@ const int kSmallImageSize = 16;
 const int kSmallImageSizeMD = 18;
 const int kSmallImagePadding = 4;
 
-// Limits.
-const size_t kMaxVisibleMessageCenterNotifications = 100;
-const size_t kMaxVisiblePopupNotifications = 3;
-
 // DIP dimension; H size of the whole card.
 const int kNotificationWidth = 360;
-
-// Colors.
-constexpr SkColor kMessageCenterBorderColor = SkColorSetRGB(0xC7, 0xCA, 0xCE);
-constexpr SkColor kMessageCenterShadowColor =
-    SkColorSetA(SK_ColorBLACK, 0.5 * 255);
 
 // Within a notification ///////////////////////////////////////////////////////
 
@@ -147,6 +138,6 @@ constexpr int kMarginBetweenPopups = 10;
 // The corners are only rounded in Chrome OS.
 constexpr int kNotificationCornerRadius = 0;
 
-}  // namespace brave_message_center
+}  // namespace brave_custom_notification
 
-#endif  // UI_BRAVE_MESSAGE_CENTER_PUBLIC_CPP_MESSAGE_CENTER_CONSTANTS_H_
+#endif  // UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_CONSTANTS_H_
