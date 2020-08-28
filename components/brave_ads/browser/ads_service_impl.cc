@@ -2019,11 +2019,16 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
-  std::unique_ptr<brave_custom_notification::Notification> notification = CreateAdNotification(*info);
-
   // Call NotificationPlatformBridgeBraveCustomNotification
-  NotificationPlatformBridgeBraveCustomNotification* platform_bridge = new NotificationPlatformBridgeBraveCustomNotification(profile_);
+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
+  std::unique_ptr<brave_custom_notification::Notification> notification = CreateAdNotification(*info);
+  std::unique_ptr<NotificationPlatformBridgeBraveCustomNotification> platform_bridge =
+    std::make_unique<NotificationPlatformBridgeBraveCustomNotification>(profile_);
   platform_bridge->Display(profile_, *notification);
+#elif defined(OS_ANDROID)
+  std::unique_ptr<message_center::Notification> notification = CreateMessageCenterAdNotification(*info);
+  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
+#endif
   StartNotificationTimeoutTimer(info->uuid);
 }
 
