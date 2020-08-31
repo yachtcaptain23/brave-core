@@ -37,6 +37,7 @@ static const int kBodyCharactersPerLine = 40;
 
 // static
 void MessagePopupView::Show(const Notification& notification) {
+  MessagePopupView::ClosePopup();
   g_notifications_[notification.id()] = new MessagePopupView(notification);
 }
 
@@ -55,6 +56,7 @@ void MessagePopupView::ClosePopup() {
     message_popup_view->notification_.delegate()->Close(true);
     message_popup_view->Close();
   }
+  g_notifications_.clear();
 }
 
 MessagePopupView::MessagePopupView(const Notification& notification) :
