@@ -201,7 +201,7 @@ void AdNotificationViewMD::CreateOrUpdateViews(const Notification& notification)
   CreateOrUpdateContextTitleView(notification);
   CreateOrUpdateTitleView(notification);
   CreateOrUpdateNotificationView(notification);
-  CreateOrUpdateSmallIconView(notification);
+//  CreateOrUpdateSmallIconView(notification);
   UpdateViewForExpandedState(expanded_);
 }
 
@@ -297,7 +297,6 @@ void AdNotificationViewMD::Layout() {
   // We need to call IsExpandable() at the end of Layout() call, since whether
   // we should show expand button or not depends on the current view layout.
   // (e.g. Show expand button when |message_view_| exceeds one line.)
-  // header_row_->SetExpandButtonEnabled(IsExpandable());
   header_row_->Layout();
 
   // The notification background is rounded in NotificationView::Layout(),
@@ -401,6 +400,7 @@ void AdNotificationViewMD::UpdateWithNotification(
 
 void AdNotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
     const Notification& notification) {
+  control_buttons_view_->ShowInfoButton(true);
   control_buttons_view_->ShowCloseButton(true);
   UpdateControlButtonsVisibility();
 }
@@ -504,6 +504,7 @@ void AdNotificationViewMD::CreateOrUpdateSmallIconView(
     const Notification& notification) {
   // TODO(knollr): figure out if this has a performance impact and
   // cache images if so. (crbug.com/768748)
+  /*
   gfx::Image masked_small_icon =
       ui::ResourceBundle::GetSharedInstance().GetImageNamed(
           IDR_BRAVE_ADS_LOGO_64);
@@ -513,6 +514,7 @@ void AdNotificationViewMD::CreateOrUpdateSmallIconView(
   } else {
     header_row_->SetAppIcon(masked_small_icon.AsImageSkia());
   }
+  */
 }
 
 bool AdNotificationViewMD::IsExpandable() {

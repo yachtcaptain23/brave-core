@@ -9,6 +9,7 @@
 #include "base/macros.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/image_button.h"
 #include "ui/views/view.h"
 
 namespace ui {
@@ -36,6 +37,8 @@ class NotificationControlButtonsView
 
   // Change the visibility of the close button. True to show, false to hide.
   void ShowCloseButton(bool show);
+
+  void ShowInfoButton(bool show);
   // Change the visibility of all buttons. True to show, false to hide.
   void ShowButtons(bool show);
 
@@ -48,6 +51,7 @@ class NotificationControlButtonsView
 
   // Methods for retrieving the control buttons directly.
   views::Button* close_button() const;
+  views::Button* info_button() const;
 
   // views::View
   const char* GetClassName() const override;
@@ -59,6 +63,7 @@ class NotificationControlButtonsView
   NotificationView* message_view_;
 
   std::unique_ptr<PaddedButton> close_button_;
+  std::unique_ptr<PaddedButton> info_button_;
 
   // The color used for the close, settings, and snooze icons.
   SkColor icon_color_;

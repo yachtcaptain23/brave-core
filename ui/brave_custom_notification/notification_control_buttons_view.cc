@@ -8,16 +8,19 @@
 #include <memory>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/grit/brave_theme_resources.h"
 #include "brave/ui/brave_custom_notification/notification_view.h"
 #include "brave/ui/brave_custom_notification/padded_button.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/event.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
+#include "ui/views/controls/button/image_button.h"
 #include "ui/views/layout/box_layout.h"
 
 namespace brave_custom_notification {
@@ -41,15 +44,37 @@ NotificationControlButtonsView::NotificationControlButtonsView(
 
 NotificationControlButtonsView::~NotificationControlButtonsView() = default;
 
+void NotificationControlButtonsView::ShowInfoButton(bool show) {
+  if (show && !info_button_) {
+    // Add the button next right to the snooze button.
+    info_button_ = std::make_unique<PaddedButton>(this);
+    info_button_->set_owned_by_client();
+    gfx::Image ad_logo =
+      ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+          IDR_BAT_ADS_LOGO_20);
+    info_button_->SetImage(
+        views::Button::STATE_NORMAL,
+        ad_logo.AsImageSkia());
+    /*
+    info_button_->SetBackground(
+        views::CreateSolidBackground(SK_ColorTRANSPARENT));
+        */
+    AddChildView(info_button_.get());
+    Layout();
+  } else if (!show && info_button_) {
+    DCHECK(Contains(info_button_.get()));
+    info_button_.reset();
+  }
+}
+
+
 void NotificationControlButtonsView::ShowCloseButton(bool show) {
   if (show && !close_button_) {
     close_button_ = std::make_unique<PaddedButton>(this);
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kBraveAdsCloseButtonIcon, icon_color_));
-    close_button_->SetTooltipText(l10n_util::GetStringUTF16(
-        IDS_MESSAGE_CENTER_CLOSE_NOTIFICATION_BUTTON_TOOLTIP));
+        ui::ResourceBundle::GetSharedInstance().GetImageNamed(IDR_BAT_ADS_CLOSE_BUTTON_16).AsImageSkia());
     close_button_->SetBackground(
         views::CreateSolidBackground(SK_ColorTRANSPARENT));
 
@@ -88,6 +113,10 @@ void NotificationControlButtonsView::SetButtonIconColors(SkColor color) {
 
 views::Button* NotificationControlButtonsView::close_button() const {
   return close_button_.get();
+}
+
+views::Button* NotificationControlButtonsView::info_button() const {
+  return info_button_.get();
 }
 
 const char* NotificationControlButtonsView::GetClassName() const {
