@@ -2074,8 +2074,13 @@ void AdsServiceImpl::CloseNotification(
       GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
   BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
       uuid, service_worker_scope);
-#endif
   display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
+#endif
+
+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
+  std::unique_ptr<NotificationPlatformBridgeBraveCustomNotification> platform_bridge = std::make_unique<NotificationPlatformBridgeBraveCustomNotification>(profile_);
+  platform_bridge->Close(profile_, uuid);
+#endif
 }
 
 void AdsServiceImpl::UrlRequest(

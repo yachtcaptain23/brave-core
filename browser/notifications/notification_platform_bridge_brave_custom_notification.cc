@@ -80,5 +80,7 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
 
 void NotificationPlatformBridgeBraveCustomNotification::Close(
     Profile* profile,
-    const std::string& notification_id) {}
+    const std::string& notification_id) {
+    brave_custom_notification::MessagePopupView::ClosePopup();
+}
 
