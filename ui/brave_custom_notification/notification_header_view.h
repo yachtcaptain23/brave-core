@@ -24,9 +24,9 @@ class NotificationHeaderView : public views::Button {
  public:
   explicit NotificationHeaderView(views::ButtonListener* listener);
   ~NotificationHeaderView() override;
-  void SetAppIcon(const gfx::ImageSkia& img);
-  void SetAppName(const base::string16& name);
-  void SetAppNameElideBehavior(gfx::ElideBehavior elide_behavior);
+  void SetAdIcon(const gfx::ImageSkia& img);
+  void SetAdName(const base::string16& name);
+  void SetAdNameElideBehavior(gfx::ElideBehavior elide_behavior);
   void SetOverflowIndicator(int count);
 
   // Set the unified theme color used among the app icon, app name, and expand
@@ -37,11 +37,11 @@ class NotificationHeaderView : public views::Button {
   // the accent color has enough contrast against the background.
   void SetBackgroundColor(SkColor color);
 
-  void ClearAppIcon();
+  void ClearAdIcon();
   void SetSubpixelRenderingEnabled(bool enabled);
 
   // Shows or hides the app icon.
-  void SetAppIconVisible(bool visible);
+  void SetAdIconVisible(bool visible);
 
   SkColor accent_color_for_testing() { return accent_color_; }
 
@@ -49,9 +49,9 @@ class NotificationHeaderView : public views::Button {
     return summary_text_view_;
   }
 
-  const base::string16& app_name_for_testing() const;
+  const base::string16& ad_name_for_testing() const;
 
-  const gfx::ImageSkia& app_icon_for_testing() const;
+  const gfx::ImageSkia& ad_icon_for_testing() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NotificationHeaderViewTest, SettingsMode);
@@ -61,13 +61,13 @@ class NotificationHeaderView : public views::Button {
 
   SkColor accent_color_ = kNotificationDefaultAccentColor;
 
-  views::ImageView* app_icon_view_ = nullptr;
-  views::Label* app_name_view_ = nullptr;
+  views::ImageView* ad_icon_view_ = nullptr;
+  views::Label* ad_name_view_ = nullptr;
   views::View* detail_views_ = nullptr;
   views::Label* summary_text_divider_ = nullptr;
   views::Label* summary_text_view_ = nullptr;
 
-  bool using_default_app_icon_ = false;
+  bool using_default_ad_icon_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(NotificationHeaderView);
 };

@@ -33,35 +33,34 @@ namespace brave_custom_notification {
 
 namespace {
 
-constexpr int kHeaderHeight = 32;
+constexpr int kHeaderHeight = 24;
 
 // The padding between controls in the header.
-constexpr gfx::Insets kHeaderSpacing(0, 2, 0, 2);
+constexpr gfx::Insets kHeaderSpacing(0, 0, 0, 0);
 
 // The padding outer the header and the control buttons.
-constexpr gfx::Insets kHeaderOuterPadding(2, 2, 0, 2);
+constexpr gfx::Insets kHeaderOuterPadding(0, 0, 0, 0);
 
 constexpr int kInnerHeaderHeight = kHeaderHeight - kHeaderOuterPadding.height();
 
 // Default paddings of the views of texts. Adjusted on Windows.
 // Top: 9px = 11px (from the mock) - 2px (outer padding).
 // Buttom: 6px from the mock.
-constexpr gfx::Insets kTextViewPaddingDefault(9, 0, 6, 0);
+constexpr gfx::Insets kTextViewPaddingDefault(9, 12, 6, 0);
 
 // Paddings of the app icon (small image).
 // Top: 8px = 10px (from the mock) - 2px (outer padding).
 // Bottom: 4px from the mock.
 // Right: 4px = 6px (from the mock) - kHeaderHorizontalSpacing.
-constexpr gfx::Insets kAppIconPadding(8, 14, 4, 4);
+// constexpr gfx::Insets kAppIconPadding(8, 0, 4, 4);
 
 // Bullet character. The divider symbol between different parts of the header.
 constexpr wchar_t kNotificationHeaderDivider[] = L" \u2022 ";
 
-// "Roboto-Regular, 12sp" is specified in the mock.
-constexpr int kHeaderTextFontSize = 12;
+constexpr int kHeaderTextFontSize = 14;
 
 // Minimum spacing before the control buttons.
-constexpr int kControlButtonSpacing = 16;
+constexpr int kControlButtonSpacing = 10;
 
 // ExpandButtton forwards all mouse and key events to NotificationHeaderView,
 // but takes tab focus for accessibility purpose.
@@ -108,8 +107,7 @@ gfx::FontList GetHeaderTextFontList() {
   gfx::Font default_font;
   int font_size_delta = kHeaderTextFontSize - default_font.GetFontSize();
   gfx::Font font = default_font.Derive(font_size_delta, gfx::Font::NORMAL,
-                                       gfx::Font::Weight::NORMAL);
-  DCHECK_EQ(kHeaderTextFontSize, font.GetFontSize());
+                                       gfx::Font::Weight::SEMIBOLD);
   return gfx::FontList(font);
 }
 
@@ -125,12 +123,10 @@ gfx::Insets CalculateTopPadding(int font_list_height) {
   // text and everything else to stop aligning correctly, so we account for it
   // by shrinking the top padding by 1.
   if (font_list_height != 15) {
-    DCHECK_EQ(16, font_list_height);
     return kTextViewPaddingDefault - gfx::Insets(1 /* top */, 0, 0, 0);
   }
 #endif
 
-  DCHECK_EQ(15, font_list_height);
   return kTextViewPaddingDefault;
 }
 
@@ -154,14 +150,13 @@ NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
   layout->SetCollapseMargins(true);
 
   // App icon view
-  app_icon_view_ = new views::ImageView();
-  app_icon_view_->SetImageSize(gfx::Size(kSmallImageSizeMD, kSmallImageSizeMD));
-  app_icon_view_->SetBorder(views::CreateEmptyBorder(kAppIconPadding));
-  app_icon_view_->SetVerticalAlignment(views::ImageView::Alignment::kLeading);
-  app_icon_view_->SetHorizontalAlignment(views::ImageView::Alignment::kLeading);
-  DCHECK_EQ(kInnerHeaderHeight, app_icon_view_->GetPreferredSize().height());
-  AddChildView(app_icon_view_);
-
+/*  ad_icon_view_ = new views::ImageView();
+//  ad_icon_view_->SetImageSize(gfx::Size(kSmallImageSizeMD, kSmallImageSizeMD));
+//  ad_icon_view_->SetBorder(views::CreateEmptyBorder(kAppIconPadding));
+  ad_icon_view_->SetVerticalAlignment(views::ImageView::Alignment::kLeading);
+  ad_icon_view_->SetHorizontalAlignment(views::ImageView::Alignment::kLeading);
+  AddChildView(ad_icon_view_);
+*/
   // Font list for text views.
   gfx::FontList font_list = GetHeaderTextFontList();
   const int font_list_height = font_list.GetHeight();
@@ -173,16 +168,16 @@ NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
     label->SetLineHeight(font_list_height);
     label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
     label->SetBorder(views::CreateEmptyBorder(text_view_padding));
-    DCHECK_EQ(kInnerHeaderHeight, label->GetPreferredSize().height());
     return label;
   };
 
   // App name view
-  app_name_view_ = create_label();
+  ad_name_view_ = create_label();
   // Explicitly disable multiline to support proper text elision for URLs.
-  app_name_view_->SetMultiLine(false);
-  app_name_view_->SetProperty(views::kFlexBehaviorKey, kAppNameFlex);
-  AddChildView(app_name_view_);
+  ad_name_view_->SetMultiLine(false);
+  ad_name_view_->SetEnabledColor(SK_ColorBLACK);
+  ad_name_view_->SetProperty(views::kFlexBehaviorKey, kAppNameFlex);
+  AddChildView(ad_name_view_);
 
   // Detail views which will be hidden in settings mode.
   detail_views_ = new views::View();
@@ -216,22 +211,22 @@ NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
 
 NotificationHeaderView::~NotificationHeaderView() = default;
 
-void NotificationHeaderView::SetAppIcon(const gfx::ImageSkia& img) {
-  app_icon_view_->SetImage(img);
-  using_default_app_icon_ = false;
+void NotificationHeaderView::SetAdIcon(const gfx::ImageSkia& img) {
+  ad_icon_view_->SetImage(img);
+  using_default_ad_icon_ = false;
 }
 
-void NotificationHeaderView::ClearAppIcon() {
-  using_default_app_icon_ = true;
+void NotificationHeaderView::ClearAdIcon() {
+  using_default_ad_icon_ = true;
 }
 
-void NotificationHeaderView::SetAppName(const base::string16& name) {
-  app_name_view_->SetText(name);
+void NotificationHeaderView::SetAdName(const base::string16& name) {
+  ad_name_view_->SetText(name);
 }
 
-void NotificationHeaderView::SetAppNameElideBehavior(
+void NotificationHeaderView::SetAdNameElideBehavior(
     gfx::ElideBehavior elide_behavior) {
-  app_name_view_->SetElideBehavior(elide_behavior);
+  ad_name_view_->SetElideBehavior(elide_behavior);
 }
 
 void NotificationHeaderView::SetOverflowIndicator(int count) {
@@ -242,38 +237,37 @@ void NotificationHeaderView::SetOverflowIndicator(int count) {
 
 void NotificationHeaderView::SetAccentColor(SkColor color) {
   accent_color_ = color;
-  app_name_view_->SetEnabledColor(accent_color_);
   summary_text_view_->SetEnabledColor(accent_color_);
   summary_text_divider_->SetEnabledColor(accent_color_);
 
   // If we are using the default app icon we should clear it so we refresh it
   // with the new accent color.
-  if (using_default_app_icon_)
-    ClearAppIcon();
+  if (using_default_ad_icon_)
+    ClearAdIcon();
 }
 
 void NotificationHeaderView::SetBackgroundColor(SkColor color) {
-  app_name_view_->SetBackgroundColor(color);
+  ad_name_view_->SetBackgroundColor(color);
   summary_text_divider_->SetBackgroundColor(color);
   summary_text_view_->SetBackgroundColor(color);
 }
 
 void NotificationHeaderView::SetSubpixelRenderingEnabled(bool enabled) {
-  app_name_view_->SetSubpixelRenderingEnabled(enabled);
+  ad_name_view_->SetSubpixelRenderingEnabled(enabled);
   summary_text_divider_->SetSubpixelRenderingEnabled(enabled);
   summary_text_view_->SetSubpixelRenderingEnabled(enabled);
 }
 
-void NotificationHeaderView::SetAppIconVisible(bool visible) {
-  app_icon_view_->SetVisible(visible);
+void NotificationHeaderView::SetAdIconVisible(bool visible) {
+  ad_icon_view_->SetVisible(visible);
 }
 
-const base::string16& NotificationHeaderView::app_name_for_testing() const {
-  return app_name_view_->GetText();
+const base::string16& NotificationHeaderView::ad_name_for_testing() const {
+  return ad_name_view_->GetText();
 }
 
-const gfx::ImageSkia& NotificationHeaderView::app_icon_for_testing() const {
-  return app_icon_view_->GetImage();
+const gfx::ImageSkia& NotificationHeaderView::ad_icon_for_testing() const {
+  return ad_icon_view_->GetImage();
 }
 
 void NotificationHeaderView::UpdateSummaryTextVisibility() {

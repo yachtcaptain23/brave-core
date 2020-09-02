@@ -70,7 +70,7 @@ namespace {
 // Dimensions.
 constexpr gfx::Insets kContentRowPadding(0, 12, 16, 12);
 constexpr gfx::Size kIconViewSize(36, 36);
-constexpr gfx::Insets kLeftContentPadding(2, 4, 0, 4);
+constexpr gfx::Insets kLeftContentPadding(2, 0, 0, 4);
 constexpr gfx::Insets kLeftContentPaddingWithIcon(2, 4, 0, 12);
 
 // Background color of the inline settings.
@@ -101,14 +101,17 @@ constexpr size_t kMessageCharacterLimitMD =
 // The default is 12, so this normally come out to 13.
 constexpr int kTextFontSizeDelta = 1;
 
+constexpr int kBodyTextFontSize = 13;
+
 // Line height of title and message views.
 constexpr int kLineHeightMD = 17;
 
 // FontList for the texts except for the header.
 gfx::FontList GetTextFontList() {
   gfx::Font default_font;
-  gfx::Font font = default_font.Derive(kTextFontSizeDelta, gfx::Font::NORMAL,
-                                       gfx::Font::Weight::NORMAL);
+  int font_size_delta = kBodyTextFontSize - default_font.GetFontSize();
+  gfx::Font font = default_font.Derive(font_size_delta, gfx::Font::NORMAL,
+                                       gfx::Font::Weight::LIGHT);
   return gfx::FontList(font);
 }
 
@@ -199,7 +202,7 @@ void AdNotificationViewMD::CreateOrUpdateViews(const Notification& notification)
   left_content_count_ = 0;
 
   CreateOrUpdateContextTitleView(notification);
-  CreateOrUpdateTitleView(notification);
+//  CreateOrUpdateTitleView(notification);
   CreateOrUpdateNotificationView(notification);
 //  CreateOrUpdateSmallIconView(notification);
   UpdateViewForExpandedState(expanded_);
@@ -427,20 +430,20 @@ void AdNotificationViewMD::CreateOrUpdateContextTitleView(
     const Notification& notification) {
   header_row_->SetAccentColor(SK_ColorTRANSPARENT);
   header_row_->SetBackgroundColor(kNotificationBackgroundColor);
-  header_row_->SetAppNameElideBehavior(gfx::ELIDE_TAIL);
+  header_row_->SetAdNameElideBehavior(gfx::ELIDE_TAIL);
 
   base::string16 app_name;
   if (notification.UseOriginAsContextMessage()) {
     app_name = url_formatter::FormatUrlForSecurityDisplay(
         notification.origin_url(),
         url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS);
-    header_row_->SetAppNameElideBehavior(gfx::ELIDE_HEAD);
+    header_row_->SetAdNameElideBehavior(gfx::ELIDE_HEAD);
   } else if (!notification.context_message().empty()) {
     app_name = notification.context_message();
   } else {
     app_name = notification.display_source();
   }
-  header_row_->SetAppName(base::UTF8ToUTF16("Brave Ad"));
+  header_row_->SetAdName(notification.title());
 }
 
 void AdNotificationViewMD::CreateOrUpdateTitleView(

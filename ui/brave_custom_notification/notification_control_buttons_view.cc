@@ -55,10 +55,6 @@ void NotificationControlButtonsView::ShowInfoButton(bool show) {
     info_button_->SetImage(
         views::Button::STATE_NORMAL,
         ad_logo.AsImageSkia());
-    /*
-    info_button_->SetBackground(
-        views::CreateSolidBackground(SK_ColorTRANSPARENT));
-        */
     AddChildView(info_button_.get());
     Layout();
   } else if (!show && info_button_) {

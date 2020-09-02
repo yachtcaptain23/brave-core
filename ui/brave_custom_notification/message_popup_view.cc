@@ -29,8 +29,8 @@ namespace {
 static std::map<std::string, MessagePopupView*> g_notifications_;
 static const int kPopupX = 30;
 static const int kPopupY = 30;
-static const int kPopupBaseWidth = 300;
-static const int kPopupBaseHeight = 100;
+static const int kPopupBaseWidth = 344;
+static const int kPopupBaseHeight = 78;
 static const int kBodyPixelLineHeight = 10;
 static const int kBodyCharactersPerLine = 40;
 }
