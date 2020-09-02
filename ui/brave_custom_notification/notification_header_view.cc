@@ -48,12 +48,6 @@ constexpr int kInnerHeaderHeight = kHeaderHeight - kHeaderOuterPadding.height();
 // Buttom: 6px from the mock.
 constexpr gfx::Insets kTextViewPaddingDefault(9, 12, 6, 0);
 
-// Paddings of the app icon (small image).
-// Top: 8px = 10px (from the mock) - 2px (outer padding).
-// Bottom: 4px from the mock.
-// Right: 4px = 6px (from the mock) - kHeaderHorizontalSpacing.
-// constexpr gfx::Insets kAppIconPadding(8, 0, 4, 4);
-
 // Bullet character. The divider symbol between different parts of the header.
 constexpr wchar_t kNotificationHeaderDivider[] = L" \u2022 ";
 
@@ -149,14 +143,6 @@ NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
   layout->SetInteriorMargin(kHeaderOuterPadding);
   layout->SetCollapseMargins(true);
 
-  // App icon view
-/*  ad_icon_view_ = new views::ImageView();
-//  ad_icon_view_->SetImageSize(gfx::Size(kSmallImageSizeMD, kSmallImageSizeMD));
-//  ad_icon_view_->SetBorder(views::CreateEmptyBorder(kAppIconPadding));
-  ad_icon_view_->SetVerticalAlignment(views::ImageView::Alignment::kLeading);
-  ad_icon_view_->SetHorizontalAlignment(views::ImageView::Alignment::kLeading);
-  AddChildView(ad_icon_view_);
-*/
   // Font list for text views.
   gfx::FontList font_list = GetHeaderTextFontList();
   const int font_list_height = font_list.GetHeight();
