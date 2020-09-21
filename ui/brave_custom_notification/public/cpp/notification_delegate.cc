@@ -10,24 +10,6 @@
 
 namespace brave_custom_notification {
 
-ThunkNotificationDelegate::ThunkNotificationDelegate(
-    base::WeakPtr<NotificationObserver> impl)
-    : impl_(impl) {}
-
-void ThunkNotificationDelegate::Close(bool by_user) {
-  if (impl_)
-    impl_->Close(by_user);
-}
-
-void ThunkNotificationDelegate::Click(
-    const base::Optional<int>& button_index,
-    const base::Optional<base::string16>& reply) {
-  if (impl_)
-    impl_->Click(button_index, reply);
-}
-
-ThunkNotificationDelegate::~ThunkNotificationDelegate() = default;
-
 HandleNotificationClickDelegate::HandleNotificationClickDelegate(
     const base::RepeatingClosure& callback) {
   SetCallback(callback);

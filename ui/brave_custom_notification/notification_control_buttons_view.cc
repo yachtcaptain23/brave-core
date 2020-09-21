@@ -48,12 +48,12 @@ NotificationControlButtonsView::~NotificationControlButtonsView() = default;
 void NotificationControlButtonsView::ShowInfoButton(bool show) {
   if (show && !info_button_) {
     // Add the button next right to the snooze button.
-    // (Albert Wang) We change to an PaddedButton once we have a link
+    // TODO: https://github.com/brave/brave-browser/issues/11798
     info_button_ = std::make_unique<views::ImageView>();
     info_button_->set_owned_by_client();
     gfx::Image ad_logo =
-      ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-          IDR_BAT_ADS_LOGO_20);
+        ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+            IDR_BAT_ADS_LOGO_20);
     info_button_->SetImage(ad_logo.AsImageSkia());
     AddChildView(info_button_.get());
     Layout();

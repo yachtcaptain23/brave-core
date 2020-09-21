@@ -1,4 +1,4 @@
-/** Copyright (c) 2019 The Brave Authors. All rights reserved.
+/** Copyright (c) 2020 The Brave Authors. All rights reserved.
   * This Source Code Form is subject to the terms of the Mozilla Public
   * License, v. 2.0. If a copy of the MPL was not distributed with this file,
   * You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -7,14 +7,9 @@
 package org.chromium.chrome.browser.dialogs;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,20 +23,10 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveFeatureList;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.tab.TabLaunchType;
-import org.chromium.chrome.browser.util.PackageUtils;
-
-import java.lang.System;
 
 public class BraveAdsCustomNotificationDialog {
 
@@ -90,7 +75,7 @@ public class BraveAdsCustomNotificationDialog {
             @Override
             public void onClick(View view) {
                 mAdsDialog.dismiss();
-                BraveAdsNativeHelper.nativeAdDismissed(Profile.getLastUsedRegularProfile(), mNotificationId);
+                BraveAdsNativeHelper.nativeAdNotificationDismissed(Profile.getLastUsedRegularProfile(), mNotificationId);
             }
         });
 
@@ -99,14 +84,14 @@ public class BraveAdsCustomNotificationDialog {
             public void onClick(View view) {
                 // We don't take the user to the page in this class, native code handles opening a new tab for us.
                 if (mNotificationId.equals(BraveOnboardingNotification.BRAVE_ONBOARDING_NOTIFICATION_TAG)) {
+                    mAdsDialog.dismiss();
                     ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
                     if (chromeTabbedActivity != null) {
                         chromeTabbedActivity.getTabCreator(false).launchUrl(origin, TabLaunchType.FROM_CHROME_UI);
                     }
-                    mAdsDialog.dismiss();
                 } else {
                     mAdsDialog.dismiss();
-                    BraveAdsNativeHelper.nativeAdClicked(Profile.getLastUsedRegularProfile(), mNotificationId);
+                    BraveAdsNativeHelper.nativeAdNotificationClicked(Profile.getLastUsedRegularProfile(), mNotificationId);
                 }
             }
         });

@@ -44,29 +44,6 @@ class NotificationDelegate : public NotificationObserver,
   friend class base::RefCountedThreadSafe<NotificationDelegate>;
 };
 
-// A pass-through which converts the RefCounted requirement to a WeakPtr
-// requirement. This class replaces the need for individual delegates that pass
-// through to an actual controller class, and which only exist because the
-// actual controller has a strong ownership model.
-class ThunkNotificationDelegate
-    : public NotificationDelegate {
- public:
-  explicit ThunkNotificationDelegate(base::WeakPtr<NotificationObserver> impl);
-
-  // NotificationDelegate:
-  void Close(bool by_user) override;
-  void Click(const base::Optional<int>& button_index,
-             const base::Optional<base::string16>& reply) override;
-
- protected:
-  ~ThunkNotificationDelegate() override;
-
- private:
-  base::WeakPtr<NotificationObserver> impl_;
-
-  DISALLOW_COPY_AND_ASSIGN(ThunkNotificationDelegate);
-};
-
 // A simple notification delegate which invokes the passed closure when the body
 // or a button is clicked.
 class HandleNotificationClickDelegate

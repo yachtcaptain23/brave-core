@@ -23,8 +23,6 @@ namespace views {
 class ImageButton;
 class Label;
 class LabelButton;
-class ProgressBar;
-class RadioButton;
 class Textfield;
 }
 

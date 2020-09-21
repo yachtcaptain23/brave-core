@@ -29,7 +29,7 @@ const int kControlButtonBorderSize = 6;
 // Colors.
 // Background of the card.
 constexpr SkColor kNotificationBackgroundColor =
-  SkColorSetRGB(0xED, 0xF0, 0xF2);
+    SkColorSetRGB(0xED, 0xF0, 0xF2);
 constexpr SkColor kDimTextColorMD = SkColorSetRGB(0x75, 0x75, 0x75);
 // The focus border.
 constexpr SkColor kFocusBorderColor = SK_ColorTRANSPARENT;
