@@ -11,11 +11,6 @@
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "build/build_config.h"
-#include "ui/message_center/public/cpp/notification.h"
-
-namespace brave_custom_notification {
-class Notification;
-}
 
 namespace ads {
 struct AdNotificationInfo;
@@ -23,10 +18,12 @@ struct AdNotificationInfo;
 
 namespace brave_ads {
 
+class Notification;
+
 // On Android, this URL must represent an HTTP or HTTPS web origin.
 const char* const kBraveAdsUrlPrefix = "https://www.brave.com/ads/?";
 
-std::unique_ptr<brave_custom_notification::Notification> CreateAdNotification(
+std::unique_ptr<Notification> CreateAdNotification(
     const ads::AdNotificationInfo& info);
 
 }  // namespace brave_ads

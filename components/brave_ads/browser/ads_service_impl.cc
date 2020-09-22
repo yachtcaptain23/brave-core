@@ -33,7 +33,7 @@
 #include "bat/ads/mojom.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
-#include "brave/browser/notifications/notification_platform_bridge_brave_custom_notification.h"
+#include "brave/browser/notifications/notification_platform_bridge_brave_ads.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
@@ -58,7 +58,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #if !defined(OS_ANDROID)
-#include "brave/ui/brave_custom_notification/message_popup_view.h"
+#include "brave/ui/brave_ads/message_popup_view.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif
@@ -2040,12 +2040,11 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
-  // Call NotificationPlatformBridgeBraveCustomNotification
-  std::unique_ptr<brave_custom_notification::Notification> notification =
+  std::unique_ptr<brave_ads::Notification> notification =
       CreateAdNotification(*info);
-  std::unique_ptr<NotificationPlatformBridgeBraveCustomNotification>
+  std::unique_ptr<NotificationPlatformBridgeBraveAds>
     platform_bridge = std::make_unique<
-      NotificationPlatformBridgeBraveCustomNotification
+      NotificationPlatformBridgeBraveAds
     >(profile_);
   platform_bridge->Display(profile_, notification);
   StartNotificationTimeoutTimer(info->uuid);
@@ -2087,9 +2086,9 @@ bool AdsServiceImpl::ShouldShowNotifications() {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& uuid) {
-  std::unique_ptr<NotificationPlatformBridgeBraveCustomNotification>
+  std::unique_ptr<NotificationPlatformBridgeBraveAds>
     platform_bridge = std::make_unique<
-      NotificationPlatformBridgeBraveCustomNotification
+      NotificationPlatformBridgeBraveAds
     >(profile_);
   platform_bridge->Close(profile_, uuid);
 }

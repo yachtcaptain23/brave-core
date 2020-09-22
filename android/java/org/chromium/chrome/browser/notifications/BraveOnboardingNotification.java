@@ -18,7 +18,7 @@ import android.net.Uri;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.dialogs.BraveAdsCustomNotificationDialog;
+import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -46,7 +46,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
 
     public static void showOnboardingNotification(Activity activity) {
         Context context = activity.getApplicationContext();
-        BraveAdsCustomNotificationDialog.displayAdsCustomNotification(
+        BraveAdsNotificationDialog.displayAdsNotification(
             activity,
             BRAVE_ONBOARDING_NOTIFICATION_TAG,
             getNotificationUrl(),

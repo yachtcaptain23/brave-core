@@ -8,14 +8,14 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "bat/ads/ad_notification_info.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/ui/brave_ads/public/cpp/notification.h"
 
 namespace brave_ads {
 
 // static
-std::unique_ptr<brave_custom_notification::Notification> CreateAdNotification(
+std::unique_ptr<brave_ads::Notification> CreateAdNotification(
     const ads::AdNotificationInfo& info) {
-  brave_custom_notification::RichNotificationData notification_data;
+  brave_ads::RichNotificationData notification_data;
 
   base::string16 title;
   if (base::IsStringUTF8(info.title)) {
@@ -30,7 +30,7 @@ std::unique_ptr<brave_custom_notification::Notification> CreateAdNotification(
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
   notification_data.context_message = base::ASCIIToUTF16(" ");
-  auto notification = std::make_unique<brave_custom_notification::Notification>(
+  auto notification = std::make_unique<brave_ads::Notification>(
       info.uuid,
       title,
       body,
