@@ -78,15 +78,6 @@ const uint64_t kSustainAdNotificationInteractionAfterSeconds = 10;
 
 const uint16_t kPurchaseIntentMaxSegments = 3;
 
-const int kDoNotDisturbFromHour = 21;  // 9pm
-const int kDoNotDisturbToHour = 6;     // 6am
-
-#if defined(OS_ANDROID)
-const int kMaximumAdNotifications = 3;
-#else
-const int kMaximumAdNotifications = 0;  // No limit
-#endif
-
 std::string GetDisplayUrl(const std::string& url) {
   GURL gurl(url);
   if (!gurl.is_valid())
@@ -409,15 +400,6 @@ bool AdsImpl::ShouldNotDisturb() const {
   }
 
   if (IsForeground()) {
-    return false;
-  }
-
-  auto now = base::Time::Now();
-  base::Time::Exploded now_exploded;
-  now.LocalExplode(&now_exploded);
-
-  if (now_exploded.hour >= kDoNotDisturbToHour &&
-      now_exploded.hour <= kDoNotDisturbFromHour) {
     return false;
   }
 
@@ -1120,11 +1102,6 @@ bool AdsImpl::ShowAdNotification(
       << "  targetUrl: " << ad_notification->target_url);
 
   ad_notifications_->PushBack(*ad_notification);
-
-  if (kMaximumAdNotifications > 0 &&
-      ad_notifications_->Count() > kMaximumAdNotifications) {
-    ad_notifications_->PopFront(true);
-  }
 
   return true;
 }
