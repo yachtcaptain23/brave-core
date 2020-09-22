@@ -231,6 +231,10 @@ source_set("browser_process") {
       "infobars",
       "//brave/app:brave_generated_resources_grit",
     ]
+  } else {
+    deps += [
+      "android:android_browser_process",
+    ]
   }
 
   if (binance_enabled) {
