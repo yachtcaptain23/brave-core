@@ -98,7 +98,7 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
   ads_service_->SetEnabled(true);
 }
 
-void JNI_BraveAdsNativeHelper_AdClicked(
+void JNI_BraveAdsNativeHelper_AdNotificationClicked(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
@@ -123,7 +123,7 @@ void JNI_BraveAdsNativeHelper_AdClicked(
       base::OnceClosure());
 }
 
-void JNI_BraveAdsNativeHelper_AdDismissed(
+void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {

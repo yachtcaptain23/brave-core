@@ -1,24 +1,24 @@
 import("//build/config/android/rules.gni")
 
+source_set("android") {
+  deps = [
+    ":jni_headers",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/resources",
+    "//brave/components/services/bat_ads/public/cpp",
+    "//brave/vendor/bat-native-ads",
+  ]
+
+  sources = [
+    "brave_ads/android/brave_ads_native_helper.cc",
+    "brave_ads/android/brave_ads_native_helper.h",
+  ]
+}
+
 generate_jni("jni_headers") {
   sources = [
     "java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
     "java/org/chromium/chrome/browser/dialogs/BraveAdsSignupDialog.java",
     "java/org/chromium/chrome/browser/dialogs/BraveAdsCustomNotificationDialog.java",
-  ]
-}
-
-source_set("android") {
-  deps = [
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/resources",
-    "//brave/components/services/bat_ads/public/cpp",
-    "//brave/vendor/bat-native-ads",
-    "brave_ads/android:jni_headers",
-  ]
-
-  sources += [
-    "brave_ads/android/brave_ads_native_helper.cc",
-    "brave_ads/android/brave_ads_native_helper.h",
   ]
 }
