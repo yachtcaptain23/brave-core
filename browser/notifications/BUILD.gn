@@ -1,15 +1,22 @@
 source_set("notifications") {
   sources = [
-    "brave_notification_platform_bridge_helper_android.cc",
-    "brave_notification_platform_bridge_helper_android.h",
     "notification_platform_bridge_brave_custom_notification.cc",
     "notification_platform_bridge_brave_custom_notification.h"
   ]
+  if (is_android) {
+    sources += [
+      "brave_notification_platform_bridge_helper_android.cc",
+      "brave_notification_platform_bridge_helper_android.h",
+    ]
+  }
 
   deps = [
     "//base",
     "//brave/components/brave_ads/browser",
+    "//brave/ui/brave_custom_notification",
+    "//brave/ui/brave_custom_notification/public/cpp",
     "//brave/vendor/bat-native-ads",
+    "//brave/browser/profiles",
     "//skia",
   ]
 }

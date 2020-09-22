@@ -7,3 +7,18 @@ generate_jni("jni_headers") {
     "java/org/chromium/chrome/browser/dialogs/BraveAdsCustomNotificationDialog.java",
   ]
 }
+
+source_set("android") {
+  deps = [
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/resources",
+    "//brave/components/services/bat_ads/public/cpp",
+    "//brave/vendor/bat-native-ads",
+    "brave_ads/android:jni_headers",
+  ]
+
+  sources += [
+    "brave_ads/android/brave_ads_native_helper.cc",
+    "brave_ads/android/brave_ads_native_helper.h",
+  ]
+}

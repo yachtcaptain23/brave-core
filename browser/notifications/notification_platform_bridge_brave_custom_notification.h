@@ -12,6 +12,7 @@
 #include "base/macros.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/browser/profiles/profile_util.h"
 
 class Profile;
 

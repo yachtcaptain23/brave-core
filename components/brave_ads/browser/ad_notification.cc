@@ -9,9 +9,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "bat/ads/ad_notification_info.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification_types.h"
-#include "ui/message_center/public/cpp/notifier_id.h"
 
 namespace brave_ads {
 

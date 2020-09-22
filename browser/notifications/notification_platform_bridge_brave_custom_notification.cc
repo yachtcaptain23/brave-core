@@ -19,11 +19,6 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/notifications/notification_ui_manager.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
