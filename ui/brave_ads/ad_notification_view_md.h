@@ -20,10 +20,7 @@
 #include "ui/views/controls/textfield/textfield_controller.h"
 
 namespace views {
-class ImageButton;
 class Label;
-class LabelButton;
-class Textfield;
 }
 
 namespace brave_ads {
