@@ -35,7 +35,7 @@ std::unique_ptr<brave_ads::Notification> CreateAdNotification(
       title,
       body,
       base::string16(),
-      GURL(kBraveAdsUrlPrefix + info.uuid),
+      GURL(info.uuid),
       notification_data,
       nullptr);
 

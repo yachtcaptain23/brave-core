@@ -212,13 +212,6 @@ void AdsImpl::InitializeStep6(
 
   MaybeServeAdNotification(false);
 
-#if defined(OS_ANDROID)
-    // Ad notifications do not sustain a reboot or update, so we should remove
-    // orphaned ad notifications
-    RemoveAllAdNotificationsAfterReboot();
-    RemoveAllAdNotificationsAfterUpdate();
-#endif
-
   client_->UpdateAdUUID();
 
   if (PlatformHelper::GetInstance()->IsMobile()) {
@@ -239,33 +232,6 @@ void AdsImpl::InitializeStep6(
 
   get_catalog_->Download();
 }
-
-#if defined(OS_ANDROID)
-void AdsImpl::RemoveAllAdNotificationsAfterReboot() {
-  auto ads_shown_history = client_->GetAdsHistory();
-  if (!ads_shown_history.empty()) {
-    uint64_t ad_shown_timestamp =
-        ads_shown_history.front().timestamp_in_seconds;
-    uint64_t boot_timestamp =
-        static_cast<uint64_t>(base::Time::Now().ToDoubleT() -
-            static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds()));
-    if (ad_shown_timestamp <= boot_timestamp) {
-      ad_notifications_->RemoveAll(false);
-    }
-  }
-}
-
-void AdsImpl::RemoveAllAdNotificationsAfterUpdate() {
-  // Ad notifications do not sustain app update, so remove all ad notifications
-  std::string current_version_code(
-      base::android::BuildInfo::GetInstance()->package_version_code());
-  std::string last_version_code = client_->GetVersionCode();
-  if (last_version_code != current_version_code) {
-    client_->SetVersionCode(current_version_code);
-    ad_notifications_->RemoveAll(false);
-  }
-}
-#endif
 
 bool AdsImpl::IsInitialized() {
   if (!is_initialized_ || !ads_client_->IsEnabled()) {
@@ -300,8 +266,7 @@ void AdsImpl::OnForeground() {
 
   BLOG(1, "Browser window did become active");
 
-  if (PlatformHelper::GetInstance()->IsMobile() &&
-      !ads_client_->CanShowBackgroundNotifications()) {
+  if (PlatformHelper::GetInstance()->IsMobile()) {
     StartDeliveringAdNotifications();
   }
 }
@@ -311,8 +276,7 @@ void AdsImpl::OnBackground() {
 
   BLOG(1, "Browser window did enter background");
 
-  if (PlatformHelper::GetInstance()->IsMobile() &&
-      !ads_client_->CanShowBackgroundNotifications()) {
+  if (PlatformHelper::GetInstance()->IsMobile()) {
     deliver_ad_notification_timer_.Stop();
   }
 }

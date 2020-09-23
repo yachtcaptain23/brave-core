@@ -76,10 +76,6 @@ bool NotificationHelperWin::ShowMyFirstAdNotification() {
   return false;
 }
 
-bool NotificationHelperWin::CanShowBackgroundNotifications() const {
-  return true;
-}
-
 NotificationHelperWin* NotificationHelperWin::GetInstanceImpl() {
   return base::Singleton<NotificationHelperWin>::get();
 }

@@ -1161,10 +1161,6 @@ void AdsServiceImpl::OnURLRequestComplete(
   callback(url_response);
 }
 
-bool AdsServiceImpl::CanShowBackgroundNotifications() const {
-  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
-}
-
 void AdsServiceImpl::OnGetAdsHistory(
     OnGetAdsHistoryCallback callback,
     const std::string& json) {
@@ -2043,9 +2039,8 @@ void AdsServiceImpl::ShowNotification(
   std::unique_ptr<brave_ads::Notification> notification =
       CreateAdNotification(*info);
   std::unique_ptr<NotificationPlatformBridgeBraveAds>
-    platform_bridge = std::make_unique<
-      NotificationPlatformBridgeBraveAds
-    >(profile_);
+      platform_bridge =
+          std::make_unique<NotificationPlatformBridgeBraveAds>(profile_);
   platform_bridge->Display(profile_, notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
