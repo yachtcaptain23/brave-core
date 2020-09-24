@@ -34,7 +34,7 @@ namespace brave_ads {
 namespace {
 static std::map<std::string, MessagePopupView*> g_notifications_;
 #if defined(OS_WIN)
-static const int kPopupYDeltaWin = 186;
+static const int kPopupYDeltaWin = 276;
 #elif defined(OS_LINUX)
 static const int kPopupYDeltaLinux = 30;
 #else
@@ -81,7 +81,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   const gfx::Size& screen_size = display::Screen::GetScreen()->GetPrimaryDisplay().size();
 #if defined(OS_WIN)
-  const uint64_t screen_y = screen_size.height() - kPopupYDelta;
+  const uint64_t screen_y = screen_size.height() - kPopupYDeltaWin;
 #elif defined (OS_LINUX)
   const uint64_t screen_y = kPopupYDeltaLinux;
 #else

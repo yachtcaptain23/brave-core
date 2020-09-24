@@ -13,6 +13,7 @@ source_set("notifications") {
   deps = [
     "//base",
     "//brave/vendor/bat-native-ads",
+    "//content/public/browser",
     "//skia",
   ]
 }
