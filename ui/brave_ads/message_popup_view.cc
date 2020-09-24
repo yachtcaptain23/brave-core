@@ -33,8 +33,14 @@
 namespace brave_ads {
 namespace {
 static std::map<std::string, MessagePopupView*> g_notifications_;
-static const int kPopupX = 30;
-static const int kPopupY = 30;
+#if defined(OS_WIN)
+static const int kPopupYDeltaWin = 186;
+#elif defined(OS_LINUX)
+static const int kPopupYDeltaLinux = 30;
+#else
+static const int kPopupYDeltaOther = 186;
+#endif
+static const int kPopupPadding = 10;
 static const int kPopupBaseWidth = 344;
 static const int kPopupBaseHeight = 88;
 static const int kBodyPixelLineHeight = 10;
@@ -73,9 +79,17 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
+  const gfx::Size& screen_size = display::Screen::GetScreen()->GetPrimaryDisplay().size();
+#if defined(OS_WIN)
+  const uint64_t screen_y = screen_size.height() - kPopupYDelta;
+#elif defined (OS_LINUX)
+  const uint64_t screen_y = kPopupYDeltaLinux;
+#else
+  const uint64_t screen_y = kPopupYDeltaOther;
+#endif
   params.bounds = {
-    kPopupX,
-    kPopupY,
+    screen_size.width() - kPopupBaseWidth - kPopupPadding,
+    screen_y,
     kPopupBaseWidth,
     kPopupBaseHeight + GetBodyHeight(notification.message())};
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
