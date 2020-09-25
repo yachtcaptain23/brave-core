@@ -124,7 +124,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
 
 MessagePopupView::~MessagePopupView() {}
 
-#if !defined(OS_MACOSX)
+#if !defined(OS_MAC)
 float MessagePopupView::GetOpacity() const {
   if (!IsWidgetValid())
     return 0.f;

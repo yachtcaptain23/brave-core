@@ -107,7 +107,7 @@ void NotificationPlatformBridgeBraveAds::Display(
   notification->set_delegate(base::WrapRefCounted(
       new PassThroughDelegate(profile_, *notification)));
 
-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
   brave_ads::MessagePopupView::Show(*notification);
 #elif defined(OS_ANDROID)
   ShowAndroidAdsNotification(profile, notification);
@@ -161,7 +161,7 @@ void NotificationPlatformBridgeBraveAds::
 void NotificationPlatformBridgeBraveAds::Close(
     Profile* profile,
     const std::string& notification_id) {
-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
   brave_ads::MessagePopupView::ClosePopup();
 #elif defined(OS_ANDROID)
   NotificationPlatformBridgeBraveAds::
