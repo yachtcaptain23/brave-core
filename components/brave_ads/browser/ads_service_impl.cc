@@ -2049,6 +2049,9 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(
     const std::string& uuid) {
 #if !defined(OS_ANDROID)
   const uint64_t timeout_in_seconds = 120;
+#else
+  const uint64_t timeout_in_seconds = 30;
+#endif
 
   notification_timers_[uuid] = std::make_unique<base::OneShotTimer>();
 
@@ -2060,7 +2063,6 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(
 
   VLOG(1) << "Timeout ad notification with uuid " << uuid << " in "
       << timeout_in_seconds << " seconds";
-#endif
 }
 
 bool AdsServiceImpl::StopNotificationTimeoutTimer(
