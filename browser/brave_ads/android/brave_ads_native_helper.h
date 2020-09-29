@@ -18,9 +18,7 @@
 using base::android::JavaParamRef;
 using base::android::ScopedJavaLocalRef;
 
-namespace chrome {
-
-namespace android {
+namespace brave_ads {
 
 // static
 
@@ -54,8 +52,6 @@ static void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id);
 
-}  // namespace android
-
-}  // namespace chrome
+}  // namespace brave_ads
 
 #endif  // BRAVE_BROWSER_BRAVE_ADS_ANDROID_BRAVE_ADS_NATIVE_HELPER_H_

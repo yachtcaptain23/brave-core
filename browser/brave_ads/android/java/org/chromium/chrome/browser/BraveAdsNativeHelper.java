@@ -9,7 +9,7 @@ package org.chromium.chrome.browser;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.profiles.Profile;
 
-@JNINamespace("chrome::android")
+@JNINamespace("brave_ads")
 public class BraveAdsNativeHelper {
     private BraveAdsNativeHelper() {}
 

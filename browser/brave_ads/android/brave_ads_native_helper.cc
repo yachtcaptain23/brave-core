@@ -24,12 +24,6 @@ class AdsService;
 class AdsServiceFactory;
 class AdsServiceImpl;
 
-}
-
-namespace chrome {
-
-namespace android {
-
 // static
 
 jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
@@ -146,6 +140,4 @@ void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
       base::OnceClosure());
 }
 
-}  // namespace android
-
-}  // namespace chrome
+}  // namespace brave_ads
