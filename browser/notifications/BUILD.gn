@@ -3,12 +3,6 @@ source_set("notifications") {
     "notification_platform_bridge_brave_ads.cc",
     "notification_platform_bridge_brave_ads.h"
   ]
-  if (is_android) {
-    sources += [
-      "brave_notification_platform_bridge_helper_android.cc",
-      "brave_notification_platform_bridge_helper_android.h",
-    ]
-  }
 
   deps = [
     "//base",
