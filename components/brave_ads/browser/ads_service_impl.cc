@@ -33,7 +33,7 @@
 #include "bat/ads/mojom.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
-#include "brave/browser/notifications/notification_platform_bridge_brave_ads.h"
+#include "brave/browser/brave_ads/notifications/platform_bridge.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
@@ -2037,9 +2037,8 @@ void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
   std::unique_ptr<brave_ads::Notification> notification =
       CreateAdNotification(*info);
-  std::unique_ptr<NotificationPlatformBridgeBraveAds>
-      platform_bridge =
-          std::make_unique<NotificationPlatformBridgeBraveAds>(profile_);
+  std::unique_ptr<PlatformBridge>
+      platform_bridge = std::make_unique<PlatformBridge>(profile_);
   platform_bridge->Display(profile_, notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
@@ -2082,10 +2081,8 @@ bool AdsServiceImpl::ShouldShowNotifications() {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& uuid) {
-  std::unique_ptr<NotificationPlatformBridgeBraveAds>
-    platform_bridge = std::make_unique<
-      NotificationPlatformBridgeBraveAds
-    >(profile_);
+  std::unique_ptr<PlatformBridge>
+    platform_bridge = std::make_unique<PlatformBridge>(profile_);
   platform_bridge->Close(profile_, uuid);
 }
 

@@ -1,7 +1,7 @@
 source_set("notifications") {
   sources = [
-    "notification_platform_bridge_brave_ads.cc",
-    "notification_platform_bridge_brave_ads.h"
+    "platform_bridge.cc",
+    "platform_bridge.h"
   ]
 
   deps = [
@@ -14,4 +14,9 @@ source_set("notifications") {
     "//brave/browser/profiles",
     "//skia",
   ]
+  if (is_android) {
+    deps += [
+      "//brave/browser/brave_ads/android:jni_headers",
+    ]
+  }
 }

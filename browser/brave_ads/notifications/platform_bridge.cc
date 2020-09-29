@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/notifications/notification_platform_bridge_brave_ads.h"
+#include "brave/browser/brave_ads/notifications/platform_bridge.h"
 
 #include <memory>
 #include <string>
@@ -89,14 +89,14 @@ class PassThroughDelegate
 
 }  // namespace
 
-NotificationPlatformBridgeBraveAds::
-    NotificationPlatformBridgeBraveAds(Profile* profile)
+PlatformBridge::
+    PlatformBridge(Profile* profile)
     : profile_(profile) {}
 
-NotificationPlatformBridgeBraveAds::
-    ~NotificationPlatformBridgeBraveAds() {}
+PlatformBridge::
+    ~PlatformBridge() {}
 
-void NotificationPlatformBridgeBraveAds::Display(
+void PlatformBridge::Display(
     Profile* profile,
     const std::unique_ptr<
         brave_ads::Notification>&notification) {
@@ -120,7 +120,7 @@ void NotificationPlatformBridgeBraveAds::Display(
 }
 
 #if defined(OS_ANDROID)
-void NotificationPlatformBridgeBraveAds::
+void PlatformBridge::
     ShowAndroidAdsNotification(
         Profile* profile,
         const std::unique_ptr<
@@ -143,7 +143,7 @@ void NotificationPlatformBridgeBraveAds::
       title, body);
 }
 
-void NotificationPlatformBridgeBraveAds::
+void PlatformBridge::
     CloseAndroidAdsNotification(
         Profile* profile,
         const std::string& notification_id) {
@@ -158,13 +158,13 @@ void NotificationPlatformBridgeBraveAds::
 }
 #endif
 
-void NotificationPlatformBridgeBraveAds::Close(
+void PlatformBridge::Close(
     Profile* profile,
     const std::string& notification_id) {
 #if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
   brave_ads::MessagePopupView::ClosePopup();
 #elif defined(OS_ANDROID)
-  NotificationPlatformBridgeBraveAds::
+  PlatformBridge::
       CloseAndroidAdsNotification(
           profile,
           notification_id);

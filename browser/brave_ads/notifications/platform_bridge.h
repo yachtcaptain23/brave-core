@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NOTIFICATIONS_NOTIFICATION_PLATFORM_BRIDGE_BRAVE_ADS_H_
-#define BRAVE_BROWSER_NOTIFICATIONS_NOTIFICATION_PLATFORM_BRIDGE_BRAVE_ADS_H_
+#ifndef BRAVE_BROWSER_BRAVE_ADS_NOTIFICATIONS_PLATFORM_BRIDGE_H_
+#define BRAVE_BROWSER_BRAVE_ADS_NOTIFICATIONS_PLATFORM_BRIDGE_H_
 
 #include <memory>
 #include <string>
@@ -16,10 +16,10 @@
 
 class Profile;
 
-class NotificationPlatformBridgeBraveAds {
+class PlatformBridge {
  public:
-  explicit NotificationPlatformBridgeBraveAds(Profile* profile);
-  ~NotificationPlatformBridgeBraveAds();
+  explicit PlatformBridge(Profile* profile);
+  ~PlatformBridge();
 
   void Display(Profile* profile,
                const std::unique_ptr<
@@ -38,7 +38,7 @@ class NotificationPlatformBridgeBraveAds {
  private:
   Profile* profile_;
 
-  DISALLOW_COPY_AND_ASSIGN(NotificationPlatformBridgeBraveAds);
+  DISALLOW_COPY_AND_ASSIGN(PlatformBridge);
 };
 
-#endif  // BRAVE_BROWSER_NOTIFICATIONS_NOTIFICATION_PLATFORM_BRIDGE_BRAVE_ADS_H_
+#endif  // BRAVE_BROWSER_BRAVE_ADS_NOTIFICATIONS_PLATFORM_BRIDGE_H_
