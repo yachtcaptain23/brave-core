@@ -21,6 +21,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -38,8 +39,7 @@ const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 class BatAdsDayPartingFrequencyCapTest : public ::testing::Test {
  protected:
   BatAdsDayPartingFrequencyCapTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
+      : ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
         ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
@@ -123,21 +123,12 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowIfRightDayAndHours) {
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  auto current_datetime = std::chrono::system_clock::now();
-  auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
-  std::tm * tm_time = std::localtime(&unix_local_time);
-  int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
-  std::string current_dow = base::NumberToString(tm_time->tm_wday);
-
-  LOG(INFO) << "albert original dow" << current_dow << " time="
-      << tm_time->tm_hour << ":" << tm_time->tm_min;
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  LOG(INFO) << "albert other dow" << base::NumberToString(exploded.day_of_week) 
-  << " time=" << exploded.hour << ":" << exploded.minute;
+  int current_time = 60 * exploded.hour + exploded.minute;
 
   ad.day_parts.push_back(
-      current_dow + "_" +
+      base::NumberToString(exploded.day_of_week) + "_" +
       base::NumberToString(current_time - base::Time::kMinutesPerHour) + "_" +
       base::NumberToString(current_time + base::Time::kMinutesPerHour));
   // Act
@@ -152,10 +143,9 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowForMultipleDays) {
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  auto current_datetime = std::chrono::system_clock::now();
-  auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
-  std::tm * tm_time = std::localtime(&unix_local_time);
-  int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  int current_time = 60 * exploded.hour + exploded.minute;
 
   ad.day_parts.push_back(
       std::string("0123456") + "_" +
@@ -173,12 +163,11 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowIfOneMatchExists) {
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  auto current_datetime = std::chrono::system_clock::now();
-  auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
-  std::tm * tm_time = std::localtime(&unix_local_time);
-  int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
-  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
-  std::string current_dow = base::NumberToString(tm_time->tm_wday);
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  int current_time = 60 * exploded.hour + exploded.minute;
+  std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
+  std::string current_dow = base::NumberToString(exploded.day_of_week);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
@@ -206,17 +195,11 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfNoMatches) {
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  auto current_datetime = std::chrono::system_clock::now();
-  auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
-  std::tm * tm_time = std::localtime(&unix_local_time);
-  int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
-  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
-  std::string current_dow = base::NumberToString(tm_time->tm_wday);
-  LOG(INFO) << "albert original dow" << current_dow;
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  LOG(INFO) << "albert " << exploded.hour << ":" << exploded.minute;
-  LOG(INFO) << "albert other dow" << base::NumberToString(exploded.day_of_week);
+  int current_time = 60 * exploded.hour + exploded.minute;
+  std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
+  std::string current_dow = base::NumberToString(exploded.day_of_week);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
@@ -246,13 +229,12 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfWrongDay) {
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  auto current_datetime = std::chrono::system_clock::now();
-  auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
-  std::tm * tm_time = std::localtime(&unix_local_time);
-  int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  int current_time = 60 * exploded.hour + exploded.minute;
 
   // Go to next day
-  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
+  std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
@@ -270,13 +252,12 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfWrongHours) {
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  auto current_datetime = std::chrono::system_clock::now();
-  auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
-  std::tm * tm_time = std::localtime(&unix_local_time);
-  int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  int current_time = 60 * exploded.hour + exploded.minute;
 
   // Go to next day
-  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
+  std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
