@@ -10,6 +10,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/task_environment.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -64,12 +65,6 @@ class BatAdsDayPartingFrequencyCapTest : public ::testing::Test {
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     const base::FilePath path = temp_dir_.GetPath();
-
-    ON_CALL(*ads_client_mock_, IsEnabled())
-        .WillByDefault(Return(true));
-
-    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
-        .WillByDefault(Return(true));
 
     SetBuildChannel(false, "test");
 
@@ -132,12 +127,19 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowIfRightDayAndHours) {
   auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
   std::tm * tm_time = std::localtime(&unix_local_time);
   int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
-  std::string current_dow = std::to_string(tm_time->tm_wday);
+  std::string current_dow = base::NumberToString(tm_time->tm_wday);
+
+  LOG(INFO) << "albert original dow" << current_dow << " time="
+      << tm_time->tm_hour << ":" << tm_time->tm_min;
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  LOG(INFO) << "albert other dow" << base::NumberToString(exploded.day_of_week) 
+  << " time=" << exploded.hour << ":" << exploded.minute;
 
   ad.day_parts.push_back(
       current_dow + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - base::Time::kMinutesPerHour) + "_" +
+      base::NumberToString(current_time + base::Time::kMinutesPerHour));
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -157,8 +159,8 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowForMultipleDays) {
 
   ad.day_parts.push_back(
       std::string("0123456") + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - base::Time::kMinutesPerHour) + "_" +
+      base::NumberToString(current_time + base::Time::kMinutesPerHour));
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -175,23 +177,23 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowIfOneMatchExists) {
   auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
   std::tm * tm_time = std::localtime(&unix_local_time);
   int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
-  std::string tomorrow_dow = std::to_string((tm_time->tm_wday + 1) % 7);
-  std::string current_dow = std::to_string(tm_time->tm_wday);
+  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
+  std::string current_dow = base::NumberToString(tm_time->tm_wday);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - 60) + "_" +
+      base::NumberToString(current_time + 60));
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
-      std::to_string(current_time + 120) + "_" +
-      std::to_string(current_time + 180));
+      base::NumberToString(current_time + 120) + "_" +
+      base::NumberToString(current_time + 180));
 
   ad.day_parts.push_back(
       current_dow + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - 60) + "_" +
+      base::NumberToString(current_time + 60));
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -208,23 +210,28 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfNoMatches) {
   auto unix_local_time = std::chrono::system_clock::to_time_t(current_datetime);
   std::tm * tm_time = std::localtime(&unix_local_time);
   int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
-  std::string tomorrow_dow = std::to_string((tm_time->tm_wday + 1) % 7);
-  std::string current_dow = std::to_string(tm_time->tm_wday);
+  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
+  std::string current_dow = base::NumberToString(tm_time->tm_wday);
+  LOG(INFO) << "albert original dow" << current_dow;
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  LOG(INFO) << "albert " << exploded.hour << ":" << exploded.minute;
+  LOG(INFO) << "albert other dow" << base::NumberToString(exploded.day_of_week);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - 60) + "_" +
+      base::NumberToString(current_time + 60));
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
-      std::to_string(current_time + 120) + "_" +
-      std::to_string(current_time + 180));
+      base::NumberToString(current_time + 120) + "_" +
+      base::NumberToString(current_time + 180));
 
   ad.day_parts.push_back(
       current_dow + "_" +
-      std::to_string(current_time + 60) + "_" +
-      std::to_string(current_time + 120));
+      base::NumberToString(current_time + 60) + "_" +
+      base::NumberToString(current_time + 120));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -245,12 +252,12 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfWrongDay) {
   int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
 
   // Go to next day
-  std::string tomorrow_dow = std::to_string((tm_time->tm_wday + 1) % 7);
+  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - 60) + "_" +
+      base::NumberToString(current_time + 60));
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -269,12 +276,12 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfWrongHours) {
   int current_time = 60 * tm_time->tm_hour + tm_time->tm_min;
 
   // Go to next day
-  std::string tomorrow_dow = std::to_string((tm_time->tm_wday + 1) % 7);
+  std::string tomorrow_dow = base::NumberToString((tm_time->tm_wday + 1) % 7);
 
   ad.day_parts.push_back(
       tomorrow_dow + "_" +
-      std::to_string(current_time - 60) + "_" +
-      std::to_string(current_time + 60));
+      base::NumberToString(current_time - 60) + "_" +
+      base::NumberToString(current_time + 60));
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 

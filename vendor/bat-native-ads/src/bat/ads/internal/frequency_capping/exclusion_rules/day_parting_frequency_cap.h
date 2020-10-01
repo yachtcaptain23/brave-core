@@ -44,13 +44,14 @@ class DayPartingFrequencyCap : public ExclusionRule {
   bool HasDayOfWeekMatch(
       const std::string& current_dow,
       const std::string& days_of_week) const;
-  bool HasTimeSlotMatch(const int current_minutes_from_start,
-    const int start_time,
-    const int end_time) const;
+  bool HasTimeSlotMatch(
+      const uint64_t current_minutes_from_start,
+      const uint64_t start_time,
+      const uint64_t end_time) const;
 
   std::vector<std::string> ParseDayPart(std::string day_part) const;
   std::string GetCurrentDayOfWeek() const;
-  int GetCurrentLocalMinutesFromStart() const;
+  uint64_t GetCurrentLocalMinutesFromStart() const;
 };
 
 }  // namespace ads
