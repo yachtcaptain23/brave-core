@@ -50,6 +50,7 @@ class DayPartingFrequencyCap : public ExclusionRule {
       const uint64_t end_time) const;
 
   std::vector<std::string> ParseDayPart(std::string day_part) const;
+  std::vector<std::string> ParseDayPartList(std::string day_part_list) const;
   std::string GetCurrentDayOfWeek() const;
   uint64_t GetCurrentLocalMinutesFromStart() const;
 };

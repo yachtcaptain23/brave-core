@@ -125,6 +125,16 @@
         }
       ],
       "dayParts": [
+        {
+          "dow": "12345",
+          "startMinute": 480,
+          "endMinute": 1020
+        },
+        {
+          "dow": "06",
+          "startMinute": 720,
+          "endMinute": 1440
+        }
       ],
       "geoTargets": [
         {

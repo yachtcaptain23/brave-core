@@ -118,14 +118,17 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     }
 
     // Day Parting
-    std::vector<std::string> day_parts;
+    std::string day_parts;
+    // Converts this to a form of
+    // "DOW_STARTTIME_ENDTIME"
     for (const auto& day_part : campaign.day_parts) {
-      // Convert this to array of "DOW,START_TIME,END_TIME"
       std::string day_part_stringified = day_part.dow +
-        "," +
-        std::to_string(day_part.start_minute) +
-        "," +
-        std::to_string(day_part.end_minute);
+          "_" +
+          std::to_string(day_part.start_minute) +
+          "_" +
+          std::to_string(day_part.end_minute);
+
+      day_parts += day_part_stringified + ",";
     }
 
     // Creative Sets

@@ -33,8 +33,8 @@ struct CreativeAdInfo {
   unsigned int total_max = 0;
   std::string category;
   std::vector<std::string> geo_targets;
-  std::vector<std::string> day_parts;
   std::string target_url;
+  std::string day_parts;
 };
 
 using CreativeAdList = std::vector<CreativeAdInfo>;

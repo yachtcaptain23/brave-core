@@ -127,10 +127,10 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowIfRightDayAndHours) {
   base::Time::Now().LocalExplode(&exploded);
   int current_time = 60 * exploded.hour + exploded.minute;
 
-  ad.day_parts.push_back(
+  ad.day_parts =
       base::NumberToString(exploded.day_of_week) + "_" +
       base::NumberToString(current_time - base::Time::kMinutesPerHour) + "_" +
-      base::NumberToString(current_time + base::Time::kMinutesPerHour));
+      base::NumberToString(current_time + base::Time::kMinutesPerHour);
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -147,10 +147,10 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowForMultipleDays) {
   base::Time::Now().LocalExplode(&exploded);
   int current_time = 60 * exploded.hour + exploded.minute;
 
-  ad.day_parts.push_back(
+  ad.day_parts =
       std::string("0123456") + "_" +
       base::NumberToString(current_time - base::Time::kMinutesPerHour) + "_" +
-      base::NumberToString(current_time + base::Time::kMinutesPerHour));
+      base::NumberToString(current_time + base::Time::kMinutesPerHour);
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -169,20 +169,20 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, AllowIfOneMatchExists) {
   std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
   std::string current_dow = base::NumberToString(exploded.day_of_week);
 
-  ad.day_parts.push_back(
+  ad.day_parts =
       tomorrow_dow + "_" +
       base::NumberToString(current_time - 60) + "_" +
-      base::NumberToString(current_time + 60));
+      base::NumberToString(current_time + 60) + ",";
 
-  ad.day_parts.push_back(
+  ad.day_parts +=
       tomorrow_dow + "_" +
       base::NumberToString(current_time + 120) + "_" +
-      base::NumberToString(current_time + 180));
+      base::NumberToString(current_time + 180) + ",";
 
-  ad.day_parts.push_back(
+  ad.day_parts +=
       current_dow + "_" +
       base::NumberToString(current_time - 60) + "_" +
-      base::NumberToString(current_time + 60));
+      base::NumberToString(current_time + 60) + ",";
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -201,20 +201,20 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfNoMatches) {
   std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
   std::string current_dow = base::NumberToString(exploded.day_of_week);
 
-  ad.day_parts.push_back(
+  ad.day_parts =
       tomorrow_dow + "_" +
       base::NumberToString(current_time - 60) + "_" +
-      base::NumberToString(current_time + 60));
+      base::NumberToString(current_time + 60) + ",";
 
-  ad.day_parts.push_back(
+  ad.day_parts +=
       tomorrow_dow + "_" +
       base::NumberToString(current_time + 120) + "_" +
-      base::NumberToString(current_time + 180));
+      base::NumberToString(current_time + 180) + ",";
 
-  ad.day_parts.push_back(
+  ad.day_parts +=
       current_dow + "_" +
       base::NumberToString(current_time + 60) + "_" +
-      base::NumberToString(current_time + 120));
+      base::NumberToString(current_time + 120) + ",";
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -236,10 +236,10 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfWrongDay) {
   // Go to next day
   std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
 
-  ad.day_parts.push_back(
+  ad.day_parts =
       tomorrow_dow + "_" +
       base::NumberToString(current_time - 60) + "_" +
-      base::NumberToString(current_time + 60));
+      base::NumberToString(current_time + 60) + ",";
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
@@ -259,10 +259,10 @@ TEST_F(BatAdsDayPartingFrequencyCapTest, DisallowIfWrongHours) {
   // Go to next day
   std::string tomorrow_dow = base::NumberToString((exploded.day_of_week + 1) % 7);
 
-  ad.day_parts.push_back(
+  ad.day_parts =
       tomorrow_dow + "_" +
       base::NumberToString(current_time - 60) + "_" +
-      base::NumberToString(current_time + 60));
+      base::NumberToString(current_time + 60) + ",";
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
