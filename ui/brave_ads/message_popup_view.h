@@ -25,7 +25,7 @@ class MessagePopupView : public views::WidgetDelegateView,
   static void Show(const Notification& notification);
 
   // Destroys the widget
-  static void ClosePopup();
+  static void ClosePopup(const bool by_user);
 
   // Tells AdsNotificationHandler that this was clicked
   static void Clicked(const std::string& notification_id);

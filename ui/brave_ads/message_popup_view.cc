@@ -49,25 +49,31 @@ static const int kBodyCharactersPerLine = 40;
 
 // static
 void MessagePopupView::Show(const Notification& notification) {
-  MessagePopupView::ClosePopup();
+  // Close previous showing notification
+  MessagePopupView::ClosePopup(false);
   g_notifications_[notification.id()] = new MessagePopupView(notification);
 }
 
 // static
 void MessagePopupView::Clicked(const std::string& notification_id) {
   MessagePopupView* message_popup_view = g_notifications_[notification_id];
-  message_popup_view->notification_.delegate()->Click(
-      base::nullopt, base::nullopt);
+  NotificationDelegate* notification_delegate = message_popup_view->notification_.delegate();
+  if (notification_delegate) {
+    notification_delegate->Click(base::nullopt, base::nullopt);
+  }
   message_popup_view->Close();
   g_notifications_.erase(notification_id);
 }
 
 // static
-void MessagePopupView::ClosePopup() {
+void MessagePopupView::ClosePopup(const bool by_user) {
   for (auto iter = g_notifications_.begin();
       iter != g_notifications_.end(); ++iter) {
     MessagePopupView* message_popup_view = g_notifications_[iter->first];
-    message_popup_view->notification_.delegate()->Close(true);
+    NotificationDelegate* notification_delegate = message_popup_view->notification_.delegate();
+    if (notification_delegate) {
+      notification_delegate->Close(by_user);
+    }
     message_popup_view->Close();
   }
   g_notifications_.clear();

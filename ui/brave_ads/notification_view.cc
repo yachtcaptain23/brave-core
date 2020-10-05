@@ -285,7 +285,7 @@ void NotificationView::OnCloseButtonPressed() {
   for (auto& observer : observers_) {
     observer.OnCloseButtonPressed(notification_id_);
   }
-  MessagePopupView::ClosePopup();
+  MessagePopupView::ClosePopup(true);
 }
 
 void NotificationView::UpdateControlButtonsVisibility() {

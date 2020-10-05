@@ -165,7 +165,7 @@ void PlatformBridge::Close(
     Profile* profile,
     const std::string& notification_id) {
 #if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
-  brave_ads::MessagePopupView::ClosePopup();
+  brave_ads::MessagePopupView::ClosePopup(false);
 #elif defined(OS_ANDROID)
   PlatformBridge::
       CloseAndroidAdsNotification(
