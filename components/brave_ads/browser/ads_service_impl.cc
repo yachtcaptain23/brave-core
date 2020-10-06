@@ -1085,8 +1085,6 @@ void AdsServiceImpl::NotificationTimedOut(
   }
 
   CloseNotification(uuid);
-
-  OnClose(profile_, GURL(), uuid, false, base::OnceClosure());
 }
 
 void AdsServiceImpl::RegisterUserModelComponentsForLocale(
