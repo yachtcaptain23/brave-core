@@ -60,6 +60,8 @@ source_set("brave_ads") {
       "notification_view_factory.h",
       "padded_button.cc",
       "padded_button.h",
+      "padded_image.cc",
+      "padded_image.h",
     ]
     deps += [
       "//ui/compositor",

@@ -11,6 +11,7 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "brave/ui/brave_ads/notification_view.h"
 #include "brave/ui/brave_ads/padded_button.h"
+#include "brave/ui/brave_ads/padded_image.h"
 #include "brave/ui/brave_ads/public/cpp/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -49,12 +50,10 @@ void NotificationControlButtonsView::ShowInfoButton(bool show) {
   if (show && !info_button_) {
     // Add the button next right to the snooze button.
     // TODO(Albert Wang): https://github.com/brave/brave-browser/issues/11798
-    info_button_ = std::make_unique<views::ImageView>();
+    info_button_ = std::make_unique<PaddedImage>();
     info_button_->set_owned_by_client();
-    gfx::Image ad_logo =
-        ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-            IDR_BAT_ADS_LOGO_20);
-    info_button_->SetImage(ad_logo.AsImageSkia());
+    info_button_->SetImage(
+        gfx::CreateVectorIcon(kBraveAdsInfoIcon, 35, SK_ColorTRANSPARENT));
     AddChildView(info_button_.get());
     Layout();
   } else if (!show && info_button_) {
@@ -63,17 +62,13 @@ void NotificationControlButtonsView::ShowInfoButton(bool show) {
   }
 }
 
-
 void NotificationControlButtonsView::ShowCloseButton(bool show) {
   if (show && !close_button_) {
     close_button_ = std::make_unique<PaddedButton>(this);
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-            IDR_BAT_ADS_CLOSE_BUTTON_16).AsImageSkia());
-    close_button_->SetBackground(
-        views::CreateSolidBackground(SK_ColorTRANSPARENT));
+        gfx::CreateVectorIcon(kBraveAdsCloseButtonIcon, 18, kBraveAdsCloseButtonIconColor));
 
     // Add the button at the last.
     AddChildView(close_button_.get());

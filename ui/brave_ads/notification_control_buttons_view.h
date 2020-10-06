@@ -26,6 +26,7 @@ class Button;
 namespace brave_ads {
 
 class NotificationView;
+class PaddedImage;
 class PaddedButton;
 
 class NotificationControlButtonsView
@@ -63,7 +64,7 @@ class NotificationControlButtonsView
   NotificationView* message_view_;
 
   std::unique_ptr<PaddedButton> close_button_;
-  std::unique_ptr<views::ImageView> info_button_;
+  std::unique_ptr<PaddedImage> info_button_;
 
   DISALLOW_COPY_AND_ASSIGN(NotificationControlButtonsView);
 };
